@@ -1,15 +1,16 @@
 const {getSavings, getInstallmentSavings} = require('../service')
 
-const getSavings = async (req, res)=> {
+const savingsList = async (req, res)=> {
 
     await getSavings();
+    res.send("aa")
 }
-const getInstallmentSavings = async (req, res)=> {
+const installmentSavingsList = async (req, res)=> {
     
     await getInstallmentSavings();
 }
 
 module.exports = {
-    getSavings,
-    getInstallmentSavings
+    savingsList,
+    installmentSavingsList
 }
