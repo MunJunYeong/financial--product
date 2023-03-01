@@ -1,5 +1,5 @@
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
-const token = process.env.API_ACCESS_TOKEN
+import fetch from 'node-fetch';
+const token = process.env.API_ACCESS_TOKEN;
 
 // 참고 url = http://finlife.fss.or.kr/PageLink.do?link=openapi/detail03&menuId=2000127
 
@@ -7,21 +7,17 @@ const token = process.env.API_ACCESS_TOKEN
 const _getSavings = async ()=> {
     const url = `http://finlife.fss.or.kr/finlifeapi/depositProductsSearch.json?auth=${token}&topFinGrpNo=020000&pageNo=${1}`
     const res = await fetch(url);
-    const {result} = await res.json();
+    const {result} : any = await res.json();
 
     const productList = result.baseList;
     const optionList = result.optionList;
 
     const refinedProduct = {};
-
     const refinedOption = {};
-    optionList.forEach((option)=> {
-
-    })
 
     // data parsing
     const data = {};
-    data.total_count = result.total_count
+    // data.total_count = result.total_count
 
     
     console.log(result.baseList.length)
@@ -37,7 +33,7 @@ const _getSavings = async ()=> {
 const _getInstallmentSavings = async ()=> {
     const url = `http://finlife.fss.or.kr/finlifeapi/savingProductsSearch.json?auth=${token}&topFinGrpNo=020000&pageNo=${1}`
     const res = await fetch(url);
-    const { result } = await res.json();
+    const {result}: any = await res.json();
 }
 
 const getSavings = async ()=> {
@@ -48,9 +44,7 @@ const getInstallmentSavings = async ()=> {
     await _getInstallmentSavings()
 }
 
-module.exports = {
+export {
     getSavings,
     getInstallmentSavings
 }
- 
-
