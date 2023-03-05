@@ -4,6 +4,5 @@ import { SavingsService } from './saving.service';
 @Controller('savings')
 export class SavingsContoller {
     constructor(private readonly savingsService: SavingsService) {}
-
     
 }
