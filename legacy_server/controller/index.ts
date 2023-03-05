@@ -1,9 +1,7 @@
 import {getSavings, getInstallmentSavings} from '../service'
 
 const savingsList = async (req: any, res: any)=> {
-
-    await getSavings();
-    res.send("aa")
+    res.send(await getSavings())
 }
 const installmentSavingsList = async (req: any, res: any)=> {
     
