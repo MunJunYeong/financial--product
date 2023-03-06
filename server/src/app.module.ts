@@ -8,6 +8,10 @@ import { ConfigurationModule } from './config';
 @Module({
   controllers: [AppController],
   providers: [AppService],
-  imports: [ConfigurationModule,UserModule, SavingsModule],
+  imports: [
+    ConfigurationModule, 
+    UserModule, 
+    SavingsModule
+  ],
 })
 export class AppModule {}
