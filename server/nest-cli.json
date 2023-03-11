@@ -27,13 +27,13 @@
         "tsConfigPath": "apps/auth/tsconfig.app.json"
       }
     },
-    "savings": {
+    "product": {
       "type": "application",
-      "root": "apps/savings",
+      "root": "apps/product",
       "entryFile": "main",
-      "sourceRoot": "apps/savings/src",
+      "sourceRoot": "apps/product/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/savings/tsconfig.app.json"
+        "tsConfigPath": "apps/product/tsconfig.app.json"
       }
     },
     "libs": {
@@ -79,15 +79,6 @@
       "sourceRoot": "libs/middleware/src",
       "compilerOptions": {
         "tsConfigPath": "libs/middleware/tsconfig.lib.json"
-      }
-    },
-    "product": {
-      "type": "application",
-      "root": "apps/product",
-      "entryFile": "main",
-      "sourceRoot": "apps/product/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/product/tsconfig.app.json"
       }
     }
   }
