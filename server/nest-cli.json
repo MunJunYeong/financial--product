@@ -80,6 +80,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/middleware/tsconfig.lib.json"
       }
+    },
+    "product": {
+      "type": "application",
+      "root": "apps/product",
+      "entryFile": "main",
+      "sourceRoot": "apps/product/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/product/tsconfig.app.json"
+      }
     }
   }
 }

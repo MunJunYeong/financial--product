@@ -3,20 +3,18 @@ import { SavingsController } from './savings.controller';
 import { SavingsService } from './savings.service';
 
 describe('SavingsController', () => {
-  let savingsController: SavingsController;
+  let controller: SavingsController;
 
   beforeEach(async () => {
-    const app: TestingModule = await Test.createTestingModule({
+    const module: TestingModule = await Test.createTestingModule({
       controllers: [SavingsController],
       providers: [SavingsService],
     }).compile();
 
-    savingsController = app.get<SavingsController>(SavingsController);
+    controller = module.get<SavingsController>(SavingsController);
   });
 
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(savingsController.getHello()).toBe('Hello World!');
-    });
+  it('should be defined', () => {
+    expect(controller).toBeDefined();
   });
 });

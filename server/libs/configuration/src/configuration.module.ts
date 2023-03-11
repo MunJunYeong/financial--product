@@ -6,9 +6,8 @@ import { ConfigurationService } from './configuration.service';
   imports : [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: process.env.NODE_ENV === 'dev' ? '.env.dev' : '.env.test',
-      ignoreEnvFile: process.env.NODE_ENV === 'prod', // prod할 때는 heroku에 따로 넣기로
-    }),
+      envFilePath: process.env.NODE_ENV === 'dev' ? '.dev.env' : '.prod.env',
+    })
   ],
   providers: [ConfigurationService],
   exports: [ConfigurationService],
