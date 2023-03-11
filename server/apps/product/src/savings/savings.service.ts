@@ -1,59 +1,53 @@
 import { Injectable } from '@nestjs/common';
-import { Savings } from './dto/common.dto';
+
+const token = process.env.API_ACCESS_TOKEN;
+
+// 참고 url = http://finlife.fss.or.kr/PageLink.do?link=openapi/detail03&menuId=2000127
+
+
 
 @Injectable()
 export class SavingsService {
+    constructor(){}
   
-    getSavings(inputSavings: Savings){
-
-        const monthArr: string[] = inputSavings.payMethod.split("-");
-        const monthCount: number = monthArr.length;
-
-        const res: DatePrice[] = []
-        let interest: number = 0;
-        let totalDay: number = inputSavings.period * 365;
-
-        // Calc Payment date
-        for (let i =0; i < monthArr.length; i++ ){
-            // 각 월 별 금액 구하기.
-            const total = Number(monthArr[i]) * inputSavings.price
-
-            // 이자 구하기 ()
-            switch (inputSavings.isSimple) {
-                case true : { // 단리
-
-                }
-                case false : { // 복리
-
-                }
-            }
-
-            const data: DatePrice = {
-                paymentDate : "temp",
-                price : total // 날짜 계산 방법 ???
-            }
-            res.push(data)
+    async schedulingSavings (){
+        const url = `http://finlife.fss.or.kr/finlifeapi/savingProductsSearch.json?auth=${token}&topFinGrpNo=020000&pageNo=${1}`
+        let res: any;
+        try{
+            res = await fetch(url);
+        }catch(err){
+            console.log(err)
         }
+        const {result} : any = await res.json();
+        
+        const productList = result.baseList;
+        const optionList = result.optionList;
+        
+        const refinedProduct = {};
+        const refinedOption = {};
+        
+        // data parsing
+        const data = {};
+        // data.total_count = result.total_count
+        
+        return result;
+    }
 
+    async schedulingInstallmentSavings (){
+        const url = `http://finlife.fss.or.kr/finlifeapi/depositProductsSearch.json?auth=${token}&topFinGrpNo=020000&pageNo=${1}`
+        const res = await fetch(url);
+        const {result}: any = await res.json();
+    }
 
-
-        console.log(res)
-
-        return null;
+    // 정기예금
+    async getSavings(){
+        // TODO: DB 연동해서 가져오기
+    }
+    
+    // 적금
+    async getInstallmentSavings(){
+        // TODO: DB 연동해서 가져오기
     }
 
 }
 
-interface Result {
-    datePrice: DatePrice[] 
-    principal: number // 원금 합계
-    beInterest: number // 세전 이자
-    taxation : number // 이자 과세
-    afInterest: number // 세후 이자
-    totalMoney: number // 세후 수령액
-}
-
-interface DatePrice {
-    paymentDate: string
-    price: number
-}
