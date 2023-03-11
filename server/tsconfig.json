@@ -16,6 +16,32 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@app/common": [
+        "libs/common/src"
+      ],
+      "@app/common/*": [
+        "libs/common/src/*"
+      ],
+      "@app/configuration": [
+        "libs/configuration/src"
+      ],
+      "@app/configuration/*": [
+        "libs/configuration/src/*"
+      ],
+      "@app/database": [
+        "libs/database/src"
+      ],
+      "@app/database/*": [
+        "libs/database/src/*"
+      ],
+      "@app/middleware": [
+        "libs/middleware/src"
+      ],
+      "@app/middleware/*": [
+        "libs/middleware/src/*"
+      ]
+    }
   }
 }
