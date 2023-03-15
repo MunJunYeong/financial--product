@@ -1,6 +1,6 @@
+import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-
-const token = process.env.API_ACCESS_TOKEN;
+import { ConfigurationService } from 'libs';
 
 // 참고 url = http://finlife.fss.or.kr/PageLink.do?link=openapi/detail03&menuId=2000127
 
@@ -8,20 +8,25 @@ const token = process.env.API_ACCESS_TOKEN;
 
 @Injectable()
 export class SavingsService {
-    constructor(){}
+    constructor(
+        private readonly configService: ConfigurationService,
+        private readonly httpService: HttpService
+    ){}
   
-    async schedulingSavings (){
+    async saveSavings (){
+        const token =  this.configService.get<string>('API_ACCESS_TOKEN')
         const url = `http://finlife.fss.or.kr/finlifeapi/savingProductsSearch.json?auth=${token}&topFinGrpNo=020000&pageNo=${1}`
         let res: any;
         try{
-            res = await fetch(url);
+            res = this.httpService.get(url).toPromise();
         }catch(err){
             console.log(err)
         }
-        const {result} : any = await res.json();
         
-        const productList = result.baseList;
-        const optionList = result.optionList;
+        console.log(res)
+        
+        const productList = res.baseList;
+        const optionList = res.optionList;
         
         const refinedProduct = {};
         const refinedOption = {};
@@ -30,10 +35,11 @@ export class SavingsService {
         const data = {};
         // data.total_count = result.total_count
         
-        return result;
+        return res;
     }
 
     async schedulingInstallmentSavings (){
+        const token =  this.configService.get<string>('API_ACCESS_TOKEN')
         const url = `http://finlife.fss.or.kr/finlifeapi/depositProductsSearch.json?auth=${token}&topFinGrpNo=020000&pageNo=${1}`
         const res = await fetch(url);
         const {result}: any = await res.json();

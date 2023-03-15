@@ -1,15 +1,16 @@
-import { IsNumber, IsBoolean, IsString } from "class-validator";
+import { Type } from 'class-transformer';
+import { IsNumber, IsBoolean, IsString, IsDate } from "class-validator";
 
 // prepayment
 export class PrePostPayment {
     @IsNumber()
-    period: number
+    period: number // 적금 기간
 
     @IsString()
-    payMethod: string
+    payMethod: string // 납입방식
 
     @IsNumber()
-    price: number
+    price: number // 월 납입액
 
     @IsNumber()
     rate: number // 금리
@@ -17,21 +18,10 @@ export class PrePostPayment {
     @IsBoolean()
     isSimple: boolean //  true : 단리,   false : 복리
 
-    @IsString() 
-    startData: string // 가입 일
+    @Type(()=> Date)
+    @IsDate()
+    startDate: Date // 가입 일
 
     @IsNumber()
     interest: number // 이자세율
-
-    /*
-    {
-        "period" : 12,
-        "payMethod" : "1-6-5",
-        "price" : 500000,
-        "rate" : 6,
-        "isSimple" : true,
-        "startData" : "2023-01-01",
-        "interest" : 0
-    }
-    */
 }

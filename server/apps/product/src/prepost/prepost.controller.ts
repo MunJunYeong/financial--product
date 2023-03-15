@@ -9,8 +9,9 @@ export class PrepostController {
   @Post('')
     findSavingsDate(@Body() inputSavings: PrePostPayment){
         //TODO: validation 추가하기
+        const tempDate = new Date(inputSavings.startDate)
+        inputSavings.startDate = tempDate
         const temp = this.prepostService.calcPrePost(inputSavings);
-        console.log(inputSavings)
     }
 
 }

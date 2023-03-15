@@ -1,8 +1,8 @@
-import { IsNumber, IsBoolean, IsString } from "class-validator";
+import { IsNumber, IsBoolean, IsString, IsDate } from "class-validator";
 
 // 선납이연 결과
 export class PrePostPaymentResult {
-    datePrice: DatePrice[] 
+    dateAmout: DateAmount[] 
     @IsNumber()
     principal: number // 원금 합계
     @IsNumber()
@@ -16,9 +16,9 @@ export class PrePostPaymentResult {
 }
 
 // 선납이연 납부 월액
-export class DatePrice {
-    @IsString()
-    paymentDate: string
+export class DateAmount {
+    @IsDate()
+    paymentDate: Date
 
     @IsNumber()
     price: number
