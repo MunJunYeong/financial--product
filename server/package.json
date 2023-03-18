@@ -91,7 +91,9 @@
       "^@app/common(|/.*)$": "<rootDir>/libs/common/src/$1",
       "^@app/configuration(|/.*)$": "<rootDir>/libs/configuration/src/$1",
       "^@app/database(|/.*)$": "<rootDir>/libs/database/src/$1",
-      "^@app/middleware(|/.*)$": "<rootDir>/libs/middleware/src/$1"
+      "^@app/middleware(|/.*)$": "<rootDir>/libs/middleware/src/$1",
+      "^@app/axios(|/.*)$": "<rootDir>/libs/axios/src/$1",
+      "^@app/scheduling(|/.*)$": "<rootDir>/libs/scheduling/src/$1"
     }
   }
 }

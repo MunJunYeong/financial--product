@@ -1,6 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { ConfigurationService } from 'libs';
+import { map, firstValueFrom, lastValueFrom } from 'rxjs';
 
 // 참고 url = http://finlife.fss.or.kr/PageLink.do?link=openapi/detail03&menuId=2000127
 
@@ -18,7 +19,8 @@ export class SavingsService {
         const url = `http://finlife.fss.or.kr/finlifeapi/savingProductsSearch.json?auth=${token}&topFinGrpNo=020000&pageNo=${1}`
         let res: any;
         try{
-            res = this.httpService.get(url).toPromise();
+            res = (await firstValueFrom(this.httpService.get(url))).data;
+            console.log(JSON.stringify(res));
         }catch(err){
             console.log(err)
         }
