@@ -41,6 +41,18 @@
       ],
       "@app/middleware/*": [
         "libs/middleware/src/*"
+      ],
+      "@app/axios": [
+        "libs/axios/src"
+      ],
+      "@app/axios/*": [
+        "libs/axios/src/*"
+      ],
+      "@app/scheduling": [
+        "libs/scheduling/src"
+      ],
+      "@app/scheduling/*": [
+        "libs/scheduling/src/*"
       ]
     }
   }
