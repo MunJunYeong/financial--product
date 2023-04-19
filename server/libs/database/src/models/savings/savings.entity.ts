@@ -1,11 +1,13 @@
-import { Model } from "sequelize";
-import { Column, PrimaryKey, Table, Unique } from "sequelize-typescript";
+import { Model, Column, PrimaryKey, Table, Unique, DataType, AutoIncrement } from "sequelize-typescript";
 
 @Table
 export class Savings extends Model<Savings> {
-    @Column
+
+    
     @PrimaryKey
-    savings_idx: number
+    @AutoIncrement
+    @Column(DataType.BIGINT)
+    savings_idx!: number
 
     @Column
     dcls_month: string
