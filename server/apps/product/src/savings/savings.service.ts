@@ -25,7 +25,9 @@ export class SavingsService {
         }catch(err){
             console.log(err)
         }
-        
+
+        const relationMap = new Map<string, number>();
+
         // baseList save
         const baseList: SavingsDTO[] = data.baseList;
         baseList.forEach((product) => {
@@ -38,6 +40,15 @@ export class SavingsService {
                 max_limit : product.max_limit,
             }
             // TODO: Save Savings
+            try{
+
+            }catch(err){
+
+            }
+
+            // fin_prdt_cd : savings PK
+            relationMap.set(product.fin_prdt_cd, 1)
+
         });
         
         // option save
@@ -52,12 +63,14 @@ export class SavingsService {
                 intr_rate2 : option.intr_rate2,
             }
             // TODO: Save Option
-        } )
-        
-        
-        // data parsing
+            const fkIdx = relationMap.get(option.fin_prdt_cd);
+            try{
 
-        // data.total_count = result.total_count
+            }catch(err){
+                
+            }
+            
+        } )
         
         return data;
     }
