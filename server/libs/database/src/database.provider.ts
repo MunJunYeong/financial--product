@@ -1,7 +1,7 @@
 import { ConfigurationService } from '../../configuration/src';
 import { Sequelize } from 'sequelize-typescript'
-import { Savings } from './models/savings/savings.entity';
-import { SavingsOption } from './models/savingsOption/savingsOptions.entity';
+import { Savings } from './models/savings.entity';
+import { SavingsOption } from './models/savingsOptions.entity';
 
 export const DatabaseProvider = [
     {
@@ -18,7 +18,7 @@ export const DatabaseProvider = [
             database : configService.get<string>('DB_DATABASE'),
         });
         
-        sequelize.addModels([Savings]);
+        sequelize.addModels([Savings, SavingsOption]);
         await sequelize.sync();
         return sequelize;
       },

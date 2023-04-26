@@ -1,9 +1,11 @@
-import { Model, Column, PrimaryKey, Table } from "sequelize-typescript";
+import { Model, DataType, Column, PrimaryKey, Table, AutoIncrement } from "sequelize-typescript";
+import { Savings } from "./savings.entity";
 
 @Table
 export class SavingsOption extends Model<SavingsOption> {
-    @Column
     @PrimaryKey
+    @AutoIncrement
+    @Column(DataType.BIGINT)
     option_idx: number
 
     @Column
@@ -23,5 +25,9 @@ export class SavingsOption extends Model<SavingsOption> {
 
     @Column
     intr_rate2: number
+
+    static associate() {
+        SavingsOption.belongsTo(Savings);
+    }
 
 }
