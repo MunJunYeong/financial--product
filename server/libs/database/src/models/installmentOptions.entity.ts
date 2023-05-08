@@ -1,8 +1,8 @@
 import { Model, DataType, Column, PrimaryKey, Table, AutoIncrement, ForeignKey, BelongsTo } from "sequelize-typescript";
-import { Savings } from "./savings.entity";
+import { Installment } from "./installments.entity";
 
 @Table
-export class SavingsOption extends Model<SavingsOption> {
+export class InstallmentOption extends Model<InstallmentOption> {
     @PrimaryKey
     @AutoIncrement
     @Column(DataType.BIGINT)
@@ -26,10 +26,10 @@ export class SavingsOption extends Model<SavingsOption> {
     @Column
     intr_rate2: number
 
-    @ForeignKey(() => Savings)
+    @ForeignKey(() => Installment)
     @Column
-    savings_idx: number;
+    installment_idx: number;
 
-    @BelongsTo(() => Savings)
-    savings: Savings;
+    @BelongsTo(() => Installment)
+    savings: Installment;
 }

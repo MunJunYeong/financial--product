@@ -2,6 +2,8 @@ import { ConfigurationService } from '../../configuration/src';
 import { Sequelize } from 'sequelize-typescript';
 import { Savings } from './models/savings.entity';
 import { SavingsOption } from './models/savingsOptions.entity';
+import { Installment } from './models/installments.entity';
+import { InstallmentOption } from './models/installmentOptions.entity';
 
 export const databaseProviders = [
   {
@@ -18,7 +20,7 @@ export const databaseProviders = [
         logging: false
       });
 
-      sequelize.addModels([Savings, SavingsOption]);
+      sequelize.addModels([Savings, SavingsOption, Installment, InstallmentOption]);
       await sequelize.sync();
       return sequelize;
     },
