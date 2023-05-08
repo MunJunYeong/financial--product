@@ -6,20 +6,28 @@ import { SavingsService } from './savings.service';
 export class SavingsController {
     constructor(private readonly savingsService: SavingsService) {}
 
-    // scheduling에서 매번 상품 업데이트
+    // TODO: scheduling에서 매번 상품 업데이트
+
+    // 정기예금
     @Post('')
     async postSavings(){
         return await this.savingsService.saveSavings();
     }
 
-    // 정기예금
+    
     @Get('')
-    async findSavings(){
+    async postInstallmentSavings(){
         return await this.savingsService.getSavings();
     }
 
     // 적금
-    @Get('/installment')
+    @Post('/installment')
+    async findSavings(){
+        return await this.savingsService.saveInstallmentSavings();
+    }
+
+
+    @Get('installment')
     async findInstallmentSavings(){
 
     }

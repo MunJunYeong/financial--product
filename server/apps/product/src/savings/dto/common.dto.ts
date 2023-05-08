@@ -1,6 +1,8 @@
 import { IsNumber, IsBoolean, IsString } from "class-validator";
 
 export class SavingsDTO {
+    @IsNumber()
+    savings_idx: number
     @IsString()
     dcls_month: string // 출시일(년월)
     @IsString()
@@ -28,4 +30,6 @@ export class SavingsOptionsDTO {
     intr_rate: number // 저축 금리 [소수점 2자리]
     @IsNumber()
     intr_rate2: number // 최고 우대금리 [소수점 2자리]
+    @IsNumber()
+    savings_idx: number
 }

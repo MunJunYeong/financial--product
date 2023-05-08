@@ -1,34 +1,48 @@
 import { Savings } from '@app/database/models/savings.entity';
 import { SavingsOption } from '@app/database/models/savingsOptions.entity';
 import { Inject, Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/sequelize';
 import { Sequelize } from 'sequelize-typescript';
-import { SavingsDTO } from './dto/common.dto';
+import { SavingsDTO, SavingsOptionsDTO } from './dto/common.dto';
 
 @Injectable()
 export class SavingsRepo {
   constructor(@Inject('SEQUELIZE') private readonly sequelize: Sequelize) {}
 
-  async createTestData() {
-    for(let i = 0; i < 5; i++){
-        const temp: SavingsDTO = {
-            dcls_month : "da",
-            fin_co_no : "aa",
-            fin_prdt_cd : "aab" + i,
-            fin_prdt_nm : "aa",
-            kor_co_nm : "aa",
-            max_limit : 2,
-        }
-        const savings = await Savings.create(temp);
-        console.log(savings)
+  async saveSavings(savings: SavingsDTO[], savingsOpts: SavingsOptionsDTO[]): Promise<boolean>{
+    const transaction = await this.sequelize.transaction();
+
+    try {
+      // save savings + opt
+      await Savings.bulkCreate(savings, { transaction });
+      await SavingsOption.bulkCreate(savingsOpts, { transaction });
+      // commit
+      await transaction.commit();
+    } catch (err) {
+      // rollback
+      await transaction.rollback();
+      throw err;
     }
-    return true
+    return true;
   }
 
-  // async deleteSavings(): Promise<void> {
-  //     await this.savingsModel.destroy({ where: {} });
-  // }
-  // async deleteOptSavings(): Promise<void> {
-  //     await this.savingsOptionModel.destroy({ where: {} });
-  // }
+
+  async deleteAllProduct(): Promise<boolean> {
+    const transaction = await this.sequelize.transaction();
+    try {
+      // delete savings + opt
+      await Savings.destroy({ where: {}, transaction });
+      await SavingsOption.destroy({ where: {}, transaction });
+
+      // TODO: delete installment + opt
+
+      // commit
+      await transaction.commit();
+    } catch (err) {
+      // rollback
+      await transaction.rollback();
+      throw err;
+    }
+    return true;
+  }
+
 }

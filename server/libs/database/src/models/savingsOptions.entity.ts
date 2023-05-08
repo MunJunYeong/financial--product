@@ -28,7 +28,7 @@ export class SavingsOption extends Model<SavingsOption> {
 
     @ForeignKey(() => Savings)
     @Column
-    savingsIdx: number;
+    savings_idx: number;
 
     @BelongsTo(() => Savings)
     savings: Savings;

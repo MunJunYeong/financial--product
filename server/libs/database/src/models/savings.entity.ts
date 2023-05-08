@@ -4,9 +4,8 @@ import { SavingsOption } from "./savingsOptions.entity";
 @Table
 export class Savings extends Model<Savings> {
     @PrimaryKey
-    @AutoIncrement
     @Column(DataType.BIGINT)
-    savings_idx!: number
+    savings_idx: number
 
     @Column
     dcls_month: string
