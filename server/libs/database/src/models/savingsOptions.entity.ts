@@ -32,5 +32,4 @@ export class SavingsOption extends Model<SavingsOption> {
 
     @BelongsTo(() => Savings)
     savings: Savings;
-
 }
