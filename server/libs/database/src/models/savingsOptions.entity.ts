@@ -1,4 +1,4 @@
-import { Model, DataType, Column, PrimaryKey, Table, AutoIncrement } from "sequelize-typescript";
+import { Model, DataType, Column, PrimaryKey, Table, AutoIncrement, ForeignKey, BelongsTo } from "sequelize-typescript";
 import { Savings } from "./savings.entity";
 
 @Table
@@ -26,8 +26,11 @@ export class SavingsOption extends Model<SavingsOption> {
     @Column
     intr_rate2: number
 
-    static associate() {
-        SavingsOption.belongsTo(Savings);
-    }
+    @ForeignKey(() => Savings)
+    @Column
+    savingsIdx: number;
+
+    @BelongsTo(() => Savings)
+    savings: Savings;
 
 }

@@ -1,4 +1,4 @@
-import { Model, Column, PrimaryKey, Table, Unique, DataType, AutoIncrement } from "sequelize-typescript";
+import { Model, Column, PrimaryKey, Table, Unique, DataType, AutoIncrement, HasMany } from "sequelize-typescript";
 import { SavingsOption } from "./savingsOptions.entity";
 
 @Table
@@ -27,8 +27,7 @@ export class Savings extends Model<Savings> {
     @Column
     max_limit: number
 
-    static associate() {
-        Savings.hasMany(SavingsOption);
-    }
+    @HasMany(() => SavingsOption)
+    options: SavingsOption[];
 
 }

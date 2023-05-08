@@ -16,8 +16,12 @@ export class SavingsService {
     ){}
   
     async saveSavings (){
-        const token =  this.configService.get<string>('API_ACCESS_TOKEN')
-        const url = `http://finlife.fss.or.kr/finlifeapi/savingProductsSearch.json?auth=${token}&topFinGrpNo=020000&pageNo=${1}`
+        // 기존 데이터 전부 삭제
+        
+        
+
+        const token: string =  this.configService.get<string>('API_ACCESS_TOKEN')
+        const url: string = `http://finlife.fss.or.kr/finlifeapi/savingProductsSearch.json?auth=${token}&topFinGrpNo=020000&pageNo=${1}`
         let data: any;
         try{
             const res = (await firstValueFrom(this.httpService.get(url))).data;
