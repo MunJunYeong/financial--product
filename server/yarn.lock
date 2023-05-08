@@ -781,12 +781,12 @@
     "jsonc-parser" "3.2.0"
     "pluralize" "8.0.0"
 
-"@nestjs/sequelize@^9.0.0":
-  "integrity" "sha512-8HwEcDuUka5sGR4eIv98tEWRTzNI87KGkoHLbmFx9rk1/OB3nF2gqvtLzU7WMLdgan0mNQdDzeBoVwAmedMEtQ=="
-  "resolved" "https://registry.npmjs.org/@nestjs/sequelize/-/sequelize-9.0.0.tgz"
-  "version" "9.0.0"
+"@nestjs/sequelize@^9.0.2":
+  "integrity" "sha512-swACZqx+7EbjpDxNHUfRhRwm7164Zv1G00TaXV6m87Gzg/WTz56FCnxeis06XnjtQyEV6rbe/DbxWOzk2XuOog=="
+  "resolved" "https://registry.npmjs.org/@nestjs/sequelize/-/sequelize-9.0.2.tgz"
+  "version" "9.0.2"
   dependencies:
-    "uuid" "8.3.2"
+    "uuid" "9.0.0"
 
 "@nestjs/testing@^9.0.0":
   "integrity" "sha512-+mPvSVvSC2SAkYgZZv1mOI2xsdGc1pmq7/sem7iin/JDoFtlvoGSK+pfZHD3IV3EpYtq1v/8/5gi+UFH9yZnDg=="
@@ -4918,11 +4918,6 @@
   "version" "1.0.1"
 
 "uuid@^8.3.2":
-  "integrity" "sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg=="
-  "resolved" "https://registry.npmjs.org/uuid/-/uuid-8.3.2.tgz"
-  "version" "8.3.2"
-
-"uuid@8.3.2":
   "integrity" "sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg=="
   "resolved" "https://registry.npmjs.org/uuid/-/uuid-8.3.2.tgz"
   "version" "8.3.2"
