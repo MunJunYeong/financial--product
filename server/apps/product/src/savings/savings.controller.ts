@@ -11,7 +11,7 @@ export class SavingsController {
     // 적금
     @Post('/savings')
     async postSavings(){
-        return await this.savingsService.saveSavings();
+        return await this.savingsService.SaveSavings();
     }
 
     
@@ -23,7 +23,7 @@ export class SavingsController {
     // 정기예금 
     @Post('/installment')
     async findSavings(){
-        return await this.savingsService.saveInstallmentSavings();
+        return await this.savingsService.SaveInstallmentSavings();
     }
 
 
