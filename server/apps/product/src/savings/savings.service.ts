@@ -77,7 +77,7 @@ export class SavingsService {
         });
       });
     }
-    console.log(optsList[0].savings_idx)
+    
     // save savings + opts
     {
       try {
