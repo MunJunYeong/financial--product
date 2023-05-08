@@ -1,8 +1,9 @@
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
-import { ConfigurationModule } from 'libs';
+import { ConfigurationModule, DatabaseModule } from 'libs';
 import { SavingsController } from './savings.controller';
 import { SavingsService } from './savings.service';
+import { SavingsRepo } from './savings.repo';
 
 @Module({
   imports : [
@@ -13,9 +14,13 @@ import { SavingsService } from './savings.service';
         timeout : 5000,
         maxRedirects : 5,
       })
-    })
+    }),
+    DatabaseModule,
   ],
   controllers: [SavingsController],
-  providers: [SavingsService]
+  providers: [SavingsService, SavingsRepo],
+  exports : [
+    SavingsRepo
+  ]
 })
 export class SavingsModule {}

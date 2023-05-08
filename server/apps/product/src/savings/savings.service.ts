@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigurationService } from 'libs';
 import { map, firstValueFrom, lastValueFrom } from 'rxjs';
 import { SavingsDTO, SavingsOptionsDTO } from './dto/common.dto';
+import { SavingsRepo } from './savings.repo';
 
 // 참고 url = http://finlife.fss.or.kr/PageLink.do?link=openapi/detail03&menuId=2000127
 
@@ -12,12 +13,13 @@ import { SavingsDTO, SavingsOptionsDTO } from './dto/common.dto';
 export class SavingsService {
     constructor(
         private readonly configService: ConfigurationService,
-        private readonly httpService: HttpService
+        private readonly httpService: HttpService,
+        private readonly savingsRepo: SavingsRepo
     ){}
   
     async saveSavings (){
         // 기존 데이터 전부 삭제
-        
+        this.savingsRepo.createTestData();
         
 
         const token: string =  this.configService.get<string>('API_ACCESS_TOKEN')

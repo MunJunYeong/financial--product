@@ -3,7 +3,7 @@ import { Sequelize } from 'sequelize-typescript'
 import { Savings } from './models/savings.entity';
 import { SavingsOption } from './models/savingsOptions.entity';
 
-export const DatabaseProvider = [
+export const databaseProviders = [
     {
       provide: 'SEQUELIZE',
       inject: [ConfigurationService],
