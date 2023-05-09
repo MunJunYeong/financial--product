@@ -2,20 +2,18 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { ConfigurationService } from 'libs';
 import { firstValueFrom } from 'rxjs';
-import {
-  SavingsDTO,
-  InstallmentDTO,
-  SavingsOptionsDTO,
-  InstallmentOptionsDTO,
-} from './dto/common.dto';
+import { SavingsDTO, InstallmentDTO, SavingsOptionsDTO, InstallmentOptionsDTO } from './dto/common.dto';
 import { SavingsRepo } from './savings.repo';
-import { ProductWithOptionDTO } from './dto/service.dto';
+import { OptionDTO, ProductWithOptionDTO } from './dto/service.dto';
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // 참고 url = https://finlife.fss.or.kr/finlife/api/fncCoApi/list.do?menuNo=700051
 
 type ProductDTO = SavingsDTO | InstallmentDTO;
-type OptDTO = SavingsOptionsDTO | InstallmentOptionsDTO;
+type ProductOptDTO = SavingsOptionsDTO | InstallmentOptionsDTO;
+
+const _savingsType: string = 'savings';
+const _installmentType: string = 'installment';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -30,104 +28,75 @@ export class SavingsService {
   // api 통신
   private async _getData(url: string) {
     const token = this.configService.get<string>('API_ACCESS_TOKEN');
-    const { data } = await firstValueFrom(
-      this.httpService.get(
-        `${url}?auth=${token}&topFinGrpNo=020000&pageNo=${1}`,
-      ),
-    );
-    return data.result;
+    let res: any;
+    try {
+      const { data } = await firstValueFrom(
+        this.httpService.get(`${url}?auth=${token}&topFinGrpNo=020000&pageNo=${1}`),
+      );
+      res = data.result;
+    } catch (err) {}
+
+    return res;
   }
 
-  // processing savings
-  private _processSavingsData(data: any) {
-    const savingIdxMap = new Map<string, number>();
+  private _processProduct(
+    productData: ProductDTO[],
+    optData: ProductOptDTO[],
+    type: string,
+  ): { productList: ProductDTO[]; optsList: ProductOptDTO[] } {
+    // set map
+    const idxMap = new Map<string, number>();
 
-    // find savings list
-    let savingsList: SavingsDTO[] = [];
-    data.baseList.forEach((savings: SavingsDTO, idx: number) => {
-      // set savingsIdx
-      const savingsIdx = idx + 1;
-
-      savingsList.push({
-        savings_idx: savingsIdx,
-        dcls_month: savings.dcls_month,
-        fin_co_no: savings.fin_co_no,
-        fin_prdt_cd: savings.fin_prdt_cd,
-        kor_co_nm: savings.kor_co_nm,
-        fin_prdt_nm: savings.fin_prdt_nm,
-        max_limit: savings.max_limit,
-      });
-
-      // set map : fin_prdt_cd - {saving_idx}
-      savingIdxMap.set(savings.fin_prdt_cd, savingsIdx);
-    });
-
-    // find savings option list
-    let optsList: SavingsOptionsDTO[] = [];
-    data.optionList.forEach((option: SavingsOptionsDTO) => {
-      optsList.push({
-        fin_prdt_cd: option.fin_prdt_cd,
-        intr_rate_type_nm: option.intr_rate_type_nm,
-        rsrv_type_nm: option.rsrv_type_nm,
-        save_trm: option.save_trm,
-        intr_rate: option.intr_rate,
-        intr_rate2: option.intr_rate2,
-        savings_idx: savingIdxMap.get(option.fin_prdt_cd),
-      });
-    });
-
-    return { savingsList, optsList };
-  }
-
-  // processing installment
-  private _processInstallmentData(data: any) {
-    const installmentIdxMap = new Map<string, number>();
-
-    let installmentList: InstallmentDTO[] = [];
-
+    let productList: ProductDTO[] = [];
     // find installment list
-    data.baseList.forEach((installment: InstallmentDTO, idx: number) => {
-      const installmentIdx = idx + 1;
+    productData.forEach((product: ProductDTO, idx: number) => {
+      const productIdx = idx + 1;
 
-      installmentList.push({
-        installment_idx: installmentIdx,
-        dcls_month: installment.dcls_month,
-        fin_co_no: installment.fin_co_no,
-        fin_prdt_cd: installment.fin_prdt_cd,
-        kor_co_nm: installment.kor_co_nm,
-        fin_prdt_nm: installment.fin_prdt_nm,
-        max_limit: installment.max_limit,
-      });
+      let tempProduct: ProductDTO = {
+        ...product,
+      };
+
+      switch (type) {
+        case _savingsType:
+          tempProduct['savings_idx'] = productIdx;
+        case _installmentType:
+          tempProduct['installment_idx'] = productIdx;
+        default:
+        // TODO: 나중에 NOT_SUPPORTED 에러 떨궈주기
+      }
+      productList.push(tempProduct);
 
       // set map : fin_prdt_cd - {saving_idx}
-      installmentIdxMap.set(installment.fin_prdt_cd, installmentIdx);
+      idxMap.set(product.fin_prdt_cd, productIdx);
     });
 
-    let optsList: InstallmentOptionsDTO[] = [];
-
+    let optsList: ProductOptDTO[] = [];
     // find installment option List
-    data.optionList.forEach((option: InstallmentOptionsDTO) => {
-      optsList.push({
-        fin_prdt_cd: option.fin_prdt_cd,
-        intr_rate_type_nm: option.intr_rate_type_nm,
-        save_trm: option.save_trm,
-        intr_rate: option.intr_rate,
-        intr_rate2: option.intr_rate2,
-        installment_idx: installmentIdxMap.get(option.fin_prdt_cd),
-      });
-    });
+    optData.forEach((option: ProductOptDTO) => {
+      const idx = idxMap.get(option.fin_prdt_cd);
 
-    return { installmentList, optsList };
+      let tempOpt: ProductOptDTO = {
+        ...option,
+      };
+      switch (type) {
+        case _savingsType:
+          tempOpt['savings_idx'] = idx;
+        case _installmentType:
+          tempOpt['installment_idx'] = idx;
+        default:
+        // TODO: 나중에 NOT_SUPPORTED 에러 떨궈주기
+      }
+      optsList.push(tempOpt);
+    });
+    return { productList, optsList };
   }
 
   // processing product with option
-  private _processProductData(productData: ProductDTO[], optData: OptDTO[]) {
+  private _processProductWithOption(productData: ProductDTO[], optData: ProductOptDTO[]) {
     let result: ProductWithOptionDTO[] = [];
 
     for (const product of productData) {
-      const opts = optData.filter(
-        (opt) => opt.fin_prdt_cd === product.fin_prdt_cd,
-      );
+      const opts = optData.filter((opt) => opt.fin_prdt_cd === product.fin_prdt_cd);
 
       for (const opt of opts) {
         result.push({
@@ -151,39 +120,49 @@ export class SavingsService {
 
   // Save all
   async SaveSavings() {
-    // 1. delete savings + opts
-    await this.savingsRepo.DeleteAllSavings();
+    let savingsData: any;
+    try {
+      // 1. delete savings + opts
+      await this.savingsRepo.DeleteAllSavings();
 
-    // 2. get data
-    const savingsData = await this._getData(
-      'http://finlife.fss.or.kr/finlifeapi/savingProductsSearch.json',
-    );
+      // 2. get data
+      savingsData = await this._getData('http://finlife.fss.or.kr/finlifeapi/savingProductsSearch.json');
+    } catch (err) {
+      // TODO: error handling
+    }
 
     // 3. processing data
-    const savings = this._processSavingsData(savingsData);
+    const savings: SavingsDTO[] = savingsData.baseList;
+    const opts: SavingsOptionsDTO[] = savingsData.optionList;
+    const result = this._processProduct(savings, opts, _savingsType);
 
-    console.log(savings.optsList[0].intr_rate);
-    console.log(savings.optsList[3].intr_rate);
-    console.log(savings.optsList[5].intr_rate);
-    console.log(savings.optsList[7].intr_rate);
-    console.log(savings.optsList[9].intr_rate);
     // 4. save data
-    await this.savingsRepo.SaveSavings(savings.savingsList, savings.optsList);
+    try {
+      await this.savingsRepo.SaveSavings(result.productList as SavingsDTO[], result.optsList as SavingsOptionsDTO[]);
+    } catch (err) {
+      // TODO: error handling
+    }
 
     return true;
   }
 
   // Get all
   async GetSavings(): Promise<ProductWithOptionDTO[]> {
-    const savingsData = await this.savingsRepo.GetSavings();
-    const optData = await this.savingsRepo.GetSavingsOpts();
+    let savingsData: SavingsDTO[];
+    let optData: SavingsOptionsDTO[];
+    try {
+      savingsData = await this.savingsRepo.GetSavings();
+      optData = await this.savingsRepo.GetSavingsOpts();
+    } catch (err) {
+      // TODO: error handling
+    }
 
     if (!savingsData || !optData) {
-      // TODO: error handling 고민해보기
+      // TODO: error handling
       return null;
     }
 
-    return this._processProductData(savingsData, optData);
+    return this._processProductWithOption(savingsData, optData);
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -195,31 +174,46 @@ export class SavingsService {
     await this.savingsRepo.DeleteAllInstallment();
 
     // get data 정기예금
-    const installmentData = await this._getData(
-      'http://finlife.fss.or.kr/finlifeapi/depositProductsSearch.json',
-    );
+    let installmentData: any;
+    try {
+      installmentData = await this._getData('http://finlife.fss.or.kr/finlifeapi/depositProductsSearch.json');
+    } catch (err) {
+      // TODO: error handling
+    }
 
-    // processing installments, opts
-    const installment = this._processInstallmentData(installmentData);
+    // 3. processing data
+    const installments: InstallmentDTO[] = installmentData.baseList;
+    const opts: InstallmentOptionsDTO[] = installmentData.optionList;
+    const installment = this._processProduct(installments, opts, _installmentType);
 
-    // save all
-    await this.savingsRepo.SaveInstallments(
-      installment.installmentList,
-      installment.optsList,
-    );
+    try {
+      // save all
+      await this.savingsRepo.SaveInstallments(
+        installment.productList as InstallmentDTO[],
+        installment.optsList as InstallmentOptionsDTO[],
+      );
+    } catch (err) {
+      // TODO: error handling
+    }
 
     return true;
   }
 
   async GetInstallment(): Promise<ProductWithOptionDTO[]> {
-    const instData = await this.savingsRepo.GetInstallments();
-    const optData = await this.savingsRepo.GetInstallmentOpts();
+    let instData: InstallmentDTO[];
+    let optData: InstallmentOptionsDTO[];
+    try {
+      instData = await this.savingsRepo.GetInstallments();
+      optData = await this.savingsRepo.GetInstallmentOpts();
+    } catch (err) {
+      // TODO: error handling
+    }
 
     if (!instData || !optData) {
       // TODO: error handling 고민해보기
       return null;
     }
 
-    return this._processProductData(instData, optData);
+    return this._processProductWithOption(instData, optData);
   }
 }

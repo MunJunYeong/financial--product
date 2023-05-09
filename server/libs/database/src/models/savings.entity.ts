@@ -1,32 +1,31 @@
-import { Model, Column, PrimaryKey, Table, Unique, DataType, AutoIncrement, HasMany } from "sequelize-typescript";
-import { SavingsOption } from "./savingsOptions.entity";
+import { Model, Column, PrimaryKey, Table, Unique, DataType, AutoIncrement, HasMany } from 'sequelize-typescript';
+import { SavingsOption } from './savingsOptions.entity';
 
 @Table
 export class Savings extends Model<Savings> {
-    @PrimaryKey
-    @Column(DataType.BIGINT)
-    savings_idx: number
+  @PrimaryKey
+  @Column(DataType.BIGINT)
+  savings_idx: number;
 
-    @Column
-    dcls_month: string
+  @Column
+  dcls_month: string;
 
-    @Column
-    fin_co_no: string
+  @Column
+  fin_co_no: string;
 
-    @Unique
-    @Column
-    fin_prdt_cd: string
+  @Unique
+  @Column
+  fin_prdt_cd: string;
 
-    @Column
-    kor_co_nm: string
+  @Column
+  kor_co_nm: string;
 
-    @Column
-    fin_prdt_nm: string
+  @Column
+  fin_prdt_nm: string;
 
-    @Column
-    max_limit: number
+  @Column
+  max_limit: number;
 
-    @HasMany(() => SavingsOption)
-    options: SavingsOption[];
-
+  @HasMany(() => SavingsOption)
+  options: SavingsOption[];
 }

@@ -13,7 +13,7 @@ export class SavingsRepo {
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Savings method
 
-  async SaveSavings(savings: SavingsDTO[], savingsOptList: SavingsOptionsDTO[]): Promise<boolean>{
+  async SaveSavings(savings: SavingsDTO[], savingsOptList: SavingsOptionsDTO[]): Promise<boolean> {
     const transaction = await this.sequelize.transaction();
 
     try {
@@ -50,7 +50,7 @@ export class SavingsRepo {
   async GetSavings(): Promise<SavingsDTO[]> {
     return await Savings.findAll();
   }
-  
+
   async GetSavingsOpts(): Promise<SavingsOptionsDTO[]> {
     return await SavingsOption.findAll();
   }
@@ -58,7 +58,10 @@ export class SavingsRepo {
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Installment method
 
-  async SaveInstallments(installmentList: InstallmentDTO[], installmentOptList: InstallmentOptionsDTO[]): Promise<boolean>{
+  async SaveInstallments(
+    installmentList: InstallmentDTO[],
+    installmentOptList: InstallmentOptionsDTO[],
+  ): Promise<boolean> {
     const transaction = await this.sequelize.transaction();
 
     try {
@@ -98,5 +101,4 @@ export class SavingsRepo {
   async GetInstallmentOpts(): Promise<InstallmentOptionsDTO[]> {
     return await InstallmentOption.findAll();
   }
-
 }

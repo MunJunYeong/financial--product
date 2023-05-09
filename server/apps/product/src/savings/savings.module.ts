@@ -6,21 +6,19 @@ import { SavingsService } from './savings.service';
 import { SavingsRepo } from './savings.repo';
 
 @Module({
-  imports : [
+  imports: [
     ConfigurationModule,
     // TODO: HttpModule - Axios module & service seperate
     HttpModule.registerAsync({
-      useFactory :  ()=> ({
-        timeout : 5000,
-        maxRedirects : 5,
-      })
+      useFactory: () => ({
+        timeout: 5000,
+        maxRedirects: 5,
+      }),
     }),
     DatabaseModule,
   ],
   controllers: [SavingsController],
   providers: [SavingsService, SavingsRepo],
-  exports : [
-    SavingsRepo
-  ]
+  exports: [SavingsRepo],
 })
 export class SavingsModule {}
