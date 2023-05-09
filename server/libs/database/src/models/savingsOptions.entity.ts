@@ -20,11 +20,15 @@ export class SavingsOption extends Model<SavingsOption> {
     @Column
     save_trm: string
 
-    @Column
-    intr_rate: number
+    @Column({
+        type: DataType.FLOAT,
+    })
+    intr_rate: string
 
-    @Column
-    intr_rate2: number
+    @Column({
+        type: DataType.FLOAT,
+    })
+    intr_rate2: string
 
     @ForeignKey(() => Savings)
     @Column

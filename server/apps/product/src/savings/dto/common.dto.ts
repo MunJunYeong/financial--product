@@ -1,5 +1,6 @@
-import { IsNumber, IsBoolean, IsString } from "class-validator";
-
+import { IsNumber, IsBoolean, IsString, IsDecimal } from "class-validator";
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// relation Savings DTO
 export class SavingsDTO {
     @IsNumber()
     savings_idx: number
@@ -26,14 +27,37 @@ export class SavingsOptionsDTO {
     rsrv_type_nm: string  // 적립 유형
     @IsString()
     save_trm: string // 저축 기간 [단위: 개월]
-    @IsNumber()
-    intr_rate: number // 저축 금리 [소수점 2자리]
-    @IsNumber()
-    intr_rate2: number // 최고 우대금리 [소수점 2자리]
+    @IsDecimal({ decimal_digits: '1,2' })
+    intr_rate: string // 저축 금리 [소수점 2자리]
+    @IsDecimal({ decimal_digits: '1,2' })
+    intr_rate2: string // 최고 우대금리 [소수점 2자리]
     @IsNumber()
     savings_idx: number
 }
 
+export class SavingsWithOptionDTO {
+    @IsString()
+    dcls_month: string 
+    @IsString()
+    kor_co_nm: string
+    @IsString()
+    fin_prdt_nm: string
+    @IsNumber()
+    max_limit: number
+    @IsString()
+    intr_rate_type_nm: string
+    @IsString()
+    rsrv_type_nm: string
+    @IsString()
+    save_trm: string
+    @IsDecimal({ decimal_digits: '1,2' })
+    intr_rate: string // 저축 금리 [소수점 2자리]
+    @IsDecimal({ decimal_digits: '1,2' })
+    intr_rate2: string // 최고 우대금리 [소수점 2자리]
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// relation Installment DTO
 export class InstallmentDTO {
     @IsNumber()
     installment_idx: number
@@ -60,10 +84,31 @@ export class InstallmentOptionsDTO {
     rsrv_type_nm: string  // 적립 유형
     @IsString()
     save_trm: string // 저축 기간 [단위: 개월]
-    @IsNumber()
-    intr_rate: number // 저축 금리 [소수점 2자리]
-    @IsNumber()
-    intr_rate2: number // 최고 우대금리 [소수점 2자리]
+    @IsDecimal({ decimal_digits: '1,2' })
+    intr_rate: string // 저축 금리 [소수점 2자리]
+    @IsDecimal({ decimal_digits: '1,2' })
+    intr_rate2: string // 최고 우대금리 [소수점 2자리]
     @IsNumber()
     installment_idx: number
+}
+
+export class InstallmentWithOptionDTO {
+    @IsString()
+    dcls_month: string 
+    @IsString()
+    kor_co_nm: string
+    @IsString()
+    fin_prdt_nm: string
+    @IsNumber()
+    max_limit: number
+    @IsString()
+    intr_rate_type_nm: string
+    @IsString()
+    rsrv_type_nm: string
+    @IsString()
+    save_trm: string
+    @IsDecimal({ decimal_digits: '1,2' })
+    intr_rate: string // 저축 금리 [소수점 2자리]
+    @IsDecimal({ decimal_digits: '1,2' })
+    intr_rate2: string // 최고 우대금리 [소수점 2자리]
 }

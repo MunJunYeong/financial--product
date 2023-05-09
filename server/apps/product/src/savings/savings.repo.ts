@@ -10,7 +10,10 @@ import { InstallmentOption } from '@app/database/models/installmentOptions.entit
 export class SavingsRepo {
   constructor(@Inject('SEQUELIZE') private readonly sequelize: Sequelize) {}
 
-  async saveSavings(savings: SavingsDTO[], savingsOptList: SavingsOptionsDTO[]): Promise<boolean>{
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Savings method
+
+  async SaveSavings(savings: SavingsDTO[], savingsOptList: SavingsOptionsDTO[]): Promise<boolean>{
     const transaction = await this.sequelize.transaction();
 
     try {
@@ -26,7 +29,28 @@ export class SavingsRepo {
     }
     return true;
   }
-  async saveInstallments(installmentList: InstallmentDTO[], installmentOptList: InstallmentOptionsDTO[]): Promise<boolean>{
+
+  async DeleteAllSavings(): Promise<boolean> {
+    const transaction = await this.sequelize.transaction();
+    try {
+      // delete savings + opt
+      await Savings.destroy({ where: {}, transaction });
+      await SavingsOption.destroy({ where: {}, transaction });
+
+      // commit
+      await transaction.commit();
+    } catch (err) {
+      // rollback
+      await transaction.rollback();
+      throw err;
+    }
+    return true;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Installment method
+
+  async SaveInstallments(installmentList: InstallmentDTO[], installmentOptList: InstallmentOptionsDTO[]): Promise<boolean>{
     const transaction = await this.sequelize.transaction();
 
     try {
@@ -43,26 +67,7 @@ export class SavingsRepo {
     return true;
   }
 
-
-  async deleteAllSavings(): Promise<boolean> {
-    const transaction = await this.sequelize.transaction();
-    try {
-      // delete savings + opt
-      await Savings.destroy({ where: {}, transaction });
-      await SavingsOption.destroy({ where: {}, transaction });
-
-      // TODO: delete installment + opt
-
-      // commit
-      await transaction.commit();
-    } catch (err) {
-      // rollback
-      await transaction.rollback();
-      throw err;
-    }
-    return true;
-  }
-  async deleteAllInstallment(): Promise<boolean> {
+  async DeleteAllInstallment(): Promise<boolean> {
     const transaction = await this.sequelize.transaction();
     try {
       // delete savings + opt
@@ -77,6 +82,13 @@ export class SavingsRepo {
       throw err;
     }
     return true;
+  }
+
+  async GetInstallments(): Promise<InstallmentDTO[]> {
+    return await Installment.findAll();
+  }
+  async GetInstallmentOpts(): Promise<InstallmentOptionsDTO[]> {
+    return await InstallmentOption.findAll();
   }
 
 }

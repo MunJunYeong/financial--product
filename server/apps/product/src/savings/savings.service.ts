@@ -7,6 +7,7 @@ import {
   SavingsOptionsDTO,
   InstallmentDTO,
   InstallmentOptionsDTO,
+  InstallmentWithOptionDTO,
 } from './dto/common.dto';
 import { SavingsRepo } from './savings.repo';
 
@@ -100,7 +101,6 @@ export class SavingsService {
 
     // find installment option List
     data.optionList.forEach((option: InstallmentOptionsDTO) => {
-
       optsList.push({
         fin_prdt_cd: option.fin_prdt_cd,
         intr_rate_type_nm: option.intr_rate_type_nm,
@@ -115,28 +115,43 @@ export class SavingsService {
     return { installmentList, optsList };
   }
 
-  // 
-  async SaveSavings() {
-    // delete savings + opts
-    await this.savingsRepo.deleteAllSavings();
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Savings method
 
-    // get data 적금
+  // Save all
+  async SaveSavings() {
+    // 1. delete savings + opts
+    await this.savingsRepo.DeleteAllSavings();
+
+    // 2. get data
     const savingsData = await this._getData(
       'http://finlife.fss.or.kr/finlifeapi/savingProductsSearch.json',
     );
 
-    // processing savings, opts
+    // 3. processing data
     const savings = this._processSavingsData(savingsData);
 
-    // save all
-    await this.savingsRepo.saveSavings(savings.savingsList, savings.optsList);
+    console.log(savings.optsList[0].intr_rate);
+    console.log(savings.optsList[3].intr_rate);
+    console.log(savings.optsList[5].intr_rate);
+    console.log(savings.optsList[7].intr_rate);
+    console.log(savings.optsList[9].intr_rate);
+    // 4. save data
+    await this.savingsRepo.SaveSavings(savings.savingsList, savings.optsList);
 
     return true;
   }
 
+  // Get all
+  async GetSavings() {}
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Installment method
+
+  // save all
   async SaveInstallmentSavings() {
     // delete installments + opts
-    await this.savingsRepo.deleteAllInstallment();
+    await this.savingsRepo.DeleteAllInstallment();
 
     // get data 정기예금
     const installmentData = await this._getData(
@@ -147,7 +162,7 @@ export class SavingsService {
     const installment = this._processInstallmentData(installmentData);
 
     // save all
-    await this.savingsRepo.saveInstallments(
+    await this.savingsRepo.SaveInstallments(
       installment.installmentList,
       installment.optsList,
     );
@@ -155,11 +170,34 @@ export class SavingsService {
     return true;
   }
 
-  // 정기예금
-  async getSavings() {}
+  async GetInstallment(): Promise<InstallmentWithOptionDTO[]> {
 
-  // 적금
-  async getInstallment() {
-    // TODO: DB 연동해서 가져오기
+    const instData = await this.savingsRepo.GetInstallments();
+    const optData = await this.savingsRepo.GetInstallmentOpts();
+
+    if (!instData || !optData) {
+      // TODO: error handling 고민해보기
+      return null;
+    }
+
+    let result: InstallmentWithOptionDTO[] = [];
+    for (const installment of instData) {
+      const opts = optData.filter((opt) => opt.fin_prdt_cd === installment.fin_prdt_cd);
+      for (const opt of opts) {
+        result.push({
+          dcls_month: installment.dcls_month,
+          kor_co_nm: installment.kor_co_nm,
+          fin_prdt_nm: installment.fin_prdt_nm,
+          max_limit: installment.max_limit,
+          intr_rate_type_nm: opt.intr_rate_type_nm,
+          rsrv_type_nm: opt.rsrv_type_nm,
+          save_trm: opt.save_trm,
+          intr_rate: opt.intr_rate,
+          intr_rate2: opt.intr_rate2,
+        });
+      }
+    }
+    return result;
   }
+  
 }
