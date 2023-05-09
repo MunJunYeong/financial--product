@@ -47,6 +47,14 @@ export class SavingsRepo {
     return true;
   }
 
+  async GetSavings(): Promise<SavingsDTO[]> {
+    return await Savings.findAll();
+  }
+  
+  async GetSavingsOpts(): Promise<SavingsOptionsDTO[]> {
+    return await SavingsOption.findAll();
+  }
+
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Installment method
 

@@ -1,17 +1,23 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { ConfigurationService } from 'libs';
-import { map, firstValueFrom, lastValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import {
   SavingsDTO,
-  SavingsOptionsDTO,
   InstallmentDTO,
+  SavingsOptionsDTO,
   InstallmentOptionsDTO,
-  InstallmentWithOptionDTO,
 } from './dto/common.dto';
 import { SavingsRepo } from './savings.repo';
+import { ProductWithOptionDTO } from './dto/service.dto';
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // 참고 url = https://finlife.fss.or.kr/finlife/api/fncCoApi/list.do?menuNo=700051
+
+type ProductDTO = SavingsDTO | InstallmentDTO;
+type OptDTO = SavingsOptionsDTO | InstallmentOptionsDTO;
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 @Injectable()
 export class SavingsService {
@@ -104,7 +110,6 @@ export class SavingsService {
       optsList.push({
         fin_prdt_cd: option.fin_prdt_cd,
         intr_rate_type_nm: option.intr_rate_type_nm,
-        rsrv_type_nm: option.rsrv_type_nm,
         save_trm: option.save_trm,
         intr_rate: option.intr_rate,
         intr_rate2: option.intr_rate2,
@@ -113,6 +118,32 @@ export class SavingsService {
     });
 
     return { installmentList, optsList };
+  }
+
+  // processing product with option
+  private _processProductData(productData: ProductDTO[], optData: OptDTO[]) {
+    let result: ProductWithOptionDTO[] = [];
+
+    for (const product of productData) {
+      const opts = optData.filter(
+        (opt) => opt.fin_prdt_cd === product.fin_prdt_cd,
+      );
+
+      for (const opt of opts) {
+        result.push({
+          dcls_month: product.dcls_month,
+          kor_co_nm: product.kor_co_nm,
+          fin_prdt_nm: product.fin_prdt_nm,
+          max_limit: product.max_limit,
+          intr_rate_type_nm: opt.intr_rate_type_nm,
+          rsrv_type_nm: (opt as SavingsOptionsDTO).rsrv_type_nm,
+          save_trm: opt.save_trm,
+          intr_rate: opt.intr_rate,
+          intr_rate2: opt.intr_rate2,
+        });
+      }
+    }
+    return result;
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -143,7 +174,17 @@ export class SavingsService {
   }
 
   // Get all
-  async GetSavings() {}
+  async GetSavings(): Promise<ProductWithOptionDTO[]> {
+    const savingsData = await this.savingsRepo.GetSavings();
+    const optData = await this.savingsRepo.GetSavingsOpts();
+
+    if (!savingsData || !optData) {
+      // TODO: error handling 고민해보기
+      return null;
+    }
+
+    return this._processProductData(savingsData, optData);
+  }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Installment method
@@ -170,8 +211,7 @@ export class SavingsService {
     return true;
   }
 
-  async GetInstallment(): Promise<InstallmentWithOptionDTO[]> {
-
+  async GetInstallment(): Promise<ProductWithOptionDTO[]> {
     const instData = await this.savingsRepo.GetInstallments();
     const optData = await this.savingsRepo.GetInstallmentOpts();
 
@@ -180,24 +220,6 @@ export class SavingsService {
       return null;
     }
 
-    let result: InstallmentWithOptionDTO[] = [];
-    for (const installment of instData) {
-      const opts = optData.filter((opt) => opt.fin_prdt_cd === installment.fin_prdt_cd);
-      for (const opt of opts) {
-        result.push({
-          dcls_month: installment.dcls_month,
-          kor_co_nm: installment.kor_co_nm,
-          fin_prdt_nm: installment.fin_prdt_nm,
-          max_limit: installment.max_limit,
-          intr_rate_type_nm: opt.intr_rate_type_nm,
-          rsrv_type_nm: opt.rsrv_type_nm,
-          save_trm: opt.save_trm,
-          intr_rate: opt.intr_rate,
-          intr_rate2: opt.intr_rate2,
-        });
-      }
-    }
-    return result;
+    return this._processProductData(instData, optData);
   }
-  
 }

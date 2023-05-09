@@ -15,9 +15,6 @@ export class InstallmentOption extends Model<InstallmentOption> {
     intr_rate_type_nm: string
 
     @Column
-    rsrv_type_nm: string
-
-    @Column
     save_trm: string
 
     @Column({
@@ -35,5 +32,5 @@ export class InstallmentOption extends Model<InstallmentOption> {
     installment_idx: number;
 
     @BelongsTo(() => Installment)
-    savings: Installment;
+    installment: Installment;
 }
