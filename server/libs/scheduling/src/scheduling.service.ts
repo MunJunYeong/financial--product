@@ -8,7 +8,7 @@ export class SchedulingService {
     test;
     startScheduling(){
         this.test = setInterval(()=>{
-            this.testrerd.getSavings();
+            // this.testrerd.getSavings();
         }, 2000)
     }
 
