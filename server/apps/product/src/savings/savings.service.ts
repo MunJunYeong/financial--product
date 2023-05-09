@@ -9,13 +9,13 @@ import {
   InstallmentOptionsDTO,
 } from './dto/common.dto';
 import { SavingsRepo } from './savings.repo';
-import { ProductWithOptionDTO } from './dto/service.dto';
+import { OptionDTO, ProductWithOptionDTO } from './dto/service.dto';
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // 참고 url = https://finlife.fss.or.kr/finlife/api/fncCoApi/list.do?menuNo=700051
 
 type ProductDTO = SavingsDTO | InstallmentDTO;
-type OptDTO = SavingsOptionsDTO | InstallmentOptionsDTO;
+type ProductOptDTO = SavingsOptionsDTO | InstallmentOptionsDTO;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -119,9 +119,65 @@ export class SavingsService {
 
     return { installmentList, optsList };
   }
+  private _processProduct(productData: ProductDTO[], optData: ProductOptDTO[]) {
+    const idxMap = new Map<string, number>();
+
+    let productList: ProductDTO[] = [];
+
+    // find installment list
+    productData.forEach((product: ProductDTO, idx: number) => {
+      const productIdx = idx + 1;
+
+      let tempProduct: ProductDTO;
+      // console.log(product instanceof InstallmentDTO)
+
+      if (product instanceof SavingsDTO) {
+        tempProduct = {
+          savings_idx: productIdx,
+          ...product,
+        };
+      } else if (product instanceof InstallmentDTO) {
+        console.log('bbbbbbbbbbbbbbb')
+        tempProduct = {
+          ...product,
+          installment_idx: productIdx,
+        };
+      }
+      productList.push(tempProduct)
+
+      // set map : fin_prdt_cd - {saving_idx}
+      idxMap.set(product.fin_prdt_cd, productIdx);
+    });
+
+    let optsList: ProductOptDTO[] = [];
+    
+    // find installment option List
+    optData.forEach((option: ProductOptDTO) => {
+      const idx = idxMap.get(option.fin_prdt_cd)
+
+      let tempOpt: ProductOptDTO;
+      if (option instanceof SavingsOptionsDTO) {
+        tempOpt = {
+          ...option,
+          savings_idx: idx,
+        };
+      } else if (option instanceof InstallmentOptionsDTO) {
+        tempOpt = {
+          ...option,
+          installment_idx: idx,
+        };
+      }
+      optsList.push(tempOpt)
+
+    });
+    return { productList, optsList };
+  }
 
   // processing product with option
-  private _processProductData(productData: ProductDTO[], optData: OptDTO[]) {
+  private _processProductWithOption(
+    productData: ProductDTO[],
+    optData: ProductOptDTO[],
+  ) {
     let result: ProductWithOptionDTO[] = [];
 
     for (const product of productData) {
@@ -160,15 +216,13 @@ export class SavingsService {
     );
 
     // 3. processing data
-    const savings = this._processSavingsData(savingsData);
+    const opts: SavingsOptionsDTO[] = savingsData.optionList;
+    const savings: SavingsDTO[] = savingsData.baseList;
+    console.log(savings[0] instanceof SavingsDTO)
+    const result = this._processProduct(savings, opts);
 
-    console.log(savings.optsList[0].intr_rate);
-    console.log(savings.optsList[3].intr_rate);
-    console.log(savings.optsList[5].intr_rate);
-    console.log(savings.optsList[7].intr_rate);
-    console.log(savings.optsList[9].intr_rate);
     // 4. save data
-    await this.savingsRepo.SaveSavings(savings.savingsList, savings.optsList);
+    // await this.savingsRepo.SaveSavings(result.productList as SavingsDTO[], result.optsList as SavingsOptionsDTO[]);
 
     return true;
   }
@@ -183,7 +237,7 @@ export class SavingsService {
       return null;
     }
 
-    return this._processProductData(savingsData, optData);
+    return this._processProductWithOption(savingsData, optData);
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -220,6 +274,6 @@ export class SavingsService {
       return null;
     }
 
-    return this._processProductData(instData, optData);
+    return this._processProductWithOption(instData, optData);
   }
 }
