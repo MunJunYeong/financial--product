@@ -1,10 +1,11 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigurationService } from 'libs';
 import { firstValueFrom } from 'rxjs';
 import { SavingsDTO, InstallmentDTO, SavingsOptionsDTO, InstallmentOptionsDTO } from './dto/common.dto';
 import { SavingsRepo } from './savings.repo';
 import { OptionDTO, ProductWithOptionDTO } from './dto/service.dto';
+import { Errors } from '@app/common/shared/message';
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // 참고 url = https://finlife.fss.or.kr/finlife/api/fncCoApi/list.do?menuNo=700051
@@ -34,11 +35,14 @@ export class SavingsService {
         this.httpService.get(`${url}?auth=${token}&topFinGrpNo=020000&pageNo=${1}`),
       );
       res = data.result;
-    } catch (err) {}
+    } catch (err) {
+      throw err;
+    }
 
     return res;
   }
 
+  // process product for saving data
   private _processProduct(
     productData: ProductDTO[],
     optData: ProductOptDTO[],
@@ -61,8 +65,6 @@ export class SavingsService {
           tempProduct['savings_idx'] = productIdx;
         case _installmentType:
           tempProduct['installment_idx'] = productIdx;
-        default:
-        // TODO: 나중에 NOT_SUPPORTED 에러 떨궈주기
       }
       productList.push(tempProduct);
 
@@ -83,15 +85,13 @@ export class SavingsService {
           tempOpt['savings_idx'] = idx;
         case _installmentType:
           tempOpt['installment_idx'] = idx;
-        default:
-        // TODO: 나중에 NOT_SUPPORTED 에러 떨궈주기
       }
       optsList.push(tempOpt);
     });
     return { productList, optsList };
   }
 
-  // processing product with option
+  // processing product for get data
   private _processProductWithOption(productData: ProductDTO[], optData: ProductOptDTO[]) {
     let result: ProductWithOptionDTO[] = [];
 
@@ -128,7 +128,13 @@ export class SavingsService {
       // 2. get data
       savingsData = await this._getData('http://finlife.fss.or.kr/finlifeapi/savingProductsSearch.json');
     } catch (err) {
-      // TODO: error handling
+      throw new HttpException(
+        {
+          message: Errors.FETCH_SAVINGS,
+          error: err.message,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
 
     // 3. processing data
@@ -140,7 +146,13 @@ export class SavingsService {
     try {
       await this.savingsRepo.SaveSavings(result.productList as SavingsDTO[], result.optsList as SavingsOptionsDTO[]);
     } catch (err) {
-      // TODO: error handling
+      throw new HttpException(
+        {
+          message: Errors.DB_SAVE_SAVINGS,
+          error: err.message,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
 
     return true;
@@ -154,7 +166,13 @@ export class SavingsService {
       savingsData = await this.savingsRepo.GetSavings();
       optData = await this.savingsRepo.GetSavingsOpts();
     } catch (err) {
-      // TODO: error handling
+      throw new HttpException(
+        {
+          message: Errors.DB_GET_SAVINGS,
+          error: err.message,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
 
     if (!savingsData || !optData) {
@@ -178,7 +196,13 @@ export class SavingsService {
     try {
       installmentData = await this._getData('http://finlife.fss.or.kr/finlifeapi/depositProductsSearch.json');
     } catch (err) {
-      // TODO: error handling
+      throw new HttpException(
+        {
+          message: Errors.FETCH_INSTALLMENT,
+          error: err.message,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
 
     // 3. processing data
@@ -193,7 +217,13 @@ export class SavingsService {
         installment.optsList as InstallmentOptionsDTO[],
       );
     } catch (err) {
-      // TODO: error handling
+      throw new HttpException(
+        {
+          message: Errors.DB_SAVE_INSTALLMENT,
+          error: err.message,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
 
     return true;
@@ -206,7 +236,12 @@ export class SavingsService {
       instData = await this.savingsRepo.GetInstallments();
       optData = await this.savingsRepo.GetInstallmentOpts();
     } catch (err) {
-      // TODO: error handling
+      throw new HttpException(
+        {
+          message: Errors.DB_GET_INSTALLMENT,
+          error: err.message,
+        }, HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
 
     if (!instData || !optData) {
