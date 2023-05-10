@@ -1,6 +1,6 @@
 import { Savings } from '@app/database/models/savings.entity';
 import { SavingsOption } from '@app/database/models/savingsOptions.entity';
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { Sequelize } from 'sequelize-typescript';
 import { InstallmentDTO, InstallmentOptionsDTO, SavingsDTO, SavingsOptionsDTO } from './dto/common.dto';
 import { Installment } from '@app/database/models/installments.entity';
@@ -64,6 +64,11 @@ export class SavingsRepo {
   ): Promise<boolean> {
     const transaction = await this.sequelize.transaction();
 
+    throw new HttpException({
+      message : "failed to save installment",
+      error : "error.message"
+    }, HttpStatus.INTERNAL_SERVER_ERROR)
+    
     try {
       // save savings + opt
       await Installment.bulkCreate(installmentList, { transaction });
