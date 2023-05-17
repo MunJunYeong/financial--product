@@ -187,7 +187,7 @@ export class SavingsService {
   // Installment method
 
   // save all
-  async SaveInstallmentSavings() {
+  async SaveInstallments() {
     // delete installments + opts
     await this.savingsRepo.DeleteAllInstallment();
 
@@ -240,7 +240,8 @@ export class SavingsService {
         {
           message: Errors.DB_GET_INSTALLMENT,
           error: err.message,
-        }, HttpStatus.INTERNAL_SERVER_ERROR,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 

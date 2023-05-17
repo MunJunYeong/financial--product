@@ -17,8 +17,7 @@ import { HttpExceptionFilter } from '@app/common/filters/http-exception.filter';
   ],
 })
 export class ProductModule {
-  constructor() // private readonly configurationService: ConfigurationService,
-  // @Inject('SCHE') private readonly schedulingService: SchedulingService
+  constructor() // @Inject('SCHE') private readonly schedulingService: SchedulingService // private readonly configurationService: ConfigurationService,
   {}
 
   async onModuleInit() {
