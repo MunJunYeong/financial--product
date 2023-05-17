@@ -98,6 +98,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/scheduling/tsconfig.lib.json"
       }
+    },
+    "calc": {
+      "type": "application",
+      "root": "apps/calc",
+      "entryFile": "main",
+      "sourceRoot": "apps/calc/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/calc/tsconfig.app.json"
+      }
     }
   }
 }
