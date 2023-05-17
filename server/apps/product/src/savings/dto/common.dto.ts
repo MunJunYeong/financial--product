@@ -1,4 +1,4 @@
-import { IsNumber, IsBoolean, IsString, IsDecimal } from 'class-validator';
+import { IsNumber, IsString, IsDecimal } from 'class-validator';
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -6,6 +6,7 @@ import { IsNumber, IsBoolean, IsString, IsDecimal } from 'class-validator';
 export class SavingsDTO {
   @IsNumber()
   savings_idx: number;
+
   @IsString()
   dcls_month: string; // 출시일(년월)
   @IsString()
