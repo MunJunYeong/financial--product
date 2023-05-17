@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { PrePostPayment } from './dto/common.dto';
 import { DateAmount } from './dto/service.dto';
+import { PrePostPayment } from './dto/common.dto';
 
 @Injectable()
-export class PrepostService {
+export class SavingsService {
     calcPrePost(inputSavings: PrePostPayment){
         // 납입 방식 구하기
         const monthArr: string[] = inputSavings.payMethod.split("-");
@@ -58,15 +58,3 @@ function addMonths(date: Date, months: number) {
     date.setMonth(date.getMonth() + months);
     return date;
 }
-
-/*
-    {
-    "period" : 12,
-    "payMethod" : "1-6-5",
-    "price" : 500000,
-    "rate" : 6,
-    "isSimple" : true,
-    "startDate" : "2022-01-01",
-    "interest" : 0
-}
-*/
