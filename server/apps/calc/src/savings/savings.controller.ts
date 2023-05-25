@@ -6,7 +6,6 @@ import { CalcSavingsOutputDTO, PrePostPaymentDTO } from './dto/common.dto';
 import { SavingsService } from './savings.service';
 import { FreeSavingsInputDTO, RegularSavingsInputDTO } from './dto/controller.dto';
 
-
 @ApiTags('Savings')
 @ApiResponse({
   status: 500,
@@ -20,27 +19,26 @@ export class SavingsController {
   @ApiOperation({ summary: 'calc free savings' })
   @ApiOkResponse({
     description: '적금 정보',
-    type: CalcSavingsOutputDTO
+    type: CalcSavingsOutputDTO,
   })
   @Get('free')
-  calculateFreeSavings(@Query() freeSavingsInputDTO: FreeSavingsInputDTO): CalcSavingsOutputDTO{
+  calculateFreeSavings(@Query() freeSavingsInputDTO: FreeSavingsInputDTO): CalcSavingsOutputDTO {
     const { totalAmount, duration, rate } = freeSavingsInputDTO;
     // TODO: 로직추가
-    
+
     return null;
   }
-  
+
   // 정기적금 계산기
   @ApiOperation({ summary: 'calc regular savings' })
   @ApiOkResponse({
     description: '적금 정보',
-    type: CalcSavingsOutputDTO
+    type: CalcSavingsOutputDTO,
   })
   @Get('reg')
-  calculateRegularSavings(@Query() regularSavingsInputDTO: RegularSavingsInputDTO): CalcSavingsOutputDTO{
+  calculateRegularSavings(@Query() regularSavingsInputDTO: RegularSavingsInputDTO): CalcSavingsOutputDTO {
     const { totalAmount, duration, rate, isSimple } = regularSavingsInputDTO;
     // TODO: 로직추가
-    
 
     return null;
   }
@@ -56,6 +54,4 @@ export class SavingsController {
   }
 
   // 단순 적금
-
-  
 }
