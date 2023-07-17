@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DateAmount } from './dto/service.dto';
-import { PrePostPaymentDTO } from './dto/common.dto';
+import { DepositInputDTO, DepositOutputDTO, PrePostPaymentDTO } from './dto/common.dto';
 
 @Injectable()
 export class SavingsService {
@@ -26,7 +26,7 @@ export class SavingsService {
             const {startDate} = inputSavings;
             if(i === 0) payMonth = startDate;
             else {
-                payMonth = addMonths(startDate, Number(monthArr[i]))
+                payMonth = _addMonths(startDate, Number(monthArr[i]))
             }
             
 
@@ -52,9 +52,30 @@ export class SavingsService {
 
         return null;
     }
+
+    // 예치금 이자
+    calculateDeposits(depositInputDTO: DepositInputDTO): DepositOutputDTO{
+        console.log(depositInputDTO)
+        const {period, price, rate} = depositInputDTO
+        // 원금x연이율x월수/12
+        const numericRate = parseFloat(rate);
+        
+        const total = (price*numericRate*(period/12))
+
+        const result: DepositOutputDTO = {
+            totalInterest: total,
+            tax : {
+                taxFreeInterest: total,
+                taxGeneralInterest: (total - (total*0.154)),
+                taxInterest: (total - (total*0.94)),
+                taxInterest2: (total - (total*0.014)),
+            }
+        }
+        return result
+    }
 }
 
-function addMonths(date: Date, months: number) {
+function _addMonths(date: Date, months: number) {
     date.setMonth(date.getMonth() + months);
     return date;
 }
