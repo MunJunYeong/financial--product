@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Query } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 // common
-import { CalcSavingsOutputDTO, PrePostPaymentDTO } from './dto/common.dto';
+import { CalcSavingsOutputDTO, DepositInputDTO, DepositOutputDTO, PrePostPaymentDTO } from './dto/common.dto';
 import { SavingsService } from './savings.service';
 import { FreeSavingsInputDTO, RegularSavingsInputDTO } from './dto/controller.dto';
 
@@ -15,43 +15,57 @@ import { FreeSavingsInputDTO, RegularSavingsInputDTO } from './dto/controller.dt
 export class SavingsController {
   constructor(private readonly savingsService: SavingsService) {}
 
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // 자유적립적금 계산기
   @ApiOperation({ summary: 'calc free savings' })
   @ApiOkResponse({
-    description: '적금 정보',
+    description: '자유적립 적금 계산기',
     type: CalcSavingsOutputDTO,
   })
-  @Get('free')
+  @Get('/free')
   calculateFreeSavings(@Query() freeSavingsInputDTO: FreeSavingsInputDTO): CalcSavingsOutputDTO {
     const { totalAmount, duration, rate } = freeSavingsInputDTO;
-    // TODO: 로직추가
-
+    // TODO:
+    
     return null;
   }
-
+  
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // 정기적금 계산기
   @ApiOperation({ summary: 'calc regular savings' })
   @ApiOkResponse({
-    description: '적금 정보',
+    description: '정기 적금 계산기',
     type: CalcSavingsOutputDTO,
   })
-  @Get('reg')
+  @Get('/reg')
   calculateRegularSavings(@Query() regularSavingsInputDTO: RegularSavingsInputDTO): CalcSavingsOutputDTO {
     const { totalAmount, duration, rate, isSimple } = regularSavingsInputDTO;
-    // TODO: 로직추가
-
+    // TODO:
+    
     return null;
   }
-
+  
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // 예금 예치 계산기
+  @ApiOperation({ summary: 'calc  deposit' })
+  @ApiOkResponse({
+    description: '정기 예금 계산기',
+    type: DepositOutputDTO,
+  })
+  @Get('/deposit')
+  calculateDeposits(@Query() depositInputDTO: DepositInputDTO): DepositOutputDTO {
+    return this.savingsService.calculateDeposits(depositInputDTO)
+  }
+  
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // 선납이연 계산기
   @ApiOperation({ summary: 'calc prepost savings' })
   @Get('prepost')
   findSavingsDate(@Body() inputSavings: PrePostPaymentDTO) {
-    //TODO: validation 추가하기
+    //TODO: validateeion 추가하기
     const tempDate = new Date(inputSavings.startDate);
     inputSavings.startDate = tempDate;
     const temp = this.savingsService.calcPrePost(inputSavings);
   }
 
-  // 단순 적금
 }
