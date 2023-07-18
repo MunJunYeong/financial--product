@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { IsNumber, IsBoolean, IsString, IsDate } from 'class-validator';
 
 // 선납이연
@@ -65,31 +65,6 @@ export class CalcSavingsOutputDTO {
   taxFreeInterest: number;
 }
 
-// 예금 예치
-export class DepositInputDTO {
-  @ApiProperty({
-    example: 'number',
-    description: '예치 기간',
-  })
-  @IsNumber()
-  period: number;
-
-  @ApiProperty({
-    example: 'number',
-    description: '예치 금액',
-  })
-  @IsString()
-  price: number;
-
-  @ApiProperty({
-    example: 'string',
-    description: '이자율',
-  })
-  @IsString()
-  rate: string;
-}
-
-
 export class TaxDTO {
   @ApiProperty({
     example: 'number',
@@ -120,7 +95,41 @@ export class TaxDTO {
   taxFreeInterest: number;
 }
 
-export class DepositOutputDTO{
+// 정기적금, 예금예치
+export class SavingsInputDTO {
+  @ApiProperty({
+    example: 'number',
+    description: '예치 기간',
+  })
+  @IsNumber()
+  @Type(() => Number)
+  period: number;
+  
+  @ApiProperty({
+    example: 'number',
+    description: '예치 금액',
+  })
+  @Type(() => Number)
+  @IsNumber()
+  price: number;
+
+  @ApiProperty({
+    example: 'string',
+    description: '이자율',
+  })
+  @IsString()
+  rate: string;
+
+  @ApiProperty({
+    example: 'bool',
+    description: '단리, 복리인지',
+  })
+  @IsBoolean()
+  @Transform(({ value} ) => value === 'true')
+  isSimple: boolean;
+}
+
+export class SavingsOutputDTO{
   @ApiProperty({
     example: 'number',
     description: '총 이자',

@@ -2,9 +2,9 @@ import { Controller, Get, Post, Body, Query } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 // common
-import { CalcSavingsOutputDTO, DepositInputDTO, DepositOutputDTO, PrePostPaymentDTO } from './dto/common.dto';
+import { CalcSavingsOutputDTO, SavingsOutputDTO, PrePostPaymentDTO, SavingsInputDTO } from './dto/common.dto';
 import { SavingsService } from './savings.service';
-import { FreeSavingsInputDTO, RegularSavingsInputDTO } from './dto/controller.dto';
+import { FreeSavingsInputDTO } from './dto/controller.dto';
 
 @ApiTags('Savings')
 @ApiResponse({
@@ -26,10 +26,10 @@ export class SavingsController {
   calculateFreeSavings(@Query() freeSavingsInputDTO: FreeSavingsInputDTO): CalcSavingsOutputDTO {
     const { totalAmount, duration, rate } = freeSavingsInputDTO;
     // TODO:
-    
+
     return null;
   }
-  
+
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // 정기적금 계산기
   @ApiOperation({ summary: 'calc regular savings' })
@@ -38,25 +38,22 @@ export class SavingsController {
     type: CalcSavingsOutputDTO,
   })
   @Get('/reg')
-  calculateRegularSavings(@Query() regularSavingsInputDTO: RegularSavingsInputDTO): CalcSavingsOutputDTO {
-    const { totalAmount, duration, rate, isSimple } = regularSavingsInputDTO;
-    // TODO:
-    
-    return null;
+  calculateRegularSavings(@Query() savingsInputDTO: SavingsInputDTO): SavingsOutputDTO {
+    return this.savingsService.calculateRegularSavings(savingsInputDTO);
   }
-  
+
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // 예금 예치 계산기
   @ApiOperation({ summary: 'calc  deposit' })
   @ApiOkResponse({
     description: '정기 예금 계산기',
-    type: DepositOutputDTO,
+    type: SavingsOutputDTO,
   })
   @Get('/deposit')
-  calculateDeposits(@Query() depositInputDTO: DepositInputDTO): DepositOutputDTO {
-    return this.savingsService.calculateDeposits(depositInputDTO)
+  calculateDeposits(@Query() savingsInputDTO: SavingsInputDTO): SavingsOutputDTO {
+    return this.savingsService.calculateDeposits(savingsInputDTO);
   }
-  
+
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // 선납이연 계산기
   @ApiOperation({ summary: 'calc prepost savings' })
@@ -67,5 +64,4 @@ export class SavingsController {
     inputSavings.startDate = tempDate;
     const temp = this.savingsService.calcPrePost(inputSavings);
   }
-
 }
