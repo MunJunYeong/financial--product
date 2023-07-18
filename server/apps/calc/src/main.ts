@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule } from '@nestjs/swagger';
 import { CalcModule } from './calc.module';
 import { BaseAPIDocument } from './swagger.config';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(CalcModule);
@@ -11,6 +12,10 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   // Swagger UI에 대한 path를 연결함
   SwaggerModule.setup('api', app, document);
+
+  app.useGlobalPipes(new ValidationPipe({
+    transform: true,
+  }));
 
   await app.listen(3001);
 }

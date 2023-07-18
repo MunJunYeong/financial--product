@@ -5,6 +5,7 @@ import { SwaggerModule } from '@nestjs/swagger';
 import { HttpExceptionFilter } from '@app/common/filters/http-exception.filter';
 import { ProductModule } from './product.module';
 import { BaseAPIDocument } from './swagger.config';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(ProductModule);
@@ -16,6 +17,11 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   app.useGlobalFilters(new HttpExceptionFilter());
+
+  app.useGlobalPipes(new ValidationPipe({
+    transform: true,
+  }));
+  
   await app.listen(3002);
 }
 bootstrap();
