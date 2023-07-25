@@ -14,9 +14,9 @@
 <script>
 export default {
   name: "MainHome",
+  
 };
 </script>
-
 
 <style scoped>
 .main-container {
