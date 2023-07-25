@@ -35,6 +35,8 @@ export default {
         { title: "적금 상품", link: "/product" },
         { title: "계산기", link: "/calc" },
         { title: "내 적금", link: "/list" },
+        { title: "로그인", link: "/signin" },
+        { title: "회원가입", link: "/signup" },
       ],
     };
   },
