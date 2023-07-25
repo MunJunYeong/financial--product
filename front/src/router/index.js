@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Navi from "../components/Navi.vue"
+import Navi from "@/views/layout/Navigation.vue"
 
-import MainHome from '../views/MainHome.vue'
-import ProductHome from '../views/ProductHome.vue'
-import CalcHome from '../views/CalcHome.vue'
-import MyListHome from '../views/MyListHome.vue'
+import MainHome from '@/views/MainHome.vue'
+import ProductHome from '@/views/ProductHome.vue'
+import CalcHome from '@/views/CalcHome.vue'
+import MyListHome from '@/views/MyListHome.vue'
 
 Vue.use(VueRouter)
 
@@ -17,7 +17,6 @@ const routes = [
   },
   {
     path: '/',
-    name: 'navi',
     component: Navi,
     children : [
       {
