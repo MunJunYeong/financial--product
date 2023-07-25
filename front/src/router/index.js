@@ -8,6 +8,9 @@ import ProductHome from '@/views/ProductHome.vue'
 import CalcHome from '@/views/CalcHome.vue'
 import MyListHome from '@/views/MyListHome.vue'
 
+import SignIn from '@/views/SignIn.vue'
+import SignUp from '@/views/SignUp.vue'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -34,6 +37,14 @@ const routes = [
       {
         path: 'list',
         component: MyListHome,
+      },
+      {
+        path: 'signin',
+        component: SignIn,
+      },
+      {
+        path: 'signup',
+        component: SignUp,
       },
     ]
   },
