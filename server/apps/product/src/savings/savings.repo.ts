@@ -1,10 +1,13 @@
-import { Savings } from '@app/database/models/savings.entity';
-import { SavingsOption } from '@app/database/models/savingsOptions.entity';
+// vendor
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { Sequelize } from 'sequelize-typescript';
+
+// cus
 import { InstallmentDTO, InstallmentOptionsDTO, SavingsDTO, SavingsOptionsDTO } from './dto/common.dto';
 import { Installment } from '@app/database/models/installments.entity';
 import { InstallmentOption } from '@app/database/models/installmentOptions.entity';
+import { Savings } from '@app/database/models/savings.entity';
+import { SavingsOption } from '@app/database/models/savingsOptions.entity';
 
 @Injectable()
 export class SavingsRepo {
