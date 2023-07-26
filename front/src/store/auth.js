@@ -28,7 +28,7 @@ const authModule = {
     async SignUp({ commit }, data) {
       try {
         const res = await AuthService.SignUp(data);
-        return res;
+        return res.data;
       } catch (err) {
         console.log(err);
       }
