@@ -56,6 +56,7 @@ export class UserService {
 
     // Sequelize 모델 인스턴스가 나오기에 data만 추출
     const payload = targetUser.dataValues;
+    delete payload.pw;
     return {
       access_token: this.jwtService.sign(payload, { expiresIn: '3h' }),
       refresh_token: this.jwtService.sign(payload, { expiresIn: '14d' }),

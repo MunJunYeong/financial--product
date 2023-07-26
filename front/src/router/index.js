@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Navi from "@/views/layout/Navigation.vue"
+import Index from "@/views/layout/Index.vue"
 
 import MainHome from '@/views/MainHome.vue'
 import ProductHome from '@/views/ProductHome.vue'
@@ -20,7 +20,7 @@ const routes = [
   },
   {
     path: '/',
-    component: Navi,
+    component: Index,
     children : [
       {
         path: 'home',
