@@ -4,6 +4,7 @@ import { UserController } from './user.controller';
 import { ConfigurationModule, DatabaseModule } from 'libs';
 import { HttpModule } from '@nestjs/axios';
 import { UserRepo } from './user.repo';
+import { JwtAuthModule } from '@app/jwt';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { UserRepo } from './user.repo';
       }),
     }),
     DatabaseModule,
+    JwtAuthModule,
   ],
   controllers: [UserController],
   providers: [UserService, UserRepo],

@@ -1,9 +1,8 @@
 import { Model, Column, PrimaryKey, Table, Unique, DataType, AutoIncrement } from 'sequelize-typescript';
 
-
 @Table({
   // default지만 명시
-  timestamps: true 
+  timestamps: true,
 })
 export class User extends Model<User> {
   @PrimaryKey
@@ -22,4 +21,23 @@ export class User extends Model<User> {
 
   @Column
   email: string;
+
+  @Column({
+    type: DataType.BOOLEAN,
+    defaultValue: false,
+  })
+  @Column
+  otp_enabled: boolean;
+
+  @Column({
+    type: DataType.BOOLEAN,
+    defaultValue: false,
+  })
+  otp_verified: boolean;
+
+  @Column
+  otp_secret: string;
+
+  @Column
+  otp_auth_url: string;
 }

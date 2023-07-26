@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ApiOkResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { SignUpDTO } from './dto/common.dto';
+import { LoginInputDTO, SignUpDTO } from './dto/common.dto';
 
 @ApiResponse({
   status: 500,
@@ -11,6 +11,7 @@ import { SignUpDTO } from './dto/common.dto';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   @ApiTags('SignUp')
   @ApiOperation({ summary: 'signup' })
   @ApiOkResponse({
@@ -20,7 +21,25 @@ export class UserController {
     },
   })
   @Post('/signup')
-  async SignUp(@Body() inputSavings: SignUpDTO) {
-    return await this.userService.SaveUser(inputSavings)
+  @HttpCode(200)
+  async SignUp(@Body() bodyData: SignUpDTO) {
+    return await this.userService.SaveUser(bodyData)
   }
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  @ApiTags('SignIn')
+  @ApiOperation({ summary: 'signin' })
+  @ApiOkResponse({
+    description: '로그인',
+    schema: {
+      // example: { success: true },
+    },
+  })
+  @Post('/signin')
+  async SignIn(@Body() bodyData: LoginInputDTO) {
+    return await this.userService.Login(bodyData)
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  
 }
