@@ -13,7 +13,7 @@ export class SignUpDTO {
 
   @ApiProperty({
     example: 'string',
-    description: 'Password',
+    description: 'password',
   })
   @IsString()
   password: string;
@@ -32,3 +32,37 @@ export class SignUpDTO {
   @IsString()
   email: string;
 }
+
+// 로그인
+export class LoginInputDTO {
+  @ApiProperty({
+    example: 'string',
+    description: 'ID',
+  })
+  @IsString()
+  id: string;
+
+  @ApiProperty({
+    example: 'string',
+    description: 'Password',
+  })
+  @IsString()
+  password: string;
+}
+
+export class LoginOutputDTO {
+  @ApiProperty({
+    example: 'string',
+    description: 'access token',
+  })
+  @IsString()
+  accessToken: string;
+
+  @ApiProperty({
+    example: 'string',
+    description: 'refresh token',
+  })
+  @IsString()
+  refreshToken: string;
+}
+
