@@ -53,6 +53,12 @@
       ],
       "@app/scheduling/*": [
         "libs/scheduling/src/*"
+      ],
+      "@app/jwt": [
+        "libs/jwt/src"
+      ],
+      "@app/jwt/*": [
+        "libs/jwt/src/*"
       ]
     }
   }
