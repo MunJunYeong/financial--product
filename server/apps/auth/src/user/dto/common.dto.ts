@@ -56,13 +56,13 @@ export class LoginOutputDTO {
     description: 'access token',
   })
   @IsString()
-  accessToken: string;
+  access_token: string;
 
   @ApiProperty({
     example: 'string',
     description: 'refresh token',
   })
   @IsString()
-  refreshToken: string;
+  refresh_token: string;
 }
 

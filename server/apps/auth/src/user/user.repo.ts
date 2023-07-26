@@ -9,7 +9,7 @@ import { User } from '@app/database/models/user';
 export class UserRepo {
   constructor(@Inject('SEQUELIZE') private readonly sequelize: Sequelize) {}
 
-  async SaveUser(id: string, password: string, name: string, email: string): Promise<Boolean> {
+  async SaveUser(id: string, password: string, name: string, email: string): Promise<User> {
     let res = null;
     try {
       const newUser = new User({
@@ -24,7 +24,7 @@ export class UserRepo {
       throw err;
     }
 
-    return res !== null ? true : false;
+    return res;
   }
 
   async FindUserByID(id: string): Promise<User | null> {
