@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-row no-gutters>
-      <v-col cols="2" class="nav-container">
+      <v-col class="nav-container">
         <v-list>
           <v-list-item-group color="primary">
             <v-list-item
@@ -17,9 +17,6 @@
             </v-list-item>
           </v-list-item-group>
         </v-list>
-      </v-col>
-      <v-col cols="9" class="content">
-        <router-view />
       </v-col>
     </v-row>
   </v-container>
