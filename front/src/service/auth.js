@@ -10,6 +10,7 @@ const url = process.env.VUE_APP_AUTH_SERVER_URL;
  * @param {string} data.password - The password of the user.
  * @param {string} data.name - The name of the user.
  * @param {string} data.email - The email of the user.
+ * @returns {boolean} - Description of the return value.
  */
 const SignUp = (data) => {
   try {
@@ -21,7 +22,7 @@ const SignUp = (data) => {
     });
     return res;
   } catch (err) {
-    console.log(err);
+    return err;
   }
 };
 
@@ -29,17 +30,18 @@ const SignUp = (data) => {
  * Signs up a new user.
  * @param {Object} data - The user data.
  * @param {string} data.id - The ID of the user.
- * @param {string} data.password - The password of the user.
+ * @param {string} data.pw - The password of the user.
+ * @returns {(boolean|{access_token: string, refresh_token: string})}
  */
-const SignIn = (data) => {
+const SignIn = async (data) => {
   try {
-    const res = axios.post(`${url}/signin`, {
+    const res = await axios.post(`${url}/signin`, {
       id: data.id,
       password: data.password,
     });
-    return res;
+    return res.data;
   } catch (err) {
-    console.log(err);
+    return err;
   }
 };
 
