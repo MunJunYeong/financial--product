@@ -11,7 +11,7 @@ import { FreeSavingsInputDTO } from './dto/controller.dto';
   status: 500,
   description: 'Internal server error',
 })
-@Controller('/calc/savings')
+@Controller('/calc')
 export class SavingsController {
   constructor(private readonly savingsService: SavingsService) {}
 
@@ -37,7 +37,7 @@ export class SavingsController {
     description: '정기 적금 계산기',
     type: CalcSavingsOutputDTO,
   })
-  @Get('/reg')
+  @Get('/savings')
   calculateRegularSavings(@Query() savingsInputDTO: SavingsInputDTO): SavingsOutputDTO {
     return this.savingsService.calculateRegularSavings(savingsInputDTO);
   }

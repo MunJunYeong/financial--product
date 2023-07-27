@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols=5>
+      <v-col cols="5">
         <v-form ref="form" v-model="valid" @submit.prevent="submitForm">
           <v-text-field
             v-model="id"
@@ -22,16 +22,23 @@
             >Submit</v-btn
           >
         </v-form>
-
       </v-col>
     </v-row>
 
-    <AlertDialog v-bind="$attrs" :show="dialog" :message="dialogMessage" @update:show="dialog = $event" />
+    <AlertDialog
+      v-bind="$attrs"
+      :show="dialog"
+      :message="dialogMessage"
+      @update:show="dialog = $event"
+    />
   </v-container>
 </template>
 
 <script>
 import AlertDialog from "@/components/AlertDialog.vue";
+const errMessage =
+  "서버와의 연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.";
+
 export default {
   name: "SignIn",
   components: {
@@ -57,7 +64,6 @@ export default {
   methods: {
     async submitForm() {
       if (this.$refs.form.validate()) {
-        // Form is valid, proceed with login...
         let res;
         try {
           res = await this.$store.dispatch("SignIn", {
@@ -65,8 +71,7 @@ export default {
             password: this.password,
           });
         } catch (err) {
-          this.dialogMessage =
-            "로그인에 실패 했습니다. 잠시 후 다시 시도해주세요.";
+          this.dialogMessage = errMessage;
           this.dialog = true;
           return;
         }

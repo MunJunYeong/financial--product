@@ -30,7 +30,7 @@ const authModule = {
         const res = await AuthService.SignUp(data);
         return res.data;
       } catch (err) {
-        console.log(err);
+        return err;
       }
     },
 
@@ -39,7 +39,7 @@ const authModule = {
       try {
         res = await AuthService.SignIn(data);
       } catch (err) {
-        console.log(err);
+        return err;
       }
 
       // fail to login
