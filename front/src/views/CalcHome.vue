@@ -7,32 +7,52 @@
           <v-row>
             <v-col cols="12" md="6">
               <!-- 계산 입력 부분 -->
-              <v-text-field
-                v-model="depositPeriod"
-                label="예치 기간"
-                type="number"
-                hint="단위: 개월"
-                required
-              ></v-text-field>
-              <v-text-field
-                v-model="depositAmount"
-                label="예치 금액"
-                type="number"
-                hint="단위: 원"
-                required
-              ></v-text-field>
-              <v-text-field
-                v-model="interestRate"
-                label="이자율"
-                type="number"
-                hint="예: 3.5, 3.7"
-                required
-              ></v-text-field>
-              <v-switch
-                v-model="compoundInterest"
-                label="복리 적용 여부"
-              ></v-switch>
-              <v-btn color="primary" @click="calculate">계산하기</v-btn>
+              <v-form ref="form" v-model="valid">
+                <!-- 예치 기간 -->
+                <v-text-field
+                  v-model="savingsPeriod"
+                  label="예치 기간"
+                  type="number"
+                  hint="단위: 개월"
+                  :rules="[rules.required]"
+                  :suffix="savingsPeriodSuffix"
+                  required
+                ></v-text-field>
+                <v-btn class="mr-3" @click="increaseSavingsPeriod(1)">1개월</v-btn>
+                <v-btn class="mr-3" @click="increaseSavingsPeriod(6)">6개월</v-btn>
+                <v-btn @click="increaseSavingsPeriod(12)">12개월</v-btn>
+                <!-- 예치 금액 -->
+                <v-text-field
+                  v-model="savingsAmount"
+                  label="예치 금액"
+                  type="number"
+                  hint="단위: 원"
+                  :rules="[rules.required]"
+                  required
+                ></v-text-field>
+                <v-btn class="mr-3" @click="increaseSavingsAmout(100000)">10만원</v-btn>
+                <v-btn class="mr-3" @click="increaseSavingsAmout(1000000)">100만원</v-btn>
+                <v-btn class="mr-3" @click="increaseSavingsAmout(10000000)">1000만원</v-btn>
+                <v-btn @click="increaseSavingsAmout(100000000)">1억</v-btn>
+                <v-text-field
+                  v-model="savingstRate"
+                  label="이자율"
+                  type="number"
+                  hint="예: 3.5, 3.7"
+                  :rules="[rules.required]"
+                  required
+                ></v-text-field>
+                <v-switch
+                  v-model="savingsIsSimple"
+                  label="복리 적용 여부"
+                ></v-switch>
+                <v-btn
+                  color="primary"
+                  :disabled="!valid"
+                  @click="calcRegSavings"
+                  >계산하기</v-btn
+                >
+              </v-form>
             </v-col>
             <v-col cols="12" md="6">
               <!-- 계산 결과 부분 -->
@@ -40,7 +60,7 @@
                 <v-list-item>
                   <v-list-item-title>총 이자금액</v-list-item-title>
                   <v-list-item-subtitle>{{
-                    totalInterest
+                    savingsTotalInterest
                   }}</v-list-item-subtitle>
                 </v-list-item>
                 <v-list-item>
@@ -48,7 +68,7 @@
                     >세금 일반 (15.4%) 세후 이자</v-list-item-title
                   >
                   <v-list-item-subtitle>{{
-                    totalInterest
+                    savingsInterest15
                   }}</v-list-item-subtitle>
                 </v-list-item>
                 <v-list-item>
@@ -56,7 +76,7 @@
                     >세금우대 (9.5%) 세후 이자</v-list-item-title
                   >
                   <v-list-item-subtitle>{{
-                    totalInterest
+                    savingsInterest9
                   }}</v-list-item-subtitle>
                 </v-list-item>
                 <v-list-item>
@@ -64,13 +84,13 @@
                     >세금우대 (1.4%) 세후 이자</v-list-item-title
                   >
                   <v-list-item-subtitle>{{
-                    totalInterest
+                    savingsInterest1
                   }}</v-list-item-subtitle>
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-title>비과세</v-list-item-title>
                   <v-list-item-subtitle>{{
-                    totalInterest
+                    savingsInterest
                   }}</v-list-item-subtitle>
                 </v-list-item>
               </v-list>
@@ -98,8 +118,9 @@
 
 <script>
 import AlertDialog from "@/components/AlertDialog.vue";
-import {SavingsType} from "../lib/type"
-const errMessage = "서버와의 연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요."
+import { SavingsType } from "../lib/type";
+const errMessage =
+  "서버와의 연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.";
 
 export default {
   name: "CalcHome",
@@ -108,10 +129,16 @@ export default {
   },
   data() {
     return {
-      depositPeriod: "",
-      depositAmount: "",
-      interestRate: "",
-      compoundInterest: false,
+      valid: true,
+      savingsPeriod: 0,
+      savingsAmount: 0,
+      savingstRate: "",
+      savingsIsSimple: false,
+      savingsTotalInterest: 0,
+      savingsInterest15: 0,
+      savingsInterest9: 0,
+      savingsInterest1: 0,
+      savingsInterest: 0,
       rules: {
         required: (value) => !!value || "필요한 값입니다.",
       },
@@ -119,25 +146,38 @@ export default {
       dialogMessage: "",
     };
   },
+  computed: {
+    savingsPeriodSuffix() {
+      const years = Math.floor(this.savingsPeriod / 12);
+      const months = this.savingsPeriod % 12;
+      return `${years}년 ${months}개월`;
+    },
+  },
   methods: {
+    increaseSavingsPeriod(months) {
+      this.savingsPeriod = Number(this.savingsPeriod) + months;
+    },
+    increaseSavingsAmout(amount) {
+      this.savingsAmount = Number(this.savingsAmount) + amount;
+    },
     // 정기 적금
     async calcRegSavings() {
       let res;
       if (this.$refs.form.validate()) {
         try {
           res = await this.$store.dispatch("CalcRegSavingsDeposit", {
-            period : this.depositPeriod,
-            price : this.depositAmount,
-            rate : this.interestRate,
-            isSimple : this.compoundInterest,
-            type : SavingsType.SAVINGS
+            period: this.savingsPeriod,
+            price: this.savingsAmount,
+            rate: this.savingstRate,
+            isSimple: this.savingsIsSimple,
+            type: SavingsType.SAVINGS,
           });
         } catch (err) {
-          this.dialogMessage = errMessage
+          this.dialogMessage = errMessage;
           this.dialog = true;
           return;
         }
-
+        console.log(res);
       }
     },
     // 정기 예금

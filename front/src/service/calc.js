@@ -15,15 +15,19 @@ const url = process.env.VUE_APP_AUTH_CALC_URL + "/calc";
  * @param {string} data.type
  */
 const CalcRegSavingsDeposit = (data) => {
-  const formatUrl =
+  const formatTypeUrl =
     data.type === SavingsType.SAVINGS ? url + "/savings" : url + "/deposit";
+
+  delete data["type"];
+
+  let params = new URLSearchParams();
+  for (let key in data) {
+    params.append(key, data[key]);
+  }
+  const fullUrl = formatTypeUrl + "?" + params.toString();
+
   try {
-    const res = axios.post(formatUrl, {
-      period: data.period,
-      price: data.price,
-      rate: data.rate,
-      isSimple: data.email,
-    });
+    const res = axios.get(fullUrl);
     return res;
   } catch (err) {
     return err;
