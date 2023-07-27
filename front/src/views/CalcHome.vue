@@ -5,7 +5,7 @@
         <v-card class="pa-3" outlined>
           <v-card-title>정기 적금 상품 계산기</v-card-title>
           <v-row>
-            <v-col cols="12" md="6">
+            <v-col cols="12" sm="6">
               <!-- 계산 입력 부분 -->
               <v-form ref="form" v-model="valid">
                 <!-- 예치 기간 -->
@@ -16,32 +16,60 @@
                   hint="단위: 개월"
                   :rules="[rules.required]"
                   :suffix="savingsPeriodSuffix"
+                  append-outer-icon="mdi-refresh"
+                  @click:append-outer="initSavingsPeriod"
                   required
                 ></v-text-field>
-                <v-btn class="mr-3" @click="increaseSavingsPeriod(1)">1개월</v-btn>
-                <v-btn class="mr-3" @click="increaseSavingsPeriod(6)">6개월</v-btn>
-                <v-btn @click="increaseSavingsPeriod(12)">12개월</v-btn>
+                <v-btn small class="mr-2" @click="increaseSavingsPeriod(1)"
+                  >1개월</v-btn
+                >
+                <v-btn small class="mr-2" @click="increaseSavingsPeriod(6)"
+                  >6개월</v-btn
+                >
+                <v-btn small class="mr-2" @click="increaseSavingsPeriod(12)"
+                  >12개월</v-btn
+                >
                 <!-- 예치 금액 -->
                 <v-text-field
-                  v-model="savingsAmount"
+                  :value="formattedSavingsAmount"
+                  @input="updateSavingsAmount"
                   label="예치 금액"
-                  type="number"
+                  type="text"
                   hint="단위: 원"
                   :rules="[rules.required]"
+                  append-outer-icon="mdi-refresh"
+                  @click:append-outer="initSavingsAmount"
                   required
                 ></v-text-field>
-                <v-btn class="mr-3" @click="increaseSavingsAmout(100000)">10만원</v-btn>
-                <v-btn class="mr-3" @click="increaseSavingsAmout(1000000)">100만원</v-btn>
-                <v-btn class="mr-3" @click="increaseSavingsAmout(10000000)">1000만원</v-btn>
-                <v-btn @click="increaseSavingsAmout(100000000)">1억</v-btn>
+                <v-btn small class="mr-2" @click="increaseSavingsAmout(100000)"
+                  >10만원</v-btn
+                >
+                <v-btn small class="mr-2" @click="increaseSavingsAmout(1000000)"
+                  >100만원</v-btn
+                >
+                <v-btn small class="mr-2" @click="increaseSavingsAmout(10000000)"
+                  >1000만원</v-btn
+                >
+                <v-btn small @click="increaseSavingsAmout(100000000)">1억</v-btn>
+                <!-- 이자율 -->
                 <v-text-field
-                  v-model="savingstRate"
+                  v-model="savingsRate"
                   label="이자율"
                   type="number"
+                  step="0.1"
                   hint="예: 3.5, 3.7"
                   :rules="[rules.required]"
+                  append-outer-icon="mdi-refresh"
+                  @click:append-outer="initSavingsRate"
                   required
                 ></v-text-field>
+                <v-btn small class="mr-2" @click="increaseSavingsRate(0.1)"
+                  >0.1</v-btn
+                >
+                <v-btn small class="mr-2" @click="increaseSavingsRate(0.5)"
+                  >0.5</v-btn
+                >
+                <v-btn small class="mr-2" @click="increaseSavingsRate(1)">1.0</v-btn>
                 <v-switch
                   v-model="savingsIsSimple"
                   label="복리 적용 여부"
@@ -132,7 +160,7 @@ export default {
       valid: true,
       savingsPeriod: 0,
       savingsAmount: 0,
-      savingstRate: "",
+      savingsRate: 0,
       savingsIsSimple: false,
       savingsTotalInterest: 0,
       savingsInterest15: 0,
@@ -152,13 +180,34 @@ export default {
       const months = this.savingsPeriod % 12;
       return `${years}년 ${months}개월`;
     },
+    formattedSavingsAmount() {
+      return this.savingsAmount.toLocaleString();
+    },
   },
   methods: {
     increaseSavingsPeriod(months) {
       this.savingsPeriod = Number(this.savingsPeriod) + months;
     },
+    initSavingsPeriod() {
+      this.savingsPeriod = 0;
+    },
     increaseSavingsAmout(amount) {
       this.savingsAmount = Number(this.savingsAmount) + amount;
+    },
+    initSavingsAmount() {
+      this.savingsPeriod = 0;
+    },
+    updateSavingsAmount(value) {
+      const numberValue = Number(value.replace(/,/g, ""));
+      if (!isNaN(numberValue)) {
+        this.savingsAmount = numberValue;
+      }
+    },
+    increaseSavingsRate(rate) {
+      this.savingsRate = Number((Number(this.savingsRate) + rate).toFixed(1));
+    },
+    initSavingsRate() {
+      this.savingsRate = 0
     },
     // 정기 적금
     async calcRegSavings() {
