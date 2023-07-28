@@ -49,6 +49,8 @@
 
 <script>
 import AlertDialog from "@/components/AlertDialog.vue";
+const errMessage =
+  "서버와의 연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.";
 
 export default {
   name: "SignUp",
@@ -91,10 +93,11 @@ export default {
             email: this.email,
           });
         } catch (err) {
-          this.dialogMessage = "중복된 ID입니다. 확인해주세요.";
+          this.dialogMessage = errMessage;
           this.dialog = true;
           return;
         }
+        
         if (!res) {
           this.dialogMessage = "중복된 ID입니다. 확인해주세요.";
           this.dialog = true;

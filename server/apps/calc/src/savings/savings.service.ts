@@ -58,8 +58,7 @@ export class SavingsService {
     // 원금x연이율x월수/12
     const numericRate = parseFloat(rate);
 
-    const total = price * ((numericRate / 100) * (period / 12));
-
+    const total = Math.floor(price * ((numericRate / 100) * (period / 12)));
     const result: SavingsOutputDTO = {
       totalInterest: total,
       tax: _createTax(total),
@@ -75,18 +74,18 @@ export class SavingsService {
 
     if (isSimple) {
       for (let i = 0; i < period; i++) {
-        const t = Math.round(price * monthlyInterestRate * ((period - i) / period));
+        const t = Math.floor(Math.round(price * monthlyInterestRate * ((period - i) / period)));
         total += t;
       }
     } else {
       // https://ourcalc.com/%ec%a0%81%eb%a6%bd%ec%8b%9d-%eb%b3%b5%eb%a6%ac-%ea%b3%84%ec%82%b0%ea%b8%b0/
       // 매월 초 적립하는 월복리 공식: 적립액×(1+연이자율/12)×{(1+연이자율/12)((적립연수×12) -1)승}/(연이자율ᅟ/12)
-      const t = Math.round(
+      const t = Math.floor(Math.round(
         price *
           (1 + monthlyInterestRate / 12) *
           ((Math.pow(1 + monthlyInterestRate / 12, period) - 1) / (monthlyInterestRate / 12)),
-      );
-      total = t - period * price;
+      ));
+      total = Math.floor(t - period * price);
     }
 
     const result: SavingsOutputDTO = {
@@ -104,9 +103,9 @@ const _addMonths = (date: Date, months: number) => {
 
 const _createTax = (totalInterest: number): TaxDTO => {
   return {
-    taxFreeInterest: totalInterest,
-    taxInterest2: totalInterest - totalInterest * 0.014,
-    taxInterest: totalInterest - totalInterest * 0.095,
-    taxGeneralInterest: totalInterest - totalInterest * 0.154,
+    taxFreeInterest: Math.floor(totalInterest),
+    taxInterest2: Math.floor(totalInterest - totalInterest * 0.014),
+    taxInterest: Math.floor(totalInterest - totalInterest * 0.095),
+    taxGeneralInterest: Math.floor(totalInterest - totalInterest * 0.154),
   };
 };
