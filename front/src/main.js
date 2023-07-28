@@ -15,8 +15,13 @@ new Vue({
   created() {
     const userToken = localStorage.getItem("access_token");
     if (userToken) {
-      const decoded = jwt_decode(userToken);
-      this.$store.commit("SET_USER", decoded);
+      try {
+        const decoded = jwt_decode(userToken);
+        this.$store.commit("SET_USER", decoded);
+      } catch (error) {
+        localStorage.removeItem("access_token")
+        localStorage.removeItem("refresh_token")
+      }
     }
   },
 }).$mount("#app");

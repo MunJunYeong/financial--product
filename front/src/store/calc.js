@@ -12,14 +12,13 @@ const calcModule = {
      */
     // eslint-disable-next-line no-unused-vars
     async CalcRegSavingsDeposit({ commit }, data) {
-      console.log(data)
       let res;
       try {
         res = await CalcService.CalcRegSavingsDeposit(data);
       } catch (err) {
         console.log(err);
       }
-      console.log(res)
+      return res.data.tax
     },
   },
 };

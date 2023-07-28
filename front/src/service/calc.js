@@ -14,7 +14,7 @@ const url = process.env.VUE_APP_AUTH_CALC_URL + "/calc";
  * @param {string} data.isSimple
  * @param {string} data.type
  */
-const CalcRegSavingsDeposit = (data) => {
+const CalcRegSavingsDeposit = async (data) => {
   const formatTypeUrl =
     data.type === SavingsType.SAVINGS ? url + "/savings" : url + "/deposit";
 
@@ -27,7 +27,7 @@ const CalcRegSavingsDeposit = (data) => {
   const fullUrl = formatTypeUrl + "?" + params.toString();
 
   try {
-    const res = axios.get(fullUrl);
+    const res = await axios.get(fullUrl);
     return res;
   } catch (err) {
     return err;
