@@ -89,14 +89,14 @@
                 >
               </v-form>
             </v-col>
-            <v-col cols="12" md="6">
+            <v-col cols="12" md="6" v-if="savingsTotalInterest !== null">
               <!-- 계산 결과 부분 -->
               <v-list>
                 <v-list-item>
                   <v-list-item-title>총 이자금액</v-list-item-title>
                   <v-list-item-subtitle>{{
                     savingsTotalInterest
-                  }}</v-list-item-subtitle>
+                  }}원</v-list-item-subtitle>
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-title
@@ -104,7 +104,7 @@
                   >
                   <v-list-item-subtitle>{{
                     savingsInterest15
-                  }}</v-list-item-subtitle>
+                  }}원</v-list-item-subtitle>
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-title
@@ -112,7 +112,7 @@
                   >
                   <v-list-item-subtitle>{{
                     savingsInterest9
-                  }}</v-list-item-subtitle>
+                  }}원</v-list-item-subtitle>
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-title
@@ -120,13 +120,13 @@
                   >
                   <v-list-item-subtitle>{{
                     savingsInterest1
-                  }}</v-list-item-subtitle>
+                  }}원</v-list-item-subtitle>
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-title>비과세</v-list-item-title>
                   <v-list-item-subtitle>{{
                     savingsInterest
-                  }}</v-list-item-subtitle>
+                  }}원</v-list-item-subtitle>
                 </v-list-item>
               </v-list>
             </v-col>
@@ -211,10 +211,6 @@
                 <v-btn small class="mr-2" @click="increaseDepositRate(1)"
                   >1.0</v-btn
                 >
-                <v-switch
-                  v-model="depositIsSimple"
-                  label="복리 적용 여부"
-                ></v-switch>
                 <v-btn
                   color="primary"
                   :disabled="!depositValid"
@@ -223,14 +219,14 @@
                 >
               </v-form>
             </v-col>
-            <v-col cols="12" md="6">
+            <v-col cols="12" md="6" v-if="depositTotalInterest !== null">
               <!-- 계산 결과 부분 -->
               <v-list>
                 <v-list-item>
                   <v-list-item-title>총 이자금액</v-list-item-title>
                   <v-list-item-subtitle>{{
                     depositTotalInterest
-                  }}</v-list-item-subtitle>
+                  }}원</v-list-item-subtitle>
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-title
@@ -238,7 +234,7 @@
                   >
                   <v-list-item-subtitle>{{
                     depositInterest15
-                  }}</v-list-item-subtitle>
+                  }}원</v-list-item-subtitle>
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-title
@@ -246,7 +242,7 @@
                   >
                   <v-list-item-subtitle>{{
                     depositInterest9
-                  }}</v-list-item-subtitle>
+                  }}원</v-list-item-subtitle>
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-title
@@ -254,13 +250,13 @@
                   >
                   <v-list-item-subtitle>{{
                     depositInterest1
-                  }}</v-list-item-subtitle>
+                  }}원</v-list-item-subtitle>
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-title>비과세</v-list-item-title>
                   <v-list-item-subtitle>{{
                     depositInterest
-                  }}</v-list-item-subtitle>
+                  }}원</v-list-item-subtitle>
                 </v-list-item>
               </v-list>
             </v-col>
@@ -291,13 +287,13 @@ export default {
   },
   data() {
     return {
-      // 적금 
+      // 적금
       savingsValid: true,
       savingsPeriod: 0,
       savingsAmount: 0,
       savingsRate: 0,
       savingsIsSimple: false,
-      savingsTotalInterest: 0,
+      savingsTotalInterest: null,
       savingsInterest15: 0,
       savingsInterest9: 0,
       savingsInterest1: 0,
@@ -310,13 +306,12 @@ export default {
       depositPeriod: 0,
       depositAmount: 0,
       depositRate: 0,
-      depositIsSimple: false,
-      depositTotalInterest: 0,
+      depositTotalInterest: null,
       depositInterest15: 0,
       depositInterest9: 0,
       depositInterest1: 0,
       depositInterest: 0,
-      
+
       dialog: false,
       dialogMessage: "",
     };
@@ -418,10 +413,9 @@ export default {
       if (this.$refs.depositForm.validate()) {
         try {
           res = await this.$store.dispatch("CalcRegSavingsDeposit", {
-            period: this.savingsPeriod,
-            price: this.savingsAmount,
-            rate: this.savingsRate,
-            isSimple: this.savingsIsSimple,
+            period: this.depositPeriod,
+            price: this.depositAmount,
+            rate: this.depositRate,
             type: SavingsType.DEPOSIT,
           });
         } catch (err) {
