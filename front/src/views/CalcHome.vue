@@ -40,6 +40,7 @@
                   append-outer-icon="mdi-refresh"
                   @click:append-outer="initSavingsAmount"
                   required
+                  suffix="원"
                 ></v-text-field>
                 <v-btn small class="mr-2" @click="increaseSavingsAmout(100000)"
                   >10만원</v-btn
@@ -67,6 +68,7 @@
                   append-outer-icon="mdi-refresh"
                   @click:append-outer="initSavingsRate"
                   required
+                  suffix="%"
                 ></v-text-field>
                 <v-btn small class="mr-2" @click="increaseSavingsRate(0.1)"
                   >0.1</v-btn
@@ -100,7 +102,7 @@
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-title
-                    >세금 일반 (15.4%) 세후 이자</v-list-item-title
+                    >세금 일반 (15.4%)</v-list-item-title
                   >
                   <v-list-item-subtitle>{{
                     savingsInterest15
@@ -108,7 +110,7 @@
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-title
-                    >세금우대 (9.5%) 세후 이자</v-list-item-title
+                    >세금우대 (9.5%)</v-list-item-title
                   >
                   <v-list-item-subtitle>{{
                     savingsInterest9
@@ -116,7 +118,7 @@
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-title
-                    >세금우대 (1.4%) 세후 이자</v-list-item-title
+                    >세금우대 (1.4%)</v-list-item-title
                   >
                   <v-list-item-subtitle>{{
                     savingsInterest1
@@ -174,8 +176,9 @@
                   append-outer-icon="mdi-refresh"
                   @click:append-outer="initDepositAmount"
                   required
+                  suffix="원"
                 ></v-text-field>
-                <v-btn small class="mr-2" @click="increaseDepositAmout(100000)"
+                <v-btn small class="mr-2"  @click="increaseDepositAmout(100000)"
                   >10만원</v-btn
                 >
                 <v-btn small class="mr-2" @click="increaseDepositAmout(1000000)"
@@ -201,6 +204,7 @@
                   append-outer-icon="mdi-refresh"
                   @click:append-outer="initDepositRate"
                   required
+                  suffix="%"
                 ></v-text-field>
                 <v-btn small class="mr-2" @click="increaseDepositRate(0.1)"
                   >0.1</v-btn
@@ -211,6 +215,9 @@
                 <v-btn small class="mr-2" @click="increaseDepositRate(1)"
                   >1.0</v-btn
                 >
+                <v-switch hidden>
+
+                </v-switch>
                 <v-btn
                   color="primary"
                   :disabled="!depositValid"
@@ -230,7 +237,7 @@
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-title
-                    >세금 일반 (15.4%) 세후 이자</v-list-item-title
+                    >세금 일반 (15.4%)</v-list-item-title
                   >
                   <v-list-item-subtitle>{{
                     depositInterest15
@@ -238,7 +245,7 @@
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-title
-                    >세금우대 (9.5%) 세후 이자</v-list-item-title
+                    >세금우대 (9.5%)</v-list-item-title
                   >
                   <v-list-item-subtitle>{{
                     depositInterest9
@@ -246,7 +253,7 @@
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-title
-                    >세금우대 (1.4%) 세후 이자</v-list-item-title
+                    >세금우대 (1.4%)</v-list-item-title
                   >
                   <v-list-item-subtitle>{{
                     depositInterest1
