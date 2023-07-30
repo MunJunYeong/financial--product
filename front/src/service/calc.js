@@ -3,7 +3,7 @@ import axios from "@/lib/axios";
 import { SavingsType } from "@/lib/type";
 
 // preset
-const url = process.env.VUE_APP_AUTH_CALC_URL + "/calc";
+const url = process.env.VUE_APP_AUTH_CALC_URL;
 
 /**
  * Signs up a new user.
