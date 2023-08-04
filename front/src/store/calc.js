@@ -11,7 +11,7 @@ const calcModule = {
      * @param {string} data.type - The ID of the user.
      */
     // eslint-disable-next-line no-unused-vars
-    async CalcRegSavingsDeposit({ commit }, data) {
+    async CALC_REG_SAVINGS_DEPOSIT({ commit }, data) {
       let res;
       try {
         res = await CalcService.CalcRegSavingsDeposit(data);

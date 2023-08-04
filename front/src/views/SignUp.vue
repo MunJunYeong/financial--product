@@ -86,7 +86,7 @@ export default {
       if (this.$refs.form.validate()) {
         let res;
         try {
-          res = await this.$store.dispatch("SignUp", {
+          res = await this.$store.dispatch("SIGN_UP", {
             id: this.id,
             password: this.password,
             name: this.name,
