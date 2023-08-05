@@ -4,9 +4,10 @@ import { ProductService } from './product.service';
 import { SavingsModule } from './savings/savings.module';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from '@app/common/filters/http-exception.filter';
+import { UserProductsModule } from './user_products/user_products.module';
 
 @Module({
-  imports: [SavingsModule],
+  imports: [SavingsModule, UserProductsModule],
   controllers: [ProductController],
   providers: [
     ProductService,
