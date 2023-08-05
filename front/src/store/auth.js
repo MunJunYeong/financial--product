@@ -14,9 +14,9 @@ const authModule = {
     },
     CLEAR_USER(state) {
       state.user = null;
-      localStorage.removeItem("access_token")
-      localStorage.removeItem("refresh_token")
-    }
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
+    },
   },
   getters: {
     GET_USER(state) {
@@ -25,7 +25,7 @@ const authModule = {
   },
   actions: {
     // eslint-disable-next-line no-unused-vars
-    async SignUp({ commit }, data) {
+    async SIGN_UP({ commit }, data) {
       try {
         const res = await AuthService.SignUp(data);
         return res.data;
@@ -34,7 +34,7 @@ const authModule = {
       }
     },
 
-    async SignIn({ commit }, data) {
+    async SIGN_IN({ commit }, data) {
       let res;
       try {
         res = await AuthService.SignIn(data);
@@ -56,9 +56,13 @@ const authModule = {
 
       return true;
     },
-    Logout({commit}) {
-      commit("CLEAR_USER")
-    }
+
+    Logout({ commit }) {
+      commit("CLEAR_USER");
+    },
+
+    // eslint-disable-next-line no-unused-vars
+    async SAVE_SAVINGS({ commit }, data) {},
   },
 };
 
