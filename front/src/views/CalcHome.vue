@@ -367,6 +367,7 @@ export default {
     initSavingsRate() {
       this.savingsRate = 0;
     },
+    // 정기 적금 계산
     async calcRegSavings() {
       let res;
       if (this.$refs.savingsForm.validate()) {
@@ -390,7 +391,7 @@ export default {
         this.savingsInterest = res.taxFreeInterest;
       }
     },
-
+    // 정기 적금 상품 내용 저장
     async saveSavings() {
       if (!this.userData) {
         this.dialogMessage = "로그인 후 이용해주세요.";
@@ -399,15 +400,16 @@ export default {
       }
 
       const startDate = await this.$refs.startDateDialog.waitForDate();
-      console.log(startDate)
+
       this.$nextTick(async () => {
         try {
-          await this.$store.dispatch("SAVE_SAVINGS", {
+          await this.$store.dispatch("SAVE_PRODUCT_AFTER_CALC", {
             period: this.savingsPeriod,
             price: this.savingsAmount,
             rate: this.savingsRate,
             isSimple: this.savingsIsSimple,
             startDate: startDate,
+            type: SavingsType.SAVINGS,
           });
         } catch (err) {
           this.dialogMessage = errMessage;
@@ -456,7 +458,6 @@ export default {
           this.dialog = true;
           return;
         }
-        console.log(res);
         this.depositTotalInterest = res.taxFreeInterest;
         this.depositInterest15 = res.taxGeneralInterest;
         this.depositInterest9 = res.taxInterest;

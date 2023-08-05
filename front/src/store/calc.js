@@ -5,11 +5,6 @@ const calcModule = {
   mutations: {},
   getters: {},
   actions: {
-    /**
-     * Signs up a new user.
-     * @param {Object} data - The user data.
-     * @param {string} data.type - The ID of the user.
-     */
     // eslint-disable-next-line no-unused-vars
     async CALC_REG_SAVINGS_DEPOSIT({ commit }, data) {
       let res;
