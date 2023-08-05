@@ -267,9 +267,7 @@
       :message="dialogMessage"
       @update:show="dialog = $event"
     />
-    <SubmitDateDialog
-      ref="startDateDialog"
-    />
+    <SubmitDateDialog ref="startDateDialog" />
   </v-container>
 </template>
 
@@ -317,7 +315,6 @@ export default {
       // alert dialog
       dialog: false,
       dialogMessage: "",
-
     };
   },
   computed: {
