@@ -42,6 +42,7 @@ export default {
       if (this.user) {
         // 로그인한 상태
         baseItems.push({ title: "내 적금", link: "/list" });
+        baseItems.push({ title: "내 정보", link: "/info" });
         baseItems.push({ title: "로그아웃", action: this.logout });
       } else {
         // 로그인하지 않은 상태
