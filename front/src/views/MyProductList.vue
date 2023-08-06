@@ -20,7 +20,7 @@ export default {
   name: "MyProductList",
   mounted() {
     const userIdx = this.userData.user_idx; // 사용자 ID 가져오기, 필요에 따라 조정
-    this.$store.dispatch("GET_USER_PRODUCTS", { userIdx });
+    this.$store.dispatch("GET_USER_PRODUCTS", userIdx);
   },
   computed: {
     userData: function () {
@@ -58,7 +58,6 @@ export default {
       this.$router.push({
         name: "my_product",
         params: { product_idx: product.product_idx },
-        props: { product },
       });
     },
   },

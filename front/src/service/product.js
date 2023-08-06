@@ -1,5 +1,5 @@
 // vendor
-import moment from 'moment';
+import moment from "moment";
 
 // cus
 import axios from "@/lib/axios";
@@ -22,23 +22,25 @@ const url = process.env.VUE_APP_AUTH_PROD_URL;
  */
 // TODO: change function name
 const SaveProductAfterCalc = async (data) => {
-  const finishDate = moment(data.startDate).add(data.period, 'months').format('YYYY-MM-DD');
-  data.name = data.name || 'N/A';
-  
-  try{
+  const finishDate = moment(data.startDate)
+    .add(data.period, "months")
+    .format("YYYY-MM-DD");
+  data.name = data.name || "N/A";
+
+  try {
     const res = await axios.post(`${url}/user-prod/${data.userIdx}`, {
-      name : data.name,
-      start_date : data.startDate,
-      finish_date : finishDate,
-      period : data.period,
-      monthly_payment : data.price,
-      rate : data.rate,
-      is_simple : data.isSimple,
+      name: data.name,
+      start_date: data.startDate,
+      finish_date: finishDate,
+      period: data.period,
+      monthly_payment: data.price,
+      rate: data.rate,
+      is_simple: data.isSimple,
       total_interest: data.totalInterest,
-      type : data.type,
-    })
+      type: data.type,
+    });
     return res;
-  }catch(err) {
+  } catch (err) {
     return err;
   }
 };
@@ -48,16 +50,30 @@ const SaveProductAfterCalc = async (data) => {
  * @param {number} userIdx
  */
 const GetUserProducts = async (userIdx) => {
-  try{
-    const res = await axios.get(`${url}/user-prod/${userIdx}`, {
-    })
+  try {
+    const res = await axios.get(`${url}/user-prod/${userIdx}`, {});
     return res;
-  }catch(err) {
+  } catch (err) {
     return err;
   }
-}
+};
+
+/**
+ * Get user's prdoucts
+ * @param {number} userIdx
+ * @param {number} productIdx
+ */
+const GetUserProduct = async (userIdx, productIdx) => {
+  try {
+    const res = await axios.get(`${url}/user-prod/${userIdx}/prod/${productIdx}`);
+    return res;
+  } catch (err) {
+    return err;
+  }
+};
 
 export default {
   SaveProductAfterCalc,
-  GetUserProducts
+  GetUserProducts,
+  GetUserProduct
 };

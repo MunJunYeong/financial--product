@@ -27,15 +27,29 @@ const productModule = {
       }
       return res;
     },
-    async GET_USER_PRODUCTS({ commit }, data) {
+
+    // Get user's all product
+    async GET_USER_PRODUCTS({ commit }, userIdx) {
       let res;
       try {
-        res = await prodService.GetUserProducts(data.userIdx);
+        res = await prodService.GetUserProducts(userIdx);
       } catch (err) {
         console.log(err);
       }
       commit("SET_PRODUCTS", res.data);
     },
+
+    // Get user's product
+    async GET_USER_PRODUCT({commit}, data) {
+      let res;
+      try{
+        res = await prodService.GetUserProduct(data.userIdx, data.productIdx);
+      }catch(err){
+        console.log(err);
+        return null;
+      }
+      return res;
+    }
   },
 };
 
