@@ -8,7 +8,7 @@ import axios from "@/lib/axios";
 const url = process.env.VUE_APP_AUTH_PROD_URL;
 
 /**
- * Signs up a new user.
+ * Save user's product
  * @param {Object} data
  * @param {string} data.name // 없을 수도 있음.
  * @param {string} data.startDate
@@ -20,6 +20,7 @@ const url = process.env.VUE_APP_AUTH_PROD_URL;
  * @param {string} data.type
  * @param {number} data.userIdx
  */
+// TODO: change function name
 const SaveProductAfterCalc = async (data) => {
   const finishDate = moment(data.startDate).add(data.period, 'months').format('YYYY-MM-DD');
   data.name = data.name || 'N/A';
@@ -42,10 +43,21 @@ const SaveProductAfterCalc = async (data) => {
   }
 };
 
-const GetUserProduct = async (userIdx) => {
-
+/**
+ * Get user's prdoucts
+ * @param {number} userIdx
+ */
+const GetUserProducts = async (userIdx) => {
+  try{
+    const res = await axios.get(`${url}/user-prod/${userIdx}`, {
+    })
+    return res;
+  }catch(err) {
+    return err;
+  }
 }
 
 export default {
   SaveProductAfterCalc,
+  GetUserProducts
 };
