@@ -6,7 +6,9 @@ import Index from "@/views/layout/Index.vue"
 import MainHome from '@/views/MainHome.vue'
 import SavingsProductHome from '@/views/SavingsProductHome.vue'
 import CalcHome from '@/views/CalcHome.vue'
-import MyListHome from '@/views/MyListHome.vue'
+import MyProductList from '@/views/MyProductList.vue'
+import MyProduct from '@/components/MyProduct.vue'
+
 import MyInfo from '@/views/MyInfo.vue'
 
 import SignIn from '@/views/SignIn.vue'
@@ -37,7 +39,13 @@ const routes = [
       },
       {
         path: 'list',
-        component: MyListHome,
+        component: MyProductList,
+      },
+      {
+        path: '/list/:product_idx',
+        name: 'my_product',
+        component: MyProduct,
+        props: true,
       },
       {
         path: 'info',

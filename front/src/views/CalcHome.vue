@@ -396,7 +396,6 @@ export default {
         return;
       }
 
-      
       const startDate = await this.$refs.startDateDialog.waitForDate();
       this.$nextTick(async () => {
         try {
@@ -408,7 +407,7 @@ export default {
             startDate: startDate,
             type: SavingsType.SAVINGS,
             totalInterest: this.savingsTotalInterest,
-            userIdx: Number(this.userData.user_idx)
+            userIdx: Number(this.userData.user_idx),
           });
         } catch (err) {
           this.dialogMessage = errMessage;
@@ -416,6 +415,8 @@ export default {
           return;
         }
       });
+      this.dialogMessage = "저장 성공";
+      this.dialog = true;
     },
     // 예금 관련 method
     increaseDepositPeriod(months) {
