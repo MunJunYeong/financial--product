@@ -9,6 +9,7 @@ import { User } from '@app/database/models/user';
 export class UserRepo {
   constructor(@Inject('SEQUELIZE') private readonly sequelize: Sequelize) {}
 
+  // TODO: 이런 간단한 함수의 경우 service에서 만들어서 처리하기.
   async SaveUser(id: string, password: string, name: string, email: string): Promise<User> {
     let res = null;
     try {
@@ -32,6 +33,19 @@ export class UserRepo {
     try {
       res = await User.findOne({
         where: { id: id },
+      });
+    } catch (err) {
+      throw err;
+    }
+
+    return res;
+  }
+
+  async FindUserByIdx(userIdx: number): Promise<User | null> {
+    let res: User;
+    try {
+      res = await User.findOne({
+        where: { user_idx: userIdx },
       });
     } catch (err) {
       throw err;

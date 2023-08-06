@@ -20,17 +20,17 @@ export class Product extends Model<Product> {
     finish_date: string;
 
     @Column
-    period: string;
+    period: number;
 
     @Column
-    rate: string;
+    rate: number;
 
     @Column
-    monthly_payment: string;
+    monthly_payment: number;
 
     // 총 이자
     @Column
-    total_interest: string;
+    total_interest: number;
 
     @Column
     is_simple: boolean;

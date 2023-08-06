@@ -1,9 +1,13 @@
+// vendor
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
+
+// cus
 import { ConfigurationModule, DatabaseModule } from 'libs';
 import { UserProductsController } from './user_products.controller';
 import { UserProductsRepo } from './user_products.repo';
 import { UserProductsService } from './user_products.service';
+import { UserRepo } from 'apps/auth/src/user/user.repo';
 
 @Module({
   imports: [
@@ -18,7 +22,7 @@ import { UserProductsService } from './user_products.service';
     DatabaseModule,
   ],
   controllers: [UserProductsController],
-  providers: [UserProductsService, UserProductsRepo],
+  providers: [UserProductsService, UserProductsRepo, UserRepo],
   exports: [UserProductsRepo],
 })
 export class UserProductsModule {}

@@ -30,12 +30,6 @@ export class User extends Model<User> {
   @Column
   otp_enabled: boolean;
 
-  @Column({
-    type: DataType.BOOLEAN,
-    defaultValue: false,
-  })
-  otp_verified: boolean;
-
   @Column
   otp_secret: string;
 

@@ -12,11 +12,12 @@ import { ProductDTO } from './dto/common.dto';
   status: 500,
   description: 'Internal server error',
 })
-@Controller('/')
+@Controller('/user-prod')
 export class UserProductsController {
-  constructor(private readonly userProdsService: UserProductsService) {}
+  constructor(private readonly service: UserProductsService) {}
 
-  /////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // save user's product
   @ApiTags('User product')
   @ApiOperation({ summary: "save user's product" })
   @ApiOkResponse({
@@ -26,8 +27,10 @@ export class UserProductsController {
     },
   })
   @Post('/:user_idx')
-  async postSavings(@Param('user_idx', ParseIntPipe) user_idx: number, @Body() body: ProductDTO) {
-    
+  async postSavings(@Param('user_idx', ParseIntPipe) userIdx: number, @Body() productDTO: ProductDTO) {
+    productDTO.name = productDTO.name || "N/A";
+
+    return await this.service.SaveUserProduct(userIdx, productDTO);
   }
 
 }

@@ -4,7 +4,7 @@ import { IsBoolean, IsNumber, IsString } from "class-validator";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export class ProductDTO {
-    @IsString()
+    
     name: string
 
     @IsString()
@@ -13,17 +13,17 @@ export class ProductDTO {
     @IsString()
     finish_date: string;
 
-    @IsString()
-    period: string;
+    @IsNumber()
+    period: number;
 
     @IsNumber()
     rate: number;
 
-    @IsString()
-    monthly_payment: string;
+    @IsNumber()
+    monthly_payment: number;
 
-    @IsString()
-    total_interest: string;
+    @IsNumber()
+    total_interest: number;
 
     @IsBoolean()
     is_simple: boolean;
