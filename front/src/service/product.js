@@ -19,6 +19,7 @@ const SaveProductAfterCalc = async (data) => {
   const formatTypeUrl =
     data.type === SavingsType.SAVINGS ? url + "/savings" : url + "/deposit";
 
+  // TODO: start date로 finish date도 조합해서 보내야됨 
   delete data["type"];
 
   console.log(data)

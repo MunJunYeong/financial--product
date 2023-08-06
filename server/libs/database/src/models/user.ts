@@ -1,4 +1,5 @@
-import { Model, Column, PrimaryKey, Table, Unique, DataType, AutoIncrement } from 'sequelize-typescript';
+import { Model, Column, PrimaryKey, Table, Unique, DataType, AutoIncrement, HasMany } from 'sequelize-typescript';
+import { Product } from './product';
 
 @Table({
   // default지만 명시
@@ -29,15 +30,12 @@ export class User extends Model<User> {
   @Column
   otp_enabled: boolean;
 
-  @Column({
-    type: DataType.BOOLEAN,
-    defaultValue: false,
-  })
-  otp_verified: boolean;
-
   @Column
   otp_secret: string;
 
   @Column
   otp_auth_url: string;
+
+  @HasMany(()=> Product)
+  products: Product[];
 }

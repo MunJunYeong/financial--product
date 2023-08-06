@@ -4,22 +4,19 @@ import { Sequelize } from 'sequelize-typescript';
 
 // cus
 import { User } from '@app/database/models/user';
+import { Product } from '@app/database/models/product';
 
 @Injectable()
 export class UserRepo {
   constructor(@Inject('SEQUELIZE') private readonly sequelize: Sequelize) {}
 
-  async SaveUser(id: string, password: string, name: string, email: string): Promise<User> {
-    let res = null;
+  // find user by id
+  async FindUserByID(id: string): Promise<User | null> {
+    let res: User;
     try {
-      const newUser = new User({
-        id: id,
-        pw: password,
-        name: name,
-        email: email,
+      res = await User.findOne({
+        where: { id: id },
       });
-
-      res = await newUser.save();
     } catch (err) {
       throw err;
     }
@@ -27,11 +24,29 @@ export class UserRepo {
     return res;
   }
 
-  async FindUserByID(id: string): Promise<User | null> {
+  // find user by user_idx
+  async FindUserByIdx(userIdx: number): Promise<User | null> {
     let res: User;
     try {
       res = await User.findOne({
-        where: { id: id },
+        where: { user_idx: userIdx },
+      });
+    } catch (err) {
+      throw err;
+    }
+
+    return res;
+  }
+
+  // find user by user_idx include product
+  async FindUserByIdxIncProd(userIdx: number): Promise<User | null> {
+    let res: User;
+    try {
+      res = await User.findOne({
+        where: { user_idx: userIdx },
+        include: [{
+          model: Product
+        }]
       });
     } catch (err) {
       throw err;

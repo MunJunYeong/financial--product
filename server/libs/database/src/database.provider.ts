@@ -8,6 +8,7 @@ import { SavingsOption } from './models/savingsOptions.entity';
 import { Installment } from './models/installments.entity';
 import { InstallmentOption } from './models/installmentOptions.entity';
 import { User } from './models/user';
+import { Product } from './models/product';
 
 export const databaseProviders = [
   {
@@ -24,7 +25,7 @@ export const databaseProviders = [
         logging: false
       });
 
-      sequelize.addModels([User, Savings, SavingsOption, Installment, InstallmentOption]);
+      sequelize.addModels([User, Savings, SavingsOption, Installment, InstallmentOption, Product]);
       await sequelize.sync();
       return sequelize;
     },
