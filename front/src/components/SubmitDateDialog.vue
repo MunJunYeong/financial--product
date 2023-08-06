@@ -19,7 +19,7 @@ export default {
   data() {
     return {
       dialog: false,
-      startDate: null,
+      startDate: new Date().toISOString().substr(0, 10),
       resolvePromise: null,
     };
   },

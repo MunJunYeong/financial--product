@@ -1,29 +1,33 @@
 // vendor
-import { IsBoolean, IsNumber, IsString } from "class-validator";
+import { IsBoolean, IsNumber, IsString } from 'class-validator';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export class ProductDTO {
-    name: string
+  @IsString()
+  name: string;
 
-    @IsString()
-    start_date: string;
+  @IsString()
+  start_date: string;
 
-    @IsString()
-    finish_date: string;
+  @IsString()
+  finish_date: string;
 
-    @IsNumber()
-    period: number;
+  @IsNumber()
+  period: number;
 
-    @IsNumber()
-    rate: number;
+  @IsNumber()
+  rate: number;
 
-    @IsNumber()
-    monthly_payment: number;
+  @IsNumber()
+  monthly_payment: number;
 
-    @IsNumber()
-    total_interest: number;
+  @IsNumber()
+  total_interest: number;
 
-    @IsBoolean()
-    is_simple: boolean;
+  @IsString()
+  type: string;
+
+  @IsBoolean()
+  is_simple: boolean;
 }

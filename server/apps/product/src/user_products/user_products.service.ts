@@ -5,7 +5,6 @@ import { Injectable } from '@nestjs/common';
 import { ProductDTO } from './dto/common.dto';
 import { UserProductsRepo } from './user_products.repo';
 import { UserRepo } from 'apps/auth/src/user/user.repo';
-import { User } from '@app/database/models/user';
 import { Product } from '@app/database/models/product';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -27,11 +26,12 @@ export class UserProductsService {
         rate: productDTO.rate,
         monthly_payment: productDTO.monthly_payment,
         total_interest: productDTO.total_interest,
+        type: productDTO.type,
         is_simple: productDTO.is_simple,
         user_idx: userIdx,
         user: user,
       });
-      product.save();
+      await product.save();
     } catch (err) {
       throw err;
     }
