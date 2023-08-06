@@ -4,7 +4,7 @@ import VueRouter from 'vue-router'
 import Index from "@/views/layout/Index.vue"
 
 import MainHome from '@/views/MainHome.vue'
-import ProductHome from '@/views/ProductHome.vue'
+import SavingsProductHome from '@/views/SavingsProductHome.vue'
 import CalcHome from '@/views/CalcHome.vue'
 import MyListHome from '@/views/MyListHome.vue'
 
@@ -28,7 +28,7 @@ const routes = [
       },
       {
         path: 'product',
-        component: ProductHome,
+        component: SavingsProductHome,
       },
       {
         path: 'calc',
