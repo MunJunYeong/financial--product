@@ -22,3 +22,9 @@ $ npm run start:prod:dev
 # calc server start 
 $ npm run start:calc:dev
 ```
+
+## 주의점
+- 사용 용어에 혼동이 올 수 있음.
+* Savings - 정기적금
+* Deposit - 정기예금
+* Product - 적금이나 예금 등 사용자가 저장한 상품을 의미함.
