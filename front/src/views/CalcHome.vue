@@ -396,8 +396,8 @@ export default {
         return;
       }
 
+      
       const startDate = await this.$refs.startDateDialog.waitForDate();
-
       this.$nextTick(async () => {
         try {
           await this.$store.dispatch("SAVE_PRODUCT_AFTER_CALC", {
@@ -407,6 +407,8 @@ export default {
             isSimple: this.savingsIsSimple,
             startDate: startDate,
             type: SavingsType.SAVINGS,
+            totalInterest: this.savingsTotalInterest,
+            userIdx: Number(this.userData.user_idx)
           });
         } catch (err) {
           this.dialogMessage = errMessage;

@@ -43,6 +43,7 @@
       :show="dialog"
       :message="dialogMessage"
       @update:show="dialog = $event"
+      @closed="handleDialogClosed"
     />
   </v-container>
 </template>
@@ -79,6 +80,7 @@ export default {
       ],
       dialog: false,
       dialogMessage: "",
+      isSuccess: false,
     };
   },
   methods: {
@@ -97,7 +99,7 @@ export default {
           this.dialog = true;
           return;
         }
-        
+
         if (!res) {
           this.dialogMessage = "중복된 ID입니다. 확인해주세요.";
           this.dialog = true;
@@ -105,8 +107,15 @@ export default {
         }
         this.dialogMessage = "회원가입 성공했습니다.";
         this.dialog = true;
+        this.isSuccess = true;
+      }
+    },
+    handleDialogClosed() {
+      console.log("Dialog closed", this.isSuccess); 
+      if (this.isSuccess) {
         this.$router.push("/signin");
       }
+      this.isSuccess = false; // 플래그를 초기화
     },
   },
 };
