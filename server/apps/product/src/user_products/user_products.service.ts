@@ -40,5 +40,5 @@ export class UserProductsService {
         }
         return true
     }
-    
+
 }

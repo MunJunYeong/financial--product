@@ -13,22 +13,23 @@ export class UserService {
   constructor(private readonly userRepo: UserRepo, private jwtService: JwtService) {}
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  async SaveUser(data: SignUpDTO) {
-    // id 중복 확인
+  async SaveUser(data: SignUpDTO): Promise<Boolean> {
     try {
+      // id 중복 확인
       const targetUser = await this.userRepo.FindUserByID(data.id);
       if (targetUser) {
         return false;
       }
-    } catch (err) {
-      throw err;
-    }
+      // pw 암호화
+      const bcryptPw = await bcrypt.hash(data.password, 10);
 
-    // pw 암호화
-    const bcryptPw = await bcrypt.hash(data.password, 10);
-
-    try {
-      await this.userRepo.SaveUser(data.id, bcryptPw, data.name, data.email);
+      const user: User = new User({
+        id : data.id,
+        pw : bcryptPw,
+        name : data.name,
+        email : data.email
+      })
+      await user.save();
     } catch (err) {
       throw err;
     }
