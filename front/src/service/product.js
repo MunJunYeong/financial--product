@@ -65,7 +65,7 @@ const GetUserProducts = async (userIdx) => {
  */
 const GetUserProduct = async (userIdx, productIdx) => {
   try {
-    const res = await axios.get(`${url}/user-prod/${userIdx}/prod/${productIdx}`);
+    const res = await axios.get(`${url}/user-prod/${Number(userIdx)}/prod/${Number(productIdx)}`);
     return res;
   } catch (err) {
     return err;

@@ -3,15 +3,11 @@ import {
   Column,
   PrimaryKey,
   Table,
-  Unique,
   DataType,
   AutoIncrement,
-  HasMany,
   ForeignKey,
   BelongsTo,
 } from 'sequelize-typescript';
-import { Col } from 'sequelize/types/utils';
-import { SavingsOption } from './savingsOptions.entity';
 import { User } from './user';
 
 @Table

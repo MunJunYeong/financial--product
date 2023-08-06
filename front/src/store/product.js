@@ -48,7 +48,7 @@ const productModule = {
         console.log(err);
         return null;
       }
-      return res;
+      return res.data;
     }
   },
 };

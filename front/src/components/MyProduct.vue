@@ -1,20 +1,64 @@
 <template>
-  <div>
-    <h1>Product Details</h1>
-    <div v-if="product">
-      <p>Name: {{ product.name }}</p>
-      <p>Type: {{ product.type }}</p>
-      <p>Rate: {{ product.rate }}%</p>
-      <p>Monthly Payment: {{ product.monthly_payment }}</p>
-      <p>Total Interest: {{ product.total_interest }}</p>
-      <p>Period: {{ product.period }} months</p>
-      <p>Start Date: {{ product.start_date }}</p>
-      <p>Finish Date: {{ product.finish_date }}</p>
-      <p>Is Simple: {{ product.is_simple }}</p>
-      <p>Created At: {{ product.createdAt }}</p>
-      <p>Updated At: {{ product.updatedAt }}</p>
-    </div>
-  </div>
+  <v-container>
+    <v-card class="mx-auto" max-width="800">
+      <v-card-title class="headline">적금 상품 세부내용</v-card-title>
+      <v-card-text>
+        <v-list dense>
+          <v-list-item class="px-0">
+            <v-list-item-content>Name: {{ product.name }}</v-list-item-content>
+          </v-list-item>
+          <v-list-item class="px-0">
+            <v-list-item-content
+              >Type:
+              {{
+                product.type === "savings" ? "정기 적금" : "정기 예금"
+              }}</v-list-item-content
+            >
+          </v-list-item>
+          <v-list-item class="px-0">
+            <v-list-item-content>Rate: {{ product.rate }}%</v-list-item-content>
+          </v-list-item>
+          <v-list-item class="px-0">
+            <v-list-item-content
+              >Monthly Payment:
+              {{ formatAmount(product.monthly_payment) }}</v-list-item-content
+            >
+          </v-list-item>
+          <v-list-item class="px-0">
+            <v-list-item-content
+              >Total Interest:
+              {{ formatAmount(product.total_interest) }}</v-list-item-content
+            >
+          </v-list-item>
+          <v-list-item class="px-0">
+            <v-list-item-content
+              >Period: {{ product.period }}개월</v-list-item-content
+            >
+          </v-list-item>
+          <v-list-item class="px-0">
+            <v-list-item-content
+              >Start Date:
+              {{ formatDate(product.start_date) }}</v-list-item-content
+            >
+          </v-list-item>
+          <v-list-item class="px-0">
+            <v-list-item-content
+              >Finish Date:
+              {{ formatDate(product.finish_date) }}</v-list-item-content
+            >
+          </v-list-item>
+          <v-list-item class="px-0">
+            <v-list-item-content
+              >복리 여부:
+              {{
+                product.is_simple === false ? "비적용" : "적용"
+              }}</v-list-item-content
+            >
+          </v-list-item>
+        </v-list>
+      </v-card-text>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
@@ -29,11 +73,23 @@ export default {
     },
   },
   async created() {
-    const product = await this.$store.dispatch("GET_USER_PRODUCT", {
+    this.product = await this.$store.dispatch("GET_USER_PRODUCT", {
       userIdx: this.userData.user_idx,
       productIdx: this.product_idx,
     });
-    
+  },
+  data() {
+    return {
+      product: null, // product를 지역 상태로 추가
+    };
+  },
+  methods: {
+    formatDate(date) {
+      return new Date(date).toLocaleDateString();
+    },
+    formatAmount(amount) {
+      return amount.toLocaleString();
+    },
   },
 };
 </script>
