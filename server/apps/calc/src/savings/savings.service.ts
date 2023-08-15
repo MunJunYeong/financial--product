@@ -43,11 +43,8 @@ export class SavingsService {
         paymentDate: payMonth,
         price: monthTotalAmount,
       };
-      console.log(data);
       res.push(data);
     }
-
-    console.log(res);
 
     return null;
   }
@@ -80,11 +77,13 @@ export class SavingsService {
     } else {
       // https://ourcalc.com/%ec%a0%81%eb%a6%bd%ec%8b%9d-%eb%b3%b5%eb%a6%ac-%ea%b3%84%ec%82%b0%ea%b8%b0/
       // 매월 초 적립하는 월복리 공식: 적립액×(1+연이자율/12)×{(1+연이자율/12)((적립연수×12) -1)승}/(연이자율ᅟ/12)
-      const t = Math.floor(Math.round(
-        price *
-          (1 + monthlyInterestRate / 12) *
-          ((Math.pow(1 + monthlyInterestRate / 12, period) - 1) / (monthlyInterestRate / 12)),
-      ));
+      const t = Math.floor(
+        Math.round(
+          price *
+            (1 + monthlyInterestRate / 12) *
+            ((Math.pow(1 + monthlyInterestRate / 12, period) - 1) / (monthlyInterestRate / 12)),
+        ),
+      );
       total = Math.floor(t - period * price);
     }
 

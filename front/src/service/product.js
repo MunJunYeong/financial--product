@@ -1,63 +1,18 @@
-// vendor
-import moment from 'moment';
-
 // cus
 import axios from "@/lib/axios";
 
 // preset
-const url = process.env.VUE_APP_AUTH_PROD_URL;
+const url = process.env.VUE_APP_AUTH_PROD_URL + "prod";
 
-/**
- * Save user's product
- * @param {Object} data
- * @param {string} data.name // 없을 수도 있음.
- * @param {string} data.startDate
- * @param {number} data.period
- * @param {number} data.price
- * @param {number} data.rate
- * @param {number} data.totalInterest
- * @param {boolean} data.isSimple
- * @param {string} data.type
- * @param {number} data.userIdx
- */
-// TODO: change function name
-const SaveProductAfterCalc = async (data) => {
-  const finishDate = moment(data.startDate).add(data.period, 'months').format('YYYY-MM-DD');
-  data.name = data.name || 'N/A';
-  
-  try{
-    const res = await axios.post(`${url}/user-prod/${data.userIdx}`, {
-      name : data.name,
-      start_date : data.startDate,
-      finish_date : finishDate,
-      period : data.period,
-      monthly_payment : data.price,
-      rate : data.rate,
-      is_simple : data.isSimple,
-      total_interest: data.totalInterest,
-      type : data.type,
-    })
+const SaveSavingsProduct = async () => {
+  try {
+    const res = await axios.get(`${url}/savings`, {});
     return res;
-  }catch(err) {
+  } catch (err) {
     return err;
   }
 };
 
-/**
- * Get user's prdoucts
- * @param {number} userIdx
- */
-const GetUserProducts = async (userIdx) => {
-  try{
-    const res = await axios.get(`${url}/user-prod/${userIdx}`, {
-    })
-    return res;
-  }catch(err) {
-    return err;
-  }
-}
-
 export default {
-  SaveProductAfterCalc,
-  GetUserProducts
+  SaveSavingsProduct,
 };

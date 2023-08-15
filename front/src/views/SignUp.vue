@@ -111,7 +111,6 @@ export default {
       }
     },
     handleDialogClosed() {
-      console.log("Dialog closed", this.isSuccess); 
       if (this.isSuccess) {
         this.$router.push("/signin");
       }

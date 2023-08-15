@@ -122,7 +122,7 @@ export class SavingsInputDTO {
 
   @ApiProperty({
     example: 'bool',
-    description: '단리, 복리인지',
+    description: '단리 true, 복리 false',
   })
   @IsBoolean()
   @Transform(({ value} ) => value === 'true')

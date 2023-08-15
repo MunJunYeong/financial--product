@@ -2,16 +2,14 @@
   <v-container>
     <v-data-table :headers="headers" :items="products" class="elevation-1">
       <template v-slot:item="{ item }">
-        <tr>
+        <tr @click="goToProduct(item)">
           <td>{{ item.product_idx }}</td>
           <td>{{ item.name }}</td>
           <td>{{ formatDate(item.start_date) }}</td>
           <td>{{ formatDate(item.finish_date) }}</td>
-          <td>{{ item.period }}</td>
-          <td>{{ item.rate }}%</td>
-          <td>{{ item.monthly_payment }}</td>
-          <td>{{ item.total_interest }}</td>
-          <td>{{ item.type }}</td>
+          <td>
+            {{ calculateCurrentAmount(item.start_date, item.monthly_payment) }}
+          </td>
         </tr>
       </template>
     </v-data-table>
@@ -19,17 +17,17 @@
 </template>
 <script>
 export default {
-  name: "MyListHome",
+  name: "MyProductList",
   mounted() {
     const userIdx = this.userData.user_idx; // 사용자 ID 가져오기, 필요에 따라 조정
-    this.$store.dispatch('GET_USER_PRODUCTS', { userIdx });
+    this.$store.dispatch("GET_USER_PRODUCTS", userIdx);
   },
   computed: {
     userData: function () {
       return this.$store.getters.GET_USER;
     },
     products: function () {
-      return this.$store.getters.GET_PRODUCTS;
+      return this.$store.getters.GET_USER_PRODUCT;
     },
     headers: function () {
       return [
@@ -37,11 +35,7 @@ export default {
         { text: "Name", value: "name" },
         { text: "Start Date", value: "start_date" },
         { text: "Finish Date", value: "finish_date" },
-        { text: "Period (months)", value: "period" },
-        { text: "Rate", value: "rate" },
-        { text: "Monthly Payment", value: "monthly_payment" },
-        { text: "Total Interest", value: "total_interest" },
-        { text: "Type", value: "type" },
+        { text: "Current Amount", value: "current_amount" },
       ];
     },
   },
@@ -49,7 +43,23 @@ export default {
     formatDate(date) {
       return new Date(date).toLocaleDateString();
     },
+    calculateCurrentAmount(startDate, monthlyPayment) {
+      const start = new Date(startDate);
+      const now = new Date();
+      const monthsElapsed =
+        (now.getFullYear() - start.getFullYear()) * 12 +
+        now.getMonth() -
+        start.getMonth();
+      const amount = monthsElapsed * monthlyPayment;
+
+      return amount.toLocaleString();
+    },
+    goToProduct(product) {
+      this.$router.push({
+        name: "my_product",
+        params: { product_idx: product.product_idx },
+      });
+    },
   },
-  
 };
 </script>
