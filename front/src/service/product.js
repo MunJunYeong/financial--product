@@ -2,13 +2,15 @@
 import axios from "@/lib/axios";
 
 // preset
-const url = process.env.VUE_APP_AUTH_PROD_URL + "prod";
+const url = process.env.VUE_APP_AUTH_PROD_URL + "/prod";
 
 const SaveSavingsProduct = async () => {
   try {
-    const res = await axios.get(`${url}/savings`, {});
-    return res;
+    const res = await axios.post(`${url}/savings`, {});
+    const res2 = await axios.post(`${url}/installment`, {});
+    return res === res2;
   } catch (err) {
+    console.log(err)
     return err;
   }
 };

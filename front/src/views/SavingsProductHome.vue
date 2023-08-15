@@ -9,8 +9,8 @@ export default {
   name: "ProductHome",
   methods: {
     async testButton() {
-      const res = await this.$store.dispathc("TEST_SAVE_PROD", {});
-      console.log(res)
+      const res = await this.$store.dispatch("TEST_REFRESH_PRODUCT", {});
+      return res
     },
   },
 };
