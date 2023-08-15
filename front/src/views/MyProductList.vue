@@ -27,7 +27,7 @@ export default {
       return this.$store.getters.GET_USER;
     },
     products: function () {
-      return this.$store.getters.GET_PRODUCTS;
+      return this.$store.getters.GET_USER_PRODUCT;
     },
     headers: function () {
       return [

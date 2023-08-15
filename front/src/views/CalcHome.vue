@@ -292,7 +292,7 @@ export default {
       savingsPeriod: 12,
       savingsAmount: 100000,
       savingsRate: 5,
-      savingsIsSimple: false,
+      savingsIsSimple: true,
       savingsTotalInterest: null,
       savingsInterest15: 0,
       savingsInterest9: 0,

@@ -57,7 +57,6 @@ export class UserProductsService {
 
       // 2. find product by productIdx
       const product = user.products.find((p) => Number(p.product_idx) === productIdx);
-      console.log(product);
 
       if (!product) {
         throw new Error('Product not found');
