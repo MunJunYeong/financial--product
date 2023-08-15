@@ -40,6 +40,7 @@ const userProductModule = {
     },
 
     // Get user's product
+    // eslint-disable-next-line no-unused-vars
     async GET_USER_PRODUCT({commit}, data) {
       let res;
       try{

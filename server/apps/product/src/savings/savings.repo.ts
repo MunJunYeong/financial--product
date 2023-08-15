@@ -66,11 +66,6 @@ export class SavingsRepo {
     installmentOptList: InstallmentOptionsDTO[],
   ): Promise<boolean> {
     const transaction = await this.sequelize.transaction();
-
-    throw new HttpException({
-      message : "failed to save installment",
-      error : "error.message"
-    }, HttpStatus.INTERNAL_SERVER_ERROR)
     
     try {
       // save savings + opt

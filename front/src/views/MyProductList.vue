@@ -16,6 +16,8 @@
   </v-container>
 </template>
 <script>
+import { formatDate } from "../lib/formatter";
+
 export default {
   name: "MyProductList",
   mounted() {
@@ -40,9 +42,7 @@ export default {
     },
   },
   methods: {
-    formatDate(date) {
-      return new Date(date).toLocaleDateString();
-    },
+    formatDate,
     calculateCurrentAmount(startDate, monthlyPayment) {
       const start = new Date(startDate);
       const now = new Date();

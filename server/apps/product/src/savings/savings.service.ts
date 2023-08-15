@@ -204,7 +204,6 @@ export class SavingsService {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
-
     // 3. processing data
     const installments: InstallmentDTO[] = installmentData.baseList;
     const opts: InstallmentOptionsDTO[] = installmentData.optionList;

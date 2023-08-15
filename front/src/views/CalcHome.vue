@@ -97,25 +97,33 @@
                 <v-list-item>
                   <v-list-item-title>총 이자금액</v-list-item-title>
                   <v-list-item-subtitle
-                    >{{ formatAmount(savingsTotalInterest) }}원</v-list-item-subtitle
+                    >{{
+                      formatAmount(savingsTotalInterest)
+                    }}원</v-list-item-subtitle
                   >
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-title>세금 일반 (15.4%)</v-list-item-title>
                   <v-list-item-subtitle
-                    >{{ formatAmount(savingsInterest15) }}원</v-list-item-subtitle
+                    >{{
+                      formatAmount(savingsInterest15)
+                    }}원</v-list-item-subtitle
                   >
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-title>세금우대 (9.5%)</v-list-item-title>
                   <v-list-item-subtitle
-                    >{{ formatAmount(savingsInterest9) }}원</v-list-item-subtitle
+                    >{{
+                      formatAmount(savingsInterest9)
+                    }}원</v-list-item-subtitle
                   >
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-title>세금우대 (1.4%)</v-list-item-title>
                   <v-list-item-subtitle
-                    >{{ formatAmount(savingsInterest1) }}원</v-list-item-subtitle
+                    >{{
+                      formatAmount(savingsInterest1)
+                    }}원</v-list-item-subtitle
                   >
                 </v-list-item>
                 <v-list-item>
@@ -227,25 +235,33 @@
                 <v-list-item>
                   <v-list-item-title>총 이자금액</v-list-item-title>
                   <v-list-item-subtitle
-                    >{{ formatAmount(depositTotalInterest) }}원</v-list-item-subtitle
+                    >{{
+                      formatAmount(depositTotalInterest)
+                    }}원</v-list-item-subtitle
                   >
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-title>세금 일반 (15.4%)</v-list-item-title>
                   <v-list-item-subtitle
-                    >{{ formatAmount(depositInterest15) }}원</v-list-item-subtitle
+                    >{{
+                      formatAmount(depositInterest15)
+                    }}원</v-list-item-subtitle
                   >
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-title>세금우대 (9.5%)</v-list-item-title>
                   <v-list-item-subtitle
-                    >{{ formatAmount(depositInterest9) }}원</v-list-item-subtitle
+                    >{{
+                      formatAmount(depositInterest9)
+                    }}원</v-list-item-subtitle
                   >
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-title>세금우대 (1.4%)</v-list-item-title>
                   <v-list-item-subtitle
-                    >{{ formatAmount(depositInterest1) }}원</v-list-item-subtitle
+                    >{{
+                      formatAmount(depositInterest1)
+                    }}원</v-list-item-subtitle
                   >
                 </v-list-item>
                 <v-list-item>
@@ -272,9 +288,11 @@
 </template>
 
 <script>
-import { SavingsType } from "../lib/type";
 import AlertDialog from "@/components/AlertDialog.vue";
 import SubmitDateDialog from "@/components/SubmitDateDialog.vue";
+
+import { formatAmount } from "../lib/formatter";
+import { SavingsType } from "../lib/type";
 
 const errMessage =
   "서버와의 연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.";
@@ -339,9 +357,7 @@ export default {
     },
   },
   methods: {
-    formatAmount(amount) {
-      return amount.toLocaleString();
-    },
+    formatAmount,
     // 적금 관련 method
     increaseSavingsPeriod(months) {
       this.savingsPeriod = Number(this.savingsPeriod) + months;

@@ -62,6 +62,8 @@
 </template>
 
 <script>
+import { formatDate, formatAmount } from "../lib/formatter";
+
 export default {
   name: "MyProduct",
   props: {
@@ -84,12 +86,8 @@ export default {
     };
   },
   methods: {
-    formatDate(date) {
-      return new Date(date).toLocaleDateString();
-    },
-    formatAmount(amount) {
-      return amount.toLocaleString();
-    },
+    formatDate,
+    formatAmount,
   },
 };
 </script>
