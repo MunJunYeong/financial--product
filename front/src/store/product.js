@@ -3,22 +3,22 @@ import prodService from "@/service/product";
 
 const productModule = {
   state: {
-    savings: [],
+    best_savings: [],
     installment: [],
   },
   mutations: {
-    SET_SAVINGS_DATA(state, data) {
-      state.savings = data;
+    SET_BEST_SAVINGS_DATA(state, data) {
+      state.best_savings = data;
     },
-    SET_INSTALLMENT_DATA(state, data) {
+    SET_BEST_INSTALLMENT_DATA(state, data) {
       state.installment = data;
     },
   },
   getters: {
-    SAVINGS_DATA(state) {
-      return state.savings;
+    BEST_SAVINGS_DATA(state) {
+      return state.best_savings;
     },
-    INSTALLMENT_DATA(state) {
+    BEST_INSTALLMENT_DATA(state) {
       return state.installment;
     },
   },
@@ -31,13 +31,13 @@ const productModule = {
     },
 
     // set product data
-    async SET_PRODUCT_DATA({ commit }) {
+    async SET_BEST_PRODUCT_DATA({ commit }) {
       try {
-        const savings = await prodService.GetSavingsProduct();
-        const installment = await prodService.GetInstallmentProduct();
+        const savings = await prodService.GetBestSavingsProduct();
+        const installment = await prodService.GetBestInstallmentProduct();
         
-        commit("SET_SAVINGS_DATA", savings.data);
-        commit("SET_INSTALLMENT_DATA", installment.data);
+        commit("SET_BEST_SAVINGS_DATA", savings.data);
+        commit("SET_BEST_INSTALLMENT_DATA", installment.data);
       } catch (err) {
         return err;
       }
