@@ -8,80 +8,62 @@
       <v-radio label="예금" value="installment"></v-radio>
     </v-radio-group>
 
-    <!-- Search filter -->
-    <v-text-field v-model="searchFilter" label="검색"></v-text-field>
-
     <!-- For savingsData -->
-    <v-list v-if="selectedProductType === 'savings'">
-      <v-list-item-group
+    <v-row v-if="selectedProductType === 'savings'">
+      <v-col
         v-for="(item, index) in savingsData"
         :key="'savings-' + index"
+        cols="12"
+        md="4"
       >
-        <v-list-item>
-          <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-            <v-list-item-subtitle
-              >상품 명: {{ item.fin_prdt_nm }}</v-list-item-subtitle
-            >
-            <v-list-item-subtitle
-              >기간: {{ item.save_trm }}개월</v-list-item-subtitle
-            >
-            <v-list-item-subtitle
-              >최고 이율: {{ item.intr_rate2 }}%</v-list-item-subtitle
-            >
-            <v-list-item-subtitle
-              >월 최대 납입 금액:
-              {{ formatAmount(item.max_limit) }}원</v-list-item-subtitle
-            >
-            <v-list-item-subtitle
-              >이자 방식: {{ item.intr_rate_type_nm }}</v-list-item-subtitle
-            >
-            <v-list-item-subtitle
-              >은행 이름: {{ item.kor_co_nm }}</v-list-item-subtitle
-            >
-            <v-list-item-subtitle
-              >예금 유형: {{ item.rsrv_type_nm }}</v-list-item-subtitle
-            >
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-item-group>
-    </v-list>
+        <v-card>
+          <v-card-title>{{ item.fin_prdt_nm }}</v-card-title>
+          <v-card-text>
+            기간: {{ item.save_trm }}개월<br />
+            최고 이율: {{ item.intr_rate2 }}%<br />
+            월 최대 납입 금액: {{ formatAmount(item.max_limit) }}원<br />
+            이자 방식: {{ item.intr_rate_type_nm }}<br />
+            은행 이름: {{ item.kor_co_nm }}<br />
+            예금 유형: {{ item.rsrv_type_nm }}
+          </v-card-text>
+          <v-card-actions>
+            <v-btn text>자세히</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
 
     <!-- For installmentData -->
-    <v-list v-if="selectedProductType === 'installment'">
-      <v-list-item-group
+    <v-row v-if="selectedProductType === 'installment'">
+      <v-col
         v-for="(item, index) in installmentData"
         :key="'installment-' + index"
+        cols="12"
+        md="4"
       >
-        <v-list-item>
-          <v-list-item-content>
-            <!-- Assuming installmentData has similar fields. Adjust if different. -->
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-            <v-list-item-subtitle
-              >상품 명: {{ item.fin_prdt_nm }}</v-list-item-subtitle
-            >
-            <v-list-item-subtitle
-              >기간: {{ item.save_trm }}개월</v-list-item-subtitle
-            >
-            <v-list-item-subtitle
-              >최고 이율: {{ item.intr_rate2 }}%</v-list-item-subtitle
-            >
-            <v-list-item-subtitle
-              >이자 방식: {{ item.intr_rate_type_nm }}</v-list-item-subtitle
-            >
-            <v-list-item-subtitle
-              >은행 이름: {{ item.kor_co_nm }}</v-list-item-subtitle
-            >
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-item-group>
-    </v-list>
+        <v-card>
+          <v-card-title>{{ item.fin_prdt_nm }}</v-card-title>
+          <v-card-text>
+            기간: {{ item.save_trm }}개월<br />
+            최고 이율: {{ item.intr_rate2 }}%<br />
+            이자 방식: {{ item.intr_rate_type_nm }}<br />
+            은행 이름: {{ item.kor_co_nm }}
+          </v-card-text>
+          <v-card-actions>
+            <v-btn text>자세히</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
 // cus
 import { formatAmount } from "../lib/formatter";
+
+// TODO: product의 이름으로 map형태를 만든 후 최고 금리시 몇 개월인지 main이 되는 상품만 보여주기
+// 자세히와 같은 버튼 클릭 시 해당 상품에 대한 개월마다 금리 이런 걸 보여주는 API가 필요할듯함.
 
 export default {
   name: "ProductHome",
@@ -93,14 +75,12 @@ export default {
       return this.$store.getters.SAVINGS_DATA;
     },
     installmentData() {
-      console.log(this.$store.getters.INSTALLMENT_DATA);
       return this.$store.getters.INSTALLMENT_DATA;
     },
   },
   data() {
     return {
       selectedProductType: "savings", // default to savings
-      searchFilter: "",
     };
   },
   methods: {
@@ -132,4 +112,3 @@ export default {
   },
 };
 </script>
-

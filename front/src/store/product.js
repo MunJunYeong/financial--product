@@ -8,7 +8,6 @@ const productModule = {
   },
   mutations: {
     SET_SAVINGS_DATA(state, data) {
-      console.log(data[0])
       state.savings = data;
     },
     SET_INSTALLMENT_DATA(state, data) {
