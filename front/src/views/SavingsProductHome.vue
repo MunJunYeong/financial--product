@@ -94,7 +94,7 @@ export default {
     // set product data
     async SetProductData() {
       try {
-        await this.$store.dispatch("SET_PRODUCT_DATA");
+        await this.$store.dispatch("SET_BEST_PRODUCT_DATA");
       } catch (err) {
         console.log(err);
       }

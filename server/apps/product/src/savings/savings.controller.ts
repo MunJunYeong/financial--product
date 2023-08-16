@@ -13,6 +13,21 @@ export class SavingsController {
 
   // TODO: scheduling에서 매번 상품 업데이트
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Get best savings product - 금리가 가장 높은 상품
+  @ApiTags('Savings')
+  @ApiOperation({ summary: 'get savings product' })
+  @ApiOkResponse({
+    description: '적금 정보',
+    type: ProductWithOptionDTO,
+    isArray: true
+  })
+  @Get('savings/best')
+  async getBestSavings() {
+    return await this.savingsService.GetBestSavings();
+  }
+  
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // 적금
   @ApiTags('Savings')
   @ApiOperation({ summary: 'save savings product' })

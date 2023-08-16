@@ -158,6 +158,40 @@ export class SavingsService {
     return true;
   }
 
+  // get best savings
+  async GetBestSavings(): Promise<ProductWithOptionDTO[]> {
+    // get savings data
+    let savingsData: ProductWithOptionDTO[];
+    try {
+      savingsData = await this.GetSavings();
+    } catch (err) {
+      throw new HttpException(
+        {
+          message: Errors.DB_GET_SAVINGS,
+          error: err.message,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
+    // Map data by product name and pick the one with the highest intr_rate2
+    const bestProducts: { [key: string]: ProductWithOptionDTO } = {};
+
+    for (let product of savingsData) {
+      if (
+        !bestProducts[product.fin_prdt_nm] ||
+        parseFloat(product.intr_rate2) > parseFloat(bestProducts[product.fin_prdt_nm].intr_rate2)
+      ) {
+        bestProducts[product.fin_prdt_nm] = product;
+      }
+    }
+
+    // Convert mapped object back to an array
+    const result: ProductWithOptionDTO[] = Object.values(bestProducts);
+
+    return result;
+  }
+
   // Get all
   async GetSavings(): Promise<ProductWithOptionDTO[]> {
     let savingsData: SavingsDTO[];
