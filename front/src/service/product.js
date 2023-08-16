@@ -28,7 +28,7 @@ const GetBestSavingsProduct = async () => {
 // get installment data
 const GetBestInstallmentProduct = async () => {
   try {
-    const res = await axios.get(`${url}/installment`);
+    const res = await axios.get(`${url}/installment/best`);
     return res;
   } catch (err) {
     return err;

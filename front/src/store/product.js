@@ -10,15 +10,15 @@ const productModule = {
     SET_BEST_SAVINGS_DATA(state, data) {
       state.best_savings = data;
     },
-    SET_INSTALLMENT_DATA(state, data) {
+    SET_BEST_INSTALLMENT_DATA(state, data) {
       state.installment = data;
     },
   },
   getters: {
-    SAVINGS_DATA(state) {
+    BEST_SAVINGS_DATA(state) {
       return state.best_savings;
     },
-    INSTALLMENT_DATA(state) {
+    BEST_INSTALLMENT_DATA(state) {
       return state.installment;
     },
   },
@@ -37,7 +37,7 @@ const productModule = {
         const installment = await prodService.GetBestInstallmentProduct();
         
         commit("SET_BEST_SAVINGS_DATA", savings.data);
-        commit("SET_INSTALLMENT_DATA", installment.data);
+        commit("SET_BEST_INSTALLMENT_DATA", installment.data);
       } catch (err) {
         return err;
       }

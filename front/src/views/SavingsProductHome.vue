@@ -68,14 +68,14 @@ import { formatAmount } from "../lib/formatter";
 export default {
   name: "ProductHome",
   created() {
-    this.SetProductData();
+    this.SetBestProductData();
   },
   computed: {
     savingsData() {
-      return this.$store.getters.SAVINGS_DATA;
+      return this.$store.getters.BEST_SAVINGS_DATA;
     },
     installmentData() {
-      return this.$store.getters.INSTALLMENT_DATA;
+      return this.$store.getters.BEST_INSTALLMENT_DATA;
     },
   },
   data() {
@@ -92,7 +92,7 @@ export default {
     },
 
     // set product data
-    async SetProductData() {
+    async SetBestProductData() {
       try {
         await this.$store.dispatch("SET_BEST_PRODUCT_DATA");
       } catch (err) {

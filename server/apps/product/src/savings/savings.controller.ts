@@ -14,21 +14,9 @@ export class SavingsController {
   // TODO: scheduling에서 매번 상품 업데이트
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // Get best savings product - 금리가 가장 높은 상품
-  @ApiTags('Savings')
-  @ApiOperation({ summary: 'get savings product' })
-  @ApiOkResponse({
-    description: '적금 정보',
-    type: ProductWithOptionDTO,
-    isArray: true
-  })
-  @Get('savings/best')
-  async getBestSavings() {
-    return await this.savingsService.GetBestSavings();
-  }
+  // Savings (적금) 관련 API
   
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // 적금
+  // Save savings - 상품 저장
   @ApiTags('Savings')
   @ApiOperation({ summary: 'save savings product' })
   @ApiOkResponse({
@@ -41,7 +29,21 @@ export class SavingsController {
   async postSavings() {
     return await this.savingsService.SaveSavings();
   }
+ 
+  // Get best savings product - 금리가 가장 높은 상품
+  @ApiTags('Savings')
+  @ApiOperation({ summary: 'get savings product' })
+  @ApiOkResponse({
+    description: '적금 정보(금리가 가장 높은 상품 list)',
+    type: ProductWithOptionDTO,
+    isArray: true
+  })
+  @Get('savings/best')
+  async getBestSavings() {
+    return await this.savingsService.GetBestSavings();
+  }
 
+  // Get all savings product - 모든 적금 상품
   @ApiTags('Savings')
   @ApiOperation({ summary: 'get savings product' })
   @ApiOkResponse({
@@ -53,8 +55,12 @@ export class SavingsController {
   async getSavings() {
     return await this.savingsService.GetSavings();
   }
+  
+  
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Installment (예금) 관련 API
 
-  // 정기예금
+  // Save installment - 상품 저장
   @ApiTags('Installment')
   @ApiOperation({ summary: 'save installment product' })
   @ApiOkResponse({
@@ -63,11 +69,25 @@ export class SavingsController {
       example: { success: true },
     },
   })
-  @Post('/installment')
+  @Post('installment')
   async postInstallments() {
     return await this.savingsService.SaveInstallments();
   }
 
+  // Get best installment product - 금리가 가장 높은 상품
+  @ApiTags('Installment')
+  @ApiOperation({ summary: 'get installment product' })
+  @ApiOkResponse({
+    description: '예금 정보(금리가 가장 높은 상품 list)',
+    type: ProductWithOptionDTO,
+    isArray: true
+  })
+  @Get('installment/best')
+  async getBestInstallments() {
+    return await this.savingsService.GetBestInstallment();
+  }
+
+  // Get all installment product - 모든 예금 상품
   @ApiTags('Installment')
   @ApiOperation({ summary: 'get installment product' })
   @ApiOkResponse({
