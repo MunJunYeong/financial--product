@@ -1,18 +1,22 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+// view layour
 import Index from "@/views/layout/Index.vue"
 
+// view
 import MainHome from '@/views/MainHome.vue'
-import SavingsProductHome from '@/views/SavingsProductHome.vue'
+import ProductHome from '@/views/ProductHome.vue'
 import CalcHome from '@/views/CalcHome.vue'
 import MyProductList from '@/views/MyProductList.vue'
-import MyProduct from '@/components/MyProduct.vue'
-
 import MyInfo from '@/views/MyInfo.vue'
-
 import SignIn from '@/views/SignIn.vue'
 import SignUp from '@/views/SignUp.vue'
+
+// component
+import MyProduct from '@/components/MyProduct.vue'
+import DetailSavingsProduct from '@/components/DetailSavingsProduct.vue'
+import DetailInstallmentProduct from '@/components/DetailInstallmentProduct.vue'
 
 Vue.use(VueRouter)
 
@@ -31,7 +35,19 @@ const routes = [
       },
       {
         path: 'product',
-        component: SavingsProductHome,
+        component: ProductHome,
+      },
+      {
+        path: 'product/savings/:fin_prdt_cd',
+        name: 'detail_savings_product',
+        component: DetailSavingsProduct,
+        props : true
+      },
+      {
+        path: 'product/installment/:fin_prdt_cd',
+        name: 'detail_installment_product',
+        component: DetailInstallmentProduct,
+        props : true
       },
       {
         path: 'calc',

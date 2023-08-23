@@ -43,6 +43,13 @@ export class ProductWithOptionDTO {
   @IsString()
   fin_prdt_nm: string;
 
+  @ApiProperty({
+    example: '1111',
+    description: '상품 코드',
+  })
+  @IsString()
+  fin_prdt_cd: string;
+
   //
   @ApiProperty({
     example: '500000',

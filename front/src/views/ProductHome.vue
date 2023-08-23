@@ -27,7 +27,9 @@
             예금 유형: {{ item.rsrv_type_nm }}
           </v-card-text>
           <v-card-actions>
-            <v-btn text>자세히</v-btn>
+            <v-btn text @click="goToDetailSavings(item.fin_prdt_cd)"
+              >자세히</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-col>
@@ -50,7 +52,9 @@
             은행 이름: {{ item.kor_co_nm }}
           </v-card-text>
           <v-card-actions>
-            <v-btn text>자세히</v-btn>
+            <v-btn text @click="goToDetailInstallment(item.fin_prdt_cd)"
+              >자세히</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-col>
@@ -61,9 +65,6 @@
 <script>
 // cus
 import { formatAmount } from "../lib/formatter";
-
-// TODO: product의 이름으로 map형태를 만든 후 최고 금리시 몇 개월인지 main이 되는 상품만 보여주기
-// 자세히와 같은 버튼 클릭 시 해당 상품에 대한 개월마다 금리 이런 걸 보여주는 API가 필요할듯함.
 
 export default {
   name: "ProductHome",
@@ -108,6 +109,18 @@ export default {
       return this.installmentData.filter((item) =>
         item.title.includes(this.searchFilter)
       );
+    },
+    goToDetailSavings(fin_prdt_cd) {
+      this.$router.push({
+        name: "detail_savings_product",
+        params: { fin_prdt_cd: fin_prdt_cd },
+      });
+    },
+    goToDetailInstallment(fin_prdt_cd) {
+      this.$router.push({
+        name: "detail_installment_product",
+        params: { fin_prdt_cd: fin_prdt_cd },
+      });
     },
   },
 };
