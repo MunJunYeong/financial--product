@@ -192,6 +192,30 @@ export class SavingsService {
     return result;
   }
 
+  async GetDetailSavings(prodCode: string): Promise<ProductWithOptionDTO[]> {
+    // get savings data
+    let savingsData: ProductWithOptionDTO[];
+    try {
+      savingsData = await this.GetSavings();
+    } catch (err) {
+      throw new HttpException(
+        {
+          message: Errors.DB_GET_SAVINGS,
+          error: err.message,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
+    const detailProducts: ProductWithOptionDTO[] = [];
+    for (const product of savingsData) {
+      if (product.fin_prdt_nm === prodCode) {
+        detailProducts.push(product);
+      }
+    }
+    return detailProducts;
+  }
+
   // Get all
   async GetSavings(): Promise<ProductWithOptionDTO[]> {
     let savingsData: SavingsDTO[];
@@ -262,9 +286,9 @@ export class SavingsService {
     return true;
   }
 
-  // get best savings
-  async GetBestInstallment(): Promise<ProductWithOptionDTO[]> {
-    // get savings data
+  // get best installments
+  async GetBestInstallments(): Promise<ProductWithOptionDTO[]> {
+    // get installments data
     let installmentData: ProductWithOptionDTO[];
     try {
       installmentData = await this.GetInstallment();
@@ -294,6 +318,29 @@ export class SavingsService {
     const result: ProductWithOptionDTO[] = Object.values(bestProducts);
 
     return result;
+  }
+
+  async GetDetailInstallments(prodCode: string): Promise<ProductWithOptionDTO[]> {
+    let installmentData: ProductWithOptionDTO[];
+    try {
+      installmentData = await this.GetInstallment();
+    } catch (err) {
+      throw new HttpException(
+        {
+          message: Errors.DB_GET_INSTALLMENT,
+          error: err.message,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
+    const detailProducts: ProductWithOptionDTO[] = [];
+    for (const product of installmentData) {
+      if (product.fin_prdt_nm === prodCode) {
+        detailProducts.push(product);
+      }
+    }
+    return detailProducts;
   }
 
   async GetInstallment(): Promise<ProductWithOptionDTO[]> {
