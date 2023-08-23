@@ -51,7 +51,7 @@ export class SavingsController {
     type: ProductWithOptionDTO,
     isArray: true,
   })
-  @Get('savings/best/:fin_prdt_cd')
+  @Get('savings/:fin_prdt_cd')
   async getDetailSavings(@Param('fin_prdt_cd') prodCode: string) {
     return await this.savingsService.GetDetailSavings(prodCode);
   }
@@ -107,7 +107,7 @@ export class SavingsController {
     type: ProductWithOptionDTO,
     isArray: true,
   })
-  @Get('installment/best/:fin_prdt_cd')
+  @Get('installment/:fin_prdt_cd')
   async getDetailInstallments(@Param('fin_prdt_cd') prodCode: string) {
     return await this.savingsService.GetDetailInstallments(prodCode);
   }

@@ -103,6 +103,7 @@ export class SavingsService {
           dcls_month: product.dcls_month,
           kor_co_nm: product.kor_co_nm,
           fin_prdt_nm: product.fin_prdt_nm,
+          fin_prdt_cd : product.fin_prdt_cd,
           max_limit: product.max_limit,
           intr_rate_type_nm: opt.intr_rate_type_nm,
           rsrv_type_nm: (opt as SavingsOptionsDTO).rsrv_type_nm,
@@ -209,7 +210,7 @@ export class SavingsService {
 
     const detailProducts: ProductWithOptionDTO[] = [];
     for (const product of savingsData) {
-      if (product.fin_prdt_nm === prodCode) {
+      if (product.fin_prdt_cd === prodCode) {
         detailProducts.push(product);
       }
     }
@@ -336,7 +337,7 @@ export class SavingsService {
 
     const detailProducts: ProductWithOptionDTO[] = [];
     for (const product of installmentData) {
-      if (product.fin_prdt_nm === prodCode) {
+      if (product.fin_prdt_cd === prodCode) {
         detailProducts.push(product);
       }
     }

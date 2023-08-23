@@ -16,7 +16,7 @@ const SaveSavingsProduct = async () => {
 };
 
 // get savings data
-const GetBestSavingsProduct = async () => {
+const GetBestSavingsProducts = async () => {
   try {
     const res = await axios.get(`${url}/savings/best`);
     return res;
@@ -26,7 +26,7 @@ const GetBestSavingsProduct = async () => {
 };
 
 // get installment data
-const GetBestInstallmentProduct = async () => {
+const GetBestInstallmentProducts = async () => {
   try {
     const res = await axios.get(`${url}/installment/best`);
     return res;
@@ -35,8 +35,30 @@ const GetBestInstallmentProduct = async () => {
   }
 };
 
+// get detail savings by product code
+const GetDetailSavings = async (prodCode) => {
+  try {
+    const res = await axios.get(`${url}/savings/${prodCode}`);
+    return res;
+  } catch (err) {
+    return err;
+  }
+};
+
+// get detail installments by product code
+const GetDetailInstallments = async (prodCode) => {
+  try {
+    const res = await axios.get(`${url}/installment/${prodCode}`);
+    return res;
+  } catch (err) {
+    return err;
+  }
+};
+
 export default {
   SaveSavingsProduct,
-  GetBestSavingsProduct,
-  GetBestInstallmentProduct,
+  GetBestSavingsProducts,
+  GetBestInstallmentProducts,
+  GetDetailSavings,
+  GetDetailInstallments,
 };
