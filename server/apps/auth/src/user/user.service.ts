@@ -1,12 +1,12 @@
 // vendor
 import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
 // cus
 import { UserRepo } from './user.repo';
 import { LoginInputDTO, LoginOutputDTO, SignUpDTO } from './dto/common.dto';
 import { User } from '@app/database/models/user';
+import { JwtService } from '@app/jwt';
 
 @Injectable()
 export class UserService {
@@ -59,8 +59,8 @@ export class UserService {
     const payload = targetUser.dataValues;
     delete payload.pw;
     return {
-      access_token: this.jwtService.sign(payload, { expiresIn: '3h' }),
-      refresh_token: this.jwtService.sign(payload, { expiresIn: '14d' }),
+      access_token: await this.jwtService.createAccessToken(payload),
+      refresh_token: await this.jwtService.createRefreshToken(payload),
     };
   }
 }
