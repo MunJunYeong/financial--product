@@ -2,7 +2,7 @@
 import moment from "moment";
 
 // cus
-import axios from "@/lib/axios";
+import api from "./common"
 
 // preset
 const url = process.env.VUE_APP_AUTH_PROD_URL;
@@ -28,7 +28,7 @@ const SaveProductAfterCalc = async (data) => {
   data.name = data.name || "N/A";
 
   try {
-    const res = await axios.post(`${url}/user-prod/${data.userIdx}`, {
+    const res = await api.POST(`${url}/user-prod/${data.userIdx}`, {
       name: data.name,
       start_date: data.startDate,
       finish_date: finishDate,
@@ -51,7 +51,7 @@ const SaveProductAfterCalc = async (data) => {
  */
 const GetUserProducts = async (userIdx) => {
   try {
-    const res = await axios.get(`${url}/user-prod/${userIdx}`, {});
+    const res = await api.GET(`${url}/user-prod/${userIdx}`, {});
     return res;
   } catch (err) {
     return err;
@@ -65,7 +65,7 @@ const GetUserProducts = async (userIdx) => {
  */
 const GetUserProduct = async (userIdx, productIdx) => {
   try {
-    const res = await axios.get(
+    const res = await api.GET(
       `${url}/user-prod/${Number(userIdx)}/prod/${Number(productIdx)}`
     );
     return res;

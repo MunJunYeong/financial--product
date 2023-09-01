@@ -1,4 +1,6 @@
-import axios from "@/lib/axios";
+
+// cus
+import api from "./common"
 
 // preset
 const url = process.env.VUE_APP_AUTH_SERVER_URL;
@@ -14,7 +16,7 @@ const url = process.env.VUE_APP_AUTH_SERVER_URL;
  */
 const SignUp = (data) => {
   try {
-    const res = axios.post(`${url}/signup`, {
+    const res = api.POST(`${url}/signup`, {
       id: data.id,
       password: data.password,
       name: data.name,
@@ -35,7 +37,7 @@ const SignUp = (data) => {
  */
 const SignIn = async (data) => {
   try {
-    const res = await axios.post(`${url}/signin`, {
+    const res = await api.POST(`${url}/signin`, {
       id: data.id,
       password: data.password,
     });
