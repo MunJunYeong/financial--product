@@ -3,10 +3,12 @@ import jwt_decode from "jwt-decode";
 
 // cus
 import AuthService from "@/service/auth";
+import utils from "../lib/utils"
 
 const authModule = {
   state: {
     user: null,
+    authError: null,
   },
   mutations: {
     SET_USER(state, user) {
@@ -14,14 +16,22 @@ const authModule = {
     },
     CLEAR_USER(state) {
       state.user = null;
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("refresh_token");
+      utils.RemoveToken();
+    },
+    SET_AUTH_ERROR(state, error) {
+      state.authError = error;
+    },
+    RESET_AUTH_ERROR(state) {
+      state.authError = null;
     },
   },
   getters: {
     GET_USER(state) {
       return state.user;
     },
+    AUTH_ERROR(state) {
+      return state.authError;
+    }
   },
   actions: {
     // eslint-disable-next-line no-unused-vars
@@ -48,8 +58,7 @@ const authModule = {
       }
 
       // save token
-      localStorage.setItem("access_token", res.access_token);
-      localStorage.setItem("refresh_token", res.refresh_token);
+      utils.SetToken(res.access_token, res.refresh_token)
 
       const user = jwt_decode(res.access_token);
       commit("SET_USER", user);
@@ -59,6 +68,13 @@ const authModule = {
 
     Logout({ commit }) {
       commit("CLEAR_USER");
+    },
+
+    HANDLE_AUTH_ERROR({ commit }, err) {
+      commit("SET_AUTH_ERROR", err.message);
+    },
+    RESET_AUTH_ERROR({commit}) {
+      commit("RESET_AUTH_ERROR");
     },
 
     // eslint-disable-next-line no-unused-vars

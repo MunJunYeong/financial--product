@@ -1,13 +1,13 @@
 // cus
-import api from "./common"
+import utils from "../lib/utils"
 
 // preset
 const url = process.env.VUE_APP_AUTH_PROD_URL + "/prod";
 
 const SaveSavingsProduct = async () => {
   try {
-    const res = await api.POST(`${url}/savings`, {});
-    const res2 = await api.POST(`${url}/installment`, {});
+    const res = await utils.POST(`${url}/savings`, {});
+    const res2 = await utils.POST(`${url}/installment`, {});
     return res === res2;
   } catch (err) {
     console.log(err);
@@ -18,7 +18,7 @@ const SaveSavingsProduct = async () => {
 // get savings data
 const GetBestSavingsProducts = async () => {
   try {
-    const res = await api.GET(`${url}/savings/best`);
+    const res = await utils.GET(`${url}/savings/best`);
     return res;
   } catch (err) {
     return err;
@@ -28,7 +28,7 @@ const GetBestSavingsProducts = async () => {
 // get installment data
 const GetBestInstallmentProducts = async () => {
   try {
-    const res = await api.GET(`${url}/installment/best`);
+    const res = await utils.GET(`${url}/installment/best`);
     return res;
   } catch (err) {
     return err;
@@ -38,7 +38,7 @@ const GetBestInstallmentProducts = async () => {
 // get detail savings by product code
 const GetDetailSavings = async (prodCode) => {
   try {
-    const res = await api.GET(`${url}/savings/${prodCode}`);
+    const res = await utils.GET(`${url}/savings/${prodCode}`);
     return res;
   } catch (err) {
     return err;
@@ -48,7 +48,7 @@ const GetDetailSavings = async (prodCode) => {
 // get detail installments by product code
 const GetDetailInstallments = async (prodCode) => {
   try {
-    const res = await api.GET(`${url}/installment/${prodCode}`);
+    const res = await utils.GET(`${url}/installment/${prodCode}`);
     return res;
   } catch (err) {
     return err;

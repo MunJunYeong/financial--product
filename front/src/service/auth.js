@@ -1,6 +1,6 @@
 
 // cus
-import api from "./common"
+import utils from "../lib/utils"
 
 // preset
 const url = process.env.VUE_APP_AUTH_SERVER_URL;
@@ -16,7 +16,7 @@ const url = process.env.VUE_APP_AUTH_SERVER_URL;
  */
 const SignUp = (data) => {
   try {
-    const res = api.POST(`${url}/signup`, {
+    const res = utils.POST(`${url}/signup`, {
       id: data.id,
       password: data.password,
       name: data.name,
@@ -37,7 +37,7 @@ const SignUp = (data) => {
  */
 const SignIn = async (data) => {
   try {
-    const res = await api.POST(`${url}/signin`, {
+    const res = await utils.POST(`${url}/signin`, {
       id: data.id,
       password: data.password,
     });
