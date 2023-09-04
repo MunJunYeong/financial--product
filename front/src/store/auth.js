@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // vendor
 import jwt_decode from "jwt-decode";
 
@@ -35,7 +36,7 @@ const authModule = {
     }
   },
   actions: {
-    // eslint-disable-next-line no-unused-vars
+    // sign up
     async SIGN_UP({ commit }, data) {
       try {
         const res = await AuthService.SignUp(data);
@@ -45,10 +46,12 @@ const authModule = {
       }
     },
 
+    // sign in (login)
     async SIGN_IN({ commit }, data) {
       let res;
       try {
-        res = await AuthService.SignIn(data);
+        const {data} = await AuthService.SignIn(data);
+        res = data
       } catch (err) {
         return err;
       }
@@ -67,10 +70,21 @@ const authModule = {
       return true;
     },
 
+    // logout
     Logout({ commit }) {
       commit("CLEAR_USER");
     },
+    
+    // authenticate
+    async AUTHENTICATE({commit}){
+      try{
+        await AuthService.Authenticate();
+      }catch(err){
+        return err;
+      }
+    },
 
+    // auth error handler (401 error)
     HANDLE_AUTH_ERROR({ commit }, err) {
       commit("SET_AUTH_ERROR", err.message);
     },
@@ -78,7 +92,9 @@ const authModule = {
       commit("RESET_AUTH_ERROR");
     },
 
-    // eslint-disable-next-line no-unused-vars
+
+
+    // save savings
     async SAVE_SAVINGS({ commit }, data) {},
   },
 };

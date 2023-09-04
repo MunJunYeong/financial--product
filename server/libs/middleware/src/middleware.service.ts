@@ -7,8 +7,9 @@ import { NextFunction } from 'express';
 @Injectable()
 export class MiddlewareService implements NestMiddleware {
   constructor(private readonly jwtService: JwtService) {}
-  use(req: Request, res: Response, next: NextFunction) {
+  async use(req: Request, res: Response, next: NextFunction) {
     const authHeader = req.headers['authorization'];
+    
     if (!authHeader) {
       throw new UnauthorizedException('Authorization header not found');
     }
@@ -21,10 +22,12 @@ export class MiddlewareService implements NestMiddleware {
 
     try {
       // 토큰 검증
-      const payload = this.jwtService.validateToken(token);
+      const payload = await this.jwtService.validateToken(token);
       // 요청 객체에 사용자 정보를 첨부
       req['user'] = payload;
-    } catch (error) {
+    } catch (err) {
+      // TODO: log 추가
+      console.log("Err", err)
       throw new UnauthorizedException('Invalid token');
     }
 

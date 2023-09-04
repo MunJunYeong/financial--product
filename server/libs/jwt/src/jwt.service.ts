@@ -17,9 +17,9 @@ export class JwtService {
   async validateToken(token: string): Promise<any> {
     try {
       return this.jwtService.verify(token, {secret : process.env.JWT_SECRET});
-    } catch (error) {
-      // log 추가
-      return null;
+    } catch (err) {
+      // TODO: log 추가
+      throw err;
     }
   }
 }
