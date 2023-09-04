@@ -8,7 +8,7 @@ const POST = async (url, payload) => {
     return await axios.post(url, payload);
   } catch (err) {
     if (err.response && err.response.status === 401) {
-      store.dispatch("handleAuthError", Error(unauthorizedMsg));
+      store.dispatch("HANDLE_AUTH_ERROR", Error(unauthorizedMsg));
     }
     return err;
   }

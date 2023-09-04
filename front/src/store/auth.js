@@ -22,6 +22,7 @@ const authModule = {
       state.authError = error;
     },
     RESET_AUTH_ERROR(state) {
+      utils.RemoveToken();
       state.authError = null;
     },
   },

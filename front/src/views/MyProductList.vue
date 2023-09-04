@@ -51,11 +51,13 @@ export default {
         { text: "Current Amount", value: "current_amount" },
       ];
     },
+    // error handler
     authError() {
       return this.$store.getters.AUTH_ERROR;
     },
   },
   watch: {
+    // error handler
     authError(errMessage) {
       if (errMessage) {
         this.dialogMessage = errMessage;

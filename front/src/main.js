@@ -5,6 +5,8 @@ import router from "./router";
 import vuetify from "./plugins/vuetify";
 import jwt_decode from "jwt-decode";
 
+import utils from "./lib/utils";
+
 Vue.config.productionTip = false;
 
 new Vue({
@@ -19,8 +21,7 @@ new Vue({
         const decoded = jwt_decode(userToken);
         this.$store.commit("SET_USER", decoded);
       } catch (error) {
-        localStorage.removeItem("access_token")
-        localStorage.removeItem("refresh_token")
+        utils.RemoveToken();
       }
     }
   },
