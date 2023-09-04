@@ -281,7 +281,7 @@
       v-bind="$attrs"
       :show="dialog"
       :message="dialogMessage"
-      @update:show="dialog = $event"
+      @update:show="handleDialogClose"
     />
     <SubmitDateDialog ref="startDateDialog" />
   </v-container>
@@ -294,7 +294,7 @@ import SubmitDateDialog from "@/components/SubmitDateDialog.vue";
 import { formatAmount } from "../lib/formatter";
 import { SavingsType } from "../lib/type";
 
-const errMessage =
+const networkErrMsg =
   "서버와의 연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.";
 
 export default {
@@ -355,9 +355,24 @@ export default {
     userData: function () {
       return this.$store.getters.GET_USER;
     },
+    // error handler
+    authError() {
+      return this.$store.getters.AUTH_ERROR;
+    },
+  },
+  watch: {
+    // error handler
+    authError(errMessage) {
+      if (errMessage) {
+        this.dialogMessage = errMessage;
+        this.dialog = true;
+        this.$store.dispatch("RESET_AUTH_ERROR");
+      }
+    },
   },
   methods: {
     formatAmount,
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 적금 관련 method
     increaseSavingsPeriod(months) {
       this.savingsPeriod = Number(this.savingsPeriod) + months;
@@ -396,7 +411,7 @@ export default {
             type: SavingsType.SAVINGS,
           });
         } catch (err) {
-          this.dialogMessage = errMessage;
+          this.dialogMessage = networkErrMsg;
           this.dialog = true;
           return;
         }
@@ -429,7 +444,7 @@ export default {
             userIdx: Number(this.userData.user_idx),
           });
         } catch (err) {
-          this.dialogMessage = errMessage;
+          this.dialogMessage = networkErrMsg;
           this.dialog = true;
           return;
         }
@@ -437,6 +452,7 @@ export default {
       this.dialogMessage = "저장 성공";
       this.dialog = true;
     },
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 예금 관련 method
     increaseDepositPeriod(months) {
       this.depositPeriod = Number(this.depositPeriod) + months;
@@ -473,7 +489,7 @@ export default {
             type: SavingsType.DEPOSIT,
           });
         } catch (err) {
-          this.dialogMessage = errMessage;
+          this.dialogMessage = networkErrMsg;
           this.dialog = true;
           return;
         }
@@ -482,6 +498,13 @@ export default {
         this.depositInterest9 = res.taxInterest;
         this.depositInterest1 = res.taxInterest2;
         this.depositInterest = res.taxFreeInterest;
+      }
+    },
+    handleDialogClose(value) {
+      this.dialog = value;
+      // 다이얼로그가 닫혔을 때
+      if (!value) {
+        this.$router.push("/signin");
       }
     },
   },

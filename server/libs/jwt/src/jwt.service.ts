@@ -6,7 +6,7 @@ export class JwtService {
   constructor(private readonly jwtService: NestJwtService) {}
 
   async createAccessToken(payload: any): Promise<string> {
-    return this.jwtService.sign(payload, { expiresIn: '3h', secret : process.env.JWT_SECRET });
+    return this.jwtService.sign(payload, { expiresIn: '4h', secret : process.env.JWT_SECRET });
   }
 
   async createRefreshToken(payload: any): Promise<string> {

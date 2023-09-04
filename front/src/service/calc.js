@@ -1,6 +1,6 @@
 // cus
-import axios from "@/lib/axios";
 import { SavingsType } from "@/lib/type";
+import utils from "../lib/utils"
 
 // preset
 const url = process.env.VUE_APP_AUTH_CALC_URL;
@@ -27,7 +27,7 @@ const CalcRegSavingsDeposit = async (data) => {
   const fullUrl = formatTypeUrl + "?" + params.toString();
 
   try {
-    const res = await axios.get(fullUrl);
+    const res = await utils.GET(fullUrl);
     return res;
   } catch (err) {
     return err;
