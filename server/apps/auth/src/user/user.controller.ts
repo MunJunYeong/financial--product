@@ -41,5 +41,17 @@ export class UserController {
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
+  @ApiTags('Authenticate')
+  @ApiOperation({ summary: 'authenticate' })
+  @ApiOkResponse({
+    description: '토큰 인증',
+    schema: {
+      // example: { success: true },
+    },
+  })
+  @Get('/authenticate')
+  async Authenticate() {
+    return true;
+  }
+
 }
