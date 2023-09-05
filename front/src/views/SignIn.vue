@@ -30,19 +30,34 @@
       :show="dialog"
       :message="dialogMessage"
       @update:show="dialog = $event"
+      @closed="handleDialogClosed"
     />
   </v-container>
 </template>
 
 <script>
 import AlertDialog from "@/components/AlertDialog.vue";
-const errMessage =
-  "서버와의 연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.";
 
 export default {
   name: "SignIn",
   components: {
     AlertDialog,
+  },
+  computed: {
+    // error handler
+    isError() {
+      return this.$store.getters.ERROR;
+    },
+  },
+  watch: {
+    // error handler
+    isError(errMessage) {
+      if (errMessage) {
+        this.dialogMessage = errMessage;
+        this.dialog = true;
+        this.$store.dispatch("RESET_ERROR", null);
+      }
+    },
   },
   data() {
     return {
@@ -59,6 +74,7 @@ export default {
       ],
       dialog: false,
       dialogMessage: "",
+      isSuccess: false,
     };
   },
   methods: {
@@ -71,8 +87,6 @@ export default {
             password: this.password,
           });
         } catch (err) {
-          this.dialogMessage = errMessage;
-          this.dialog = true;
           return;
         }
 
@@ -82,8 +96,14 @@ export default {
           this.dialog = true;
           return;
         }
+        this.isSuccess = true;
+      }
+    },
+    handleDialogClosed() {
+      if (this.isSuccess) {
         this.$router.push("/home");
       }
+      this.isSuccess = false; // 플래그를 초기화
     },
   },
 };

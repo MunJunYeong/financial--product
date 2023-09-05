@@ -6,16 +6,14 @@
       v-bind="$attrs"
       :show="dialog"
       :message="dialogMessage"
-      @update:show="handleDialogClose"
+      @update:show="dialog = $event"
+      @closed="handleDialogClosed"
     />
   </v-container>
 </template>
 <script>
 // cus
 import AlertDialog from "@/components/AlertDialog.vue";
-
-const networkErrMsg =
-  "서버와의 연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.";
 
 export default {
   name: "MyInfo",
@@ -28,17 +26,17 @@ export default {
   },
   computed: {
     // error handler
-    authError() {
-      return this.$store.getters.AUTH_ERROR;
+    isError() {
+      return this.$store.getters.ERROR;
     },
   },
   watch: {
     // error handler
-    authError(errMessage) {
+    isError(errMessage) {
       if (errMessage) {
         this.dialogMessage = errMessage;
         this.dialog = true;
-        this.$store.dispatch("RESET_AUTH_ERROR");
+        this.$store.dispatch("RESET_ERROR", null);
       }
     },
   },
@@ -50,21 +48,15 @@ export default {
     };
   },
   methods: {
-    async authenticate(){
+    async authenticate() {
       try {
         await this.$store.dispatch("AUTHENTICATE");
-      }catch(err){
-        this.dialogMessage = networkErrMsg;
-          this.dialog = true;
-          return;
+      } catch (err) {
+        return;
       }
     },
-    handleDialogClose(value) {
-      this.dialog = value;
-      // 다이얼로그가 닫혔을 때
-      if (!value) {
-        this.$router.push("/signin");
-      }
+    handleDialogClosed() {
+      this.$router.push("/home");
     },
   },
 };

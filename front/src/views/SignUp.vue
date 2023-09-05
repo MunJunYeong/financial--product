@@ -50,13 +50,27 @@
 
 <script>
 import AlertDialog from "@/components/AlertDialog.vue";
-const errMessage =
-  "서버와의 연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.";
 
 export default {
   name: "SignUp",
   components: {
     AlertDialog,
+  },
+  computed: {
+    // error handler
+    isError() {
+      return this.$store.getters.ERROR;
+    },
+  },
+  watch: {
+    // error handler
+    isError(errMessage) {
+      if (errMessage) {
+        this.dialogMessage = errMessage;
+        this.dialog = true;
+        this.$store.dispatch("RESET_ERROR", null);
+      }
+    },
   },
   data() {
     return {
@@ -95,8 +109,6 @@ export default {
             email: this.email,
           });
         } catch (err) {
-          this.dialogMessage = errMessage;
-          this.dialog = true;
           return;
         }
 

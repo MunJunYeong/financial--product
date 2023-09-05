@@ -64,7 +64,7 @@
       v-bind="$attrs"
       :show="dialog"
       :message="dialogMessage"
-      @update:show="handleDialogClose"
+      @closed="handleDialogClosed"
     />
   </v-container>
 </template>

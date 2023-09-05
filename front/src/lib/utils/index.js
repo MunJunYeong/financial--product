@@ -1,7 +1,6 @@
 import axios from "@/lib/axios";
-import store from "@/store";
 
-const unauthorizedMsg = "토큰이 만료 되었습니다. 다시 로그인 해주세요.";
+import { ViewErrUnauthorized } from "../defines-error";
 
 const POST = async (url, payload) => {
   const token = localStorage.getItem("access_token");
@@ -13,7 +12,7 @@ const POST = async (url, payload) => {
     });
   } catch (err) {
     if (err.response && err.response.status === 401) {
-      store.dispatch("HANDLE_AUTH_ERROR", Error(unauthorizedMsg));
+      throw ViewErrUnauthorized;
     }
     throw err;
   }
@@ -29,7 +28,7 @@ const GET = async (url) => {
     });
   } catch (err) {
     if (err.response && err.response.status === 401) {
-      store.dispatch("HANDLE_AUTH_ERROR", Error(unauthorizedMsg));
+      throw ViewErrUnauthorized;
     }
     throw err;
   }
@@ -44,6 +43,9 @@ const RemoveToken = () => {
   localStorage.removeItem("access_token");
   localStorage.removeItem("refresh_token");
 };
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// internal
 
 export default {
   POST,

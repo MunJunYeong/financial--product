@@ -4,12 +4,11 @@ import jwt_decode from "jwt-decode";
 
 // cus
 import AuthService from "@/service/auth";
-import utils from "../lib/utils"
+import utils from "../lib/utils";
 
 const authModule = {
   state: {
     user: null,
-    authError: null,
   },
   mutations: {
     SET_USER(state, user) {
@@ -19,21 +18,11 @@ const authModule = {
       state.user = null;
       utils.RemoveToken();
     },
-    SET_AUTH_ERROR(state, error) {
-      state.authError = error;
-    },
-    RESET_AUTH_ERROR(state) {
-      utils.RemoveToken();
-      state.authError = null;
-    },
   },
   getters: {
     GET_USER(state) {
       return state.user;
     },
-    AUTH_ERROR(state) {
-      return state.authError;
-    }
   },
   actions: {
     // sign up
@@ -42,57 +31,43 @@ const authModule = {
         const res = await AuthService.SignUp(data);
         return res.data;
       } catch (err) {
-        return err;
+        commit('SET_ERROR', err.message, { root: true });
+        throw err
       }
     },
 
     // sign in (login)
     async SIGN_IN({ commit }, data) {
-      let res;
       try {
-        const {data} = await AuthService.SignIn(data);
-        res = data
+        const { resData } = await AuthService.SignIn(data);
+        if (!resData) return false; // fail to login
+
+        // save token
+        utils.SetToken(resData.access_token, resData.refresh_token);
+        // set user
+        const user = jwt_decode(resData.access_token);
+        commit("SET_USER", user);
+        return true;
       } catch (err) {
-        return err;
+        commit('SET_ERROR', err.message, { root: true });
+        throw err;
       }
-
-      // fail to login
-      if (res === false) {
-        return false;
-      }
-
-      // save token
-      utils.SetToken(res.access_token, res.refresh_token)
-
-      const user = jwt_decode(res.access_token);
-      commit("SET_USER", user);
-
-      return true;
     },
 
     // logout
     Logout({ commit }) {
       commit("CLEAR_USER");
     },
-    
+
     // authenticate
-    async AUTHENTICATE({commit}){
-      try{
+    async AUTHENTICATE({ commit }) {
+      try {
         await AuthService.Authenticate();
-      }catch(err){
+      } catch (err) {
+        commit('SET_ERROR', err.message, { root: true });
         return err;
       }
     },
-
-    // auth error handler (401 error)
-    HANDLE_AUTH_ERROR({ commit }, err) {
-      commit("SET_AUTH_ERROR", err.message);
-    },
-    RESET_AUTH_ERROR({commit}) {
-      commit("RESET_AUTH_ERROR");
-    },
-
-
 
     // save savings
     async SAVE_SAVINGS({ commit }, data) {},
