@@ -59,26 +59,15 @@
         </v-card>
       </v-col>
     </v-row>
-
-    <AlertDialog
-      v-bind="$attrs"
-      :show="dialog"
-      :message="dialogMessage"
-      @update:show="handleDialogClose"
-    />
   </v-container>
 </template>
 
 <script>
 // cus
 import { formatAmount } from "../lib/formatter";
-import AlertDialog from "@/components/AlertDialog.vue";
 
 export default {
   name: "ProductHome",
-  components: {
-    AlertDialog,
-  },
   created() {
     this.SetBestProductData();
   },
@@ -89,26 +78,9 @@ export default {
     installmentData() {
       return this.$store.getters.BEST_INSTALLMENT_DATA;
     },
-    // error handler
-    authError() {
-      return this.$store.getters.AUTH_ERROR;
-    },
-  },
-  watch: {
-    // error handler
-    authError(errMessage) {
-      if (errMessage) {
-        this.dialogMessage = errMessage;
-        this.dialog = true;
-        this.$store.dispatch("RESET_AUTH_ERROR");
-      }
-    },
   },
   data() {
     return {
-      // alert dialog
-      dialog: false,
-      dialogMessage: "",
       selectedProductType: "savings", // default to savings
     };
   },
@@ -125,7 +97,7 @@ export default {
       try {
         await this.$store.dispatch("SET_BEST_PRODUCT_DATA");
       } catch (err) {
-        console.log(err);
+        return;
       }
     },
     filteredSavingsData() {
@@ -149,13 +121,6 @@ export default {
         name: "detail_installment_product",
         params: { fin_prdt_cd: fin_prdt_cd },
       });
-    },
-    handleDialogClose(value) {
-      this.dialog = value;
-      // 다이얼로그가 닫혔을 때
-      if (!value) {
-        this.$router.push("/signin");
-      }
     },
   },
 };

@@ -24,26 +24,13 @@
         </v-form>
       </v-col>
     </v-row>
-
-    <AlertDialog
-      v-bind="$attrs"
-      :show="dialog"
-      :message="dialogMessage"
-      @update:show="dialog = $event"
-    />
   </v-container>
 </template>
 
 <script>
-import AlertDialog from "@/components/AlertDialog.vue";
-const errMessage =
-  "서버와의 연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.";
-
+import { openDialog } from '../lib/defines';
 export default {
   name: "SignIn",
-  components: {
-    AlertDialog,
-  },
   data() {
     return {
       valid: true,
@@ -57,8 +44,7 @@ export default {
         (v) => !!v || "Password is required",
         (v) => v.length >= 3 || "Password must be at least 3 characters",
       ],
-      dialog: false,
-      dialogMessage: "",
+      isSuccess: false, // TODO: 어떻게 처리할지 생각
     };
   },
   methods: {
@@ -71,18 +57,14 @@ export default {
             password: this.password,
           });
         } catch (err) {
-          this.dialogMessage = errMessage;
-          this.dialog = true;
           return;
         }
 
         if (!res) {
-          this.dialogMessage =
-            "ID나 PW가 올바르지 않습니다. 다시 시도해주세요.";
-          this.dialog = true;
+          this.$store.dispatch(openDialog, "ID나 PW가 올바르지 않습니다. 다시 시도해주세요.")
           return;
         }
-        this.$router.push("/home");
+        this.isSuccess = true;
       }
     },
   },

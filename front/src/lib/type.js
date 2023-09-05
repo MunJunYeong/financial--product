@@ -1,7 +1,7 @@
 
 const SavingsType = {
-    SAVINGS: 'savings',
-    DEPOSIT: 'deposit',
+    SAVINGS: 'savings', // 적금
+    DEPOSIT: 'deposit', // 예금
   };
   
 export {

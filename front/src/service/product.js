@@ -1,5 +1,5 @@
 // cus
-import utils from "../lib/utils"
+import utils from "../lib/utils";
 
 // preset
 const url = process.env.VUE_APP_AUTH_PROD_URL + "/prod";
@@ -11,7 +11,7 @@ const SaveSavingsProduct = async () => {
     return res === res2;
   } catch (err) {
     console.log(err);
-    return err;
+    throw err;
   }
 };
 
@@ -21,7 +21,8 @@ const GetBestSavingsProducts = async () => {
     const res = await utils.GET(`${url}/savings/best`);
     return res;
   } catch (err) {
-    return err;
+    console.log(err);
+    throw err;
   }
 };
 
@@ -31,7 +32,8 @@ const GetBestInstallmentProducts = async () => {
     const res = await utils.GET(`${url}/installment/best`);
     return res;
   } catch (err) {
-    return err;
+    console.log(err);
+    throw err;
   }
 };
 
@@ -41,7 +43,8 @@ const GetDetailSavings = async (prodCode) => {
     const res = await utils.GET(`${url}/savings/${prodCode}`);
     return res;
   } catch (err) {
-    return err;
+    console.log(err);
+    throw err;
   }
 };
 
@@ -51,7 +54,8 @@ const GetDetailInstallments = async (prodCode) => {
     const res = await utils.GET(`${url}/installment/${prodCode}`);
     return res;
   } catch (err) {
-    return err;
+    console.log(err);
+    throw err;
   }
 };
 

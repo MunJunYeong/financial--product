@@ -5,6 +5,7 @@ import auth from './auth'
 import calc from './calc'
 import product from './product'
 import userProduct from './user_product'
+import common from './common'
 
 Vue.use(Vuex)
 
@@ -13,6 +14,7 @@ export default new Vuex.Store({
     auth,
     calc,
     product,
-    userProduct
+    userProduct,
+    common
   }
 })

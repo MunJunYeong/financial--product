@@ -41,7 +41,8 @@ const SaveProductAfterCalc = async (data) => {
     });
     return res;
   } catch (err) {
-    return err;
+    console.log(err);
+    throw err;
   }
 };
 
@@ -54,7 +55,8 @@ const GetUserProducts = async (userIdx) => {
     const res = await utils.GET(`${url}/user-prod/${userIdx}`, {});
     return res;
   } catch (err) {
-    return err;
+    console.log(err);
+    throw err;
   }
 };
 
@@ -70,7 +72,8 @@ const GetUserProduct = async (userIdx, productIdx) => {
     );
     return res;
   } catch (err) {
-    return err;
+    console.log(err);
+    throw err;
   }
 };
 

@@ -37,7 +37,7 @@ export class UserService {
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  async Login(data: LoginInputDTO): Promise<LoginOutputDTO | Boolean> {
+  async Login(data: LoginInputDTO): Promise<LoginOutputDTO> {
     let targetUser: User = null;
 
     try {
@@ -47,12 +47,12 @@ export class UserService {
     }
 
     if (targetUser === null) {
-      return false;
+      return null;
     }
 
     const isMatch = await bcrypt.compare(data.password, targetUser.pw);
     if (!isMatch) {
-      return false;
+      return null;
     }
 
     // Sequelize 모델 인스턴스가 나오기에 data만 추출
