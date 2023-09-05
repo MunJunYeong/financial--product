@@ -14,12 +14,18 @@ const url = process.env.VUE_APP_AUTH_SERVER_URL;
  * @returns {boolean} - Description of the return value.
  */
 const SignUp = async (data) => {
-  return await utils.POST(`${url}/signup`, {
-    id: data.id,
-    password: data.password,
-    name: data.name,
-    email: data.email,
-  });
+  // 중복 ID일 경우에만 return false, 나머지 exception는 error
+  try {
+    return await utils.POST(`${url}/signup`, {
+      id: data.id,
+      password: data.password,
+      name: data.name,
+      email: data.email,
+    });
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
 };
 
 /**
@@ -27,17 +33,27 @@ const SignUp = async (data) => {
  * @param {Object} data - The user data.
  * @param {string} data.id - The ID of the user.
  * @param {string} data.pw - The password of the user.
- * @returns {(boolean|{access_token: string, refresh_token: string})}
+ * @returns {({access_token: string, refresh_token: string})}
  */
 const SignIn = async (data) => {
-  return await utils.POST(`${url}/signin`, {
-    id: data.id,
-    password: data.password,
-  });
+  try {
+    return await utils.POST(`${url}/signin`, {
+      id: data.id,
+      password: data.password,
+    });
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
 };
 
 const Authenticate = async () => {
-  await utils.GET(`${url}/authenticate`);
+  try {
+    return await utils.GET(`${url}/authenticate`);
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
 };
 
 export default {
