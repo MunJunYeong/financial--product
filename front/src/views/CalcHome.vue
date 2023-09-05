@@ -277,23 +277,16 @@
       </v-col>
     </v-row>
 
-    <AlertDialog
-      v-bind="$attrs"
-      :show="dialog"
-      :message="dialogMessage"
-      @update:show="dialog = $event"
-      @closed="handleDialogClosed"
-    />
     <SubmitDateDialog ref="startDateDialog" />
   </v-container>
 </template>
 
 <script>
-import AlertDialog from "@/components/AlertDialog.vue";
 import SubmitDateDialog from "@/components/SubmitDateDialog.vue";
 
 import { formatAmount } from "../lib/formatter";
 import { SavingsType } from "../lib/type";
+import { openDialog } from "../lib/defines";
 
 const networkErrMsg =
   "서버와의 연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.";
@@ -301,7 +294,6 @@ const networkErrMsg =
 export default {
   name: "CalcHome",
   components: {
-    AlertDialog,
     SubmitDateDialog,
   },
   data() {
@@ -330,10 +322,6 @@ export default {
       depositInterest9: 0,
       depositInterest1: 0,
       depositInterest: 0,
-
-      // alert dialog
-      dialog: false,
-      dialogMessage: "",
     };
   },
   computed: {
@@ -356,20 +344,6 @@ export default {
     userData: function () {
       return this.$store.getters.GET_USER;
     },
-    // error handler
-    isError() {
-      return this.$store.getters.ERROR;
-    },
-  },
-  watch: {
-    // error handler
-    isError(errMessage) {
-      if (errMessage) {
-        this.dialogMessage = errMessage;
-        this.dialog = true;
-        this.$store.dispatch("RESET_ERROR", null);
-      }
-    },
   },
   methods: {
     formatAmount,
@@ -386,6 +360,7 @@ export default {
     },
     initSavingsAmount() {
       this.savingsPeriod = 0;
+
     },
     updateSavingsAmount(value) {
       const numberValue = Number(value.replace(/,/g, ""));
@@ -424,8 +399,7 @@ export default {
     // 정기 적금 상품 내용 저장
     async saveSavings() {
       if (!this.userData) {
-        this.dialogMessage = "로그인 후 이용해주세요.";
-        this.dialog = true;
+        this.$store.dispatch(openDialog, "로그인 후 이용해주세요.")
         return;
       }
 
@@ -448,8 +422,7 @@ export default {
           return;
         }
       });
-      this.dialogMessage = "저장 성공";
-      this.dialog = true;
+      this.$store.dispatch(openDialog, "저장 성공")
     },
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 예금 관련 method
@@ -496,9 +469,6 @@ export default {
         this.depositInterest1 = res.taxInterest2;
         this.depositInterest = res.taxFreeInterest;
       }
-    },
-    handleDialogClosed() {
-      // TODO: 닫고나서 무엇을 할건지
     },
   },
 };

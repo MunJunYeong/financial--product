@@ -5,6 +5,7 @@ import jwt_decode from "jwt-decode";
 // cus
 import AuthService from "@/service/auth";
 import utils from "../lib/utils";
+import { openDialog } from "@/lib/defines";
 
 const authModule = {
   state: {
@@ -31,7 +32,7 @@ const authModule = {
         const res = await AuthService.SignUp(data);
         return res.data;
       } catch (err) {
-        dispatch("OPEN_DIALOG", err.message, { root: true });
+        dispatch(openDialog, err.message, { root: true });
         throw err;
       }
     },
@@ -49,7 +50,7 @@ const authModule = {
         commit("SET_USER", user);
         return true;
       } catch (err) {
-        dispatch("OPEN_DIALOG", err.message, { root: true });
+        dispatch(openDialog, err.message, { root: true });
         throw err;
       }
     },
@@ -64,7 +65,7 @@ const authModule = {
       try {
         await AuthService.Authenticate();
       } catch (err) {
-        dispatch("OPEN_DIALOG", err.message, { root: true });
+        dispatch(openDialog, err.message, { root: true });
         return err;
       }
     },

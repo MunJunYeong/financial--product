@@ -38,40 +38,13 @@
         </v-form>
       </v-col>
     </v-row>
-    <AlertDialog
-      v-bind="$attrs"
-      :show="dialog"
-      :message="dialogMessage"
-      @update:show="dialog = $event"
-      @closed="handleDialogClosed"
-    />
   </v-container>
 </template>
 
 <script>
-import AlertDialog from "@/components/AlertDialog.vue";
-
+import { openDialog } from "../lib/defines";
 export default {
   name: "SignUp",
-  components: {
-    AlertDialog,
-  },
-  computed: {
-    // error handler
-    isError() {
-      return this.$store.getters.ERROR;
-    },
-  },
-  watch: {
-    // error handler
-    isError(errMessage) {
-      if (errMessage) {
-        this.dialogMessage = errMessage;
-        this.dialog = true;
-        this.$store.dispatch("RESET_ERROR", null);
-      }
-    },
-  },
   data() {
     return {
       valid: true,
@@ -92,8 +65,6 @@ export default {
         (v) => !!v || "E-mail is required",
         (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
       ],
-      dialog: false,
-      dialogMessage: "",
       isSuccess: false,
     };
   },
@@ -113,20 +84,12 @@ export default {
         }
 
         if (!res) {
-          this.dialogMessage = "중복된 ID입니다. 확인해주세요.";
-          this.dialog = true;
+          this.$store.dispatch(openDialog, "중복된 ID입니다. 확인해주세요.");
           return;
         }
-        this.dialogMessage = "회원가입 성공했습니다.";
-        this.dialog = true;
+        this.$store.dispatch(openDialog, "회원가입 성공했습니다.");
         this.isSuccess = true;
       }
-    },
-    handleDialogClosed() {
-      if (this.isSuccess) {
-        this.$router.push("/signin");
-      }
-      this.isSuccess = false; // 플래그를 초기화
     },
   },
 };

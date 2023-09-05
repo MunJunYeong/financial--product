@@ -1,4 +1,5 @@
 // cus
+import { openDialog } from "@/lib/defines";
 import prodService from "@/service/user_product";
 
 const userProductModule = {
@@ -22,7 +23,7 @@ const userProductModule = {
       try {
         await prodService.SaveProductAfterCalc(data);
       } catch (err) {
-        dispatch("OPEN_DIALOG", err.message, { root: true });
+        dispatch(openDialog, err.message, { root: true });
         throw err;
       }
       return;
@@ -34,7 +35,7 @@ const userProductModule = {
         const res = await prodService.GetUserProducts(userIdx);
         commit("SET_USER_PRODUCT", res.data);
       } catch (err) {
-        dispatch("OPEN_DIALOG", err.message, { root: true });
+        dispatch(openDialog, err.message, { root: true });
         throw err;
       }
     },
@@ -49,7 +50,7 @@ const userProductModule = {
         );
         return res.data;
       } catch (err) {
-        dispatch("OPEN_DIALOG", err.message, { root: true });
+        dispatch(openDialog, err.message, { root: true });
         throw err;
       }
     },

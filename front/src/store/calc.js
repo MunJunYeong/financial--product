@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 
 // cus
+import { openDialog } from "@/lib/defines";
 import CalcService from "@/service/calc";
 
 const calcModule = {
@@ -14,7 +15,7 @@ const calcModule = {
         const res = await CalcService.CalcRegSavingsDeposit(data);
         return res.data.tax;
       } catch (err) {
-        dispatch("OPEN_DIALOG", err.message, { root: true });
+        dispatch(openDialog, err.message, { root: true });
         throw err;
       }
     },

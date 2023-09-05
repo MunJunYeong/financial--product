@@ -24,41 +24,13 @@
         </v-form>
       </v-col>
     </v-row>
-
-    <AlertDialog
-      v-bind="$attrs"
-      :show="dialog"
-      :message="dialogMessage"
-      @update:show="dialog = $event"
-      @closed="handleDialogClosed"
-    />
   </v-container>
 </template>
 
 <script>
-import AlertDialog from "@/components/AlertDialog.vue";
-
+import { openDialog } from '../lib/defines';
 export default {
   name: "SignIn",
-  components: {
-    AlertDialog,
-  },
-  computed: {
-    // error handler
-    isError() {
-      return this.$store.getters.ERROR;
-    },
-  },
-  watch: {
-    // error handler
-    isError(errMessage) {
-      if (errMessage) {
-        this.dialogMessage = errMessage;
-        this.dialog = true;
-        this.$store.dispatch("RESET_ERROR", null);
-      }
-    },
-  },
   data() {
     return {
       valid: true,
@@ -72,9 +44,7 @@ export default {
         (v) => !!v || "Password is required",
         (v) => v.length >= 3 || "Password must be at least 3 characters",
       ],
-      dialog: false,
-      dialogMessage: "",
-      isSuccess: false,
+      isSuccess: false, // TODO: 어떻게 처리할지 생각
     };
   },
   methods: {
@@ -91,19 +61,11 @@ export default {
         }
 
         if (!res) {
-          this.dialogMessage =
-            "ID나 PW가 올바르지 않습니다. 다시 시도해주세요.";
-          this.dialog = true;
+          this.$store.dispatch(openDialog, "ID나 PW가 올바르지 않습니다. 다시 시도해주세요.")
           return;
         }
         this.isSuccess = true;
       }
-    },
-    handleDialogClosed() {
-      if (this.isSuccess) {
-        this.$router.push("/home");
-      }
-      this.isSuccess = false; // 플래그를 초기화
     },
   },
 };

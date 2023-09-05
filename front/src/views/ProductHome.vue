@@ -59,27 +59,15 @@
         </v-card>
       </v-col>
     </v-row>
-
-    <AlertDialog
-      v-bind="$attrs"
-      :show="dialog"
-      :message="dialogMessage"
-      @update:show="dialog = $event"
-      @closed="handleDialogClosed"
-    />
   </v-container>
 </template>
 
 <script>
 // cus
 import { formatAmount } from "../lib/formatter";
-import AlertDialog from "@/components/AlertDialog.vue";
 
 export default {
   name: "ProductHome",
-  components: {
-    AlertDialog,
-  },
   created() {
     this.SetBestProductData();
   },
@@ -90,26 +78,9 @@ export default {
     installmentData() {
       return this.$store.getters.BEST_INSTALLMENT_DATA;
     },
-    // error handler
-    isError() {
-      return this.$store.getters.ERROR;
-    },
-  },
-  watch: {
-    // error handler
-    isError(errMessage) {
-      if (errMessage) {
-        this.dialogMessage = errMessage;
-        this.dialog = true;
-        this.$store.dispatch("RESET_ERROR", null);
-      }
-    },
   },
   data() {
     return {
-      // alert dialog
-      dialog: false,
-      dialogMessage: "",
       selectedProductType: "savings", // default to savings
     };
   },
@@ -126,7 +97,7 @@ export default {
       try {
         await this.$store.dispatch("SET_BEST_PRODUCT_DATA");
       } catch (err) {
-        console.log(err);
+        return;
       }
     },
     filteredSavingsData() {
@@ -150,9 +121,6 @@ export default {
         name: "detail_installment_product",
         params: { fin_prdt_cd: fin_prdt_cd },
       });
-    },
-    handleDialogClosed() {
-      // TODO: 닫혔을 때 어떡할건지?
     },
   },
 };

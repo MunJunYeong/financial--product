@@ -1,6 +1,6 @@
 import axios from "@/lib/axios";
 
-import { ViewErrUnauthorized } from "../defines-error";
+import { ViewErrUnauthorized } from "../defines";
 
 const POST = async (url, payload) => {
   const token = localStorage.getItem("access_token");

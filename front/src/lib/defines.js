@@ -6,3 +6,5 @@ export const ViewErrMsgUnauthorized = "토큰이 만료 되었습니다. 다시 
 export const ViewErrUnauthorized = new Error(ViewErrMsgUnauthorized)
 
 
+export const openDialog = "OPEN_DIALOG"
+export const closeDialog = "CLOSE_DIALOG"
