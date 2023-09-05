@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+
+// cus
 import CalcService from "@/service/calc";
 
 const calcModule = {
@@ -5,15 +8,15 @@ const calcModule = {
   mutations: {},
   getters: {},
   actions: {
-    // eslint-disable-next-line no-unused-vars
+    // 정기 적금 및 예금 계산 (data의 type으로 예*적금 분리)
     async CALC_REG_SAVINGS_DEPOSIT({ commit }, data) {
-      let res;
       try {
-        res = await CalcService.CalcRegSavingsDeposit(data);
+        const res = await CalcService.CalcRegSavingsDeposit(data);
+        return res.data.tax;
       } catch (err) {
-        console.log(err);
+        commit("SET_ERROR", err.message, { root: true });
+        throw err;
       }
-      return res.data.tax
     },
   },
 };

@@ -281,7 +281,8 @@
       v-bind="$attrs"
       :show="dialog"
       :message="dialogMessage"
-      @update:show="handleDialogClose"
+      @update:show="dialog = $event"
+      @closed="handleDialogClosed"
     />
     <SubmitDateDialog ref="startDateDialog" />
   </v-container>
@@ -356,17 +357,17 @@ export default {
       return this.$store.getters.GET_USER;
     },
     // error handler
-    authError() {
-      return this.$store.getters.AUTH_ERROR;
+    isError() {
+      return this.$store.getters.ERROR;
     },
   },
   watch: {
     // error handler
-    authError(errMessage) {
+    isError(errMessage) {
       if (errMessage) {
         this.dialogMessage = errMessage;
         this.dialog = true;
-        this.$store.dispatch("RESET_AUTH_ERROR");
+        this.$store.dispatch("RESET_ERROR", null);
       }
     },
   },
@@ -411,8 +412,6 @@ export default {
             type: SavingsType.SAVINGS,
           });
         } catch (err) {
-          this.dialogMessage = networkErrMsg;
-          this.dialog = true;
           return;
         }
         this.savingsTotalInterest = res.taxFreeInterest;
@@ -489,8 +488,6 @@ export default {
             type: SavingsType.DEPOSIT,
           });
         } catch (err) {
-          this.dialogMessage = networkErrMsg;
-          this.dialog = true;
           return;
         }
         this.depositTotalInterest = res.taxFreeInterest;

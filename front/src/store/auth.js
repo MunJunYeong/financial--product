@@ -31,8 +31,8 @@ const authModule = {
         const res = await AuthService.SignUp(data);
         return res.data;
       } catch (err) {
-        commit('SET_ERROR', err.message, { root: true });
-        throw err
+        commit("SET_ERROR", err.message, { root: true });
+        throw err;
       }
     },
 
@@ -49,7 +49,7 @@ const authModule = {
         commit("SET_USER", user);
         return true;
       } catch (err) {
-        commit('SET_ERROR', err.message, { root: true });
+        commit("SET_ERROR", err.message, { root: true });
         throw err;
       }
     },
@@ -64,7 +64,7 @@ const authModule = {
       try {
         await AuthService.Authenticate();
       } catch (err) {
-        commit('SET_ERROR', err.message, { root: true });
+        commit("SET_ERROR", err.message, { root: true });
         return err;
       }
     },
