@@ -64,6 +64,7 @@
       v-bind="$attrs"
       :show="dialog"
       :message="dialogMessage"
+      @update:show="dialog = $event"
       @closed="handleDialogClosed"
     />
   </v-container>
@@ -90,17 +91,17 @@ export default {
       return this.$store.getters.BEST_INSTALLMENT_DATA;
     },
     // error handler
-    authError() {
-      return this.$store.getters.AUTH_ERROR;
+    isError() {
+      return this.$store.getters.ERROR;
     },
   },
   watch: {
     // error handler
-    authError(errMessage) {
+    isError(errMessage) {
       if (errMessage) {
         this.dialogMessage = errMessage;
         this.dialog = true;
-        this.$store.dispatch("RESET_AUTH_ERROR");
+        this.$store.dispatch("RESET_ERROR", null);
       }
     },
   },
@@ -150,12 +151,8 @@ export default {
         params: { fin_prdt_cd: fin_prdt_cd },
       });
     },
-    handleDialogClose(value) {
-      this.dialog = value;
-      // 다이얼로그가 닫혔을 때
-      if (!value) {
-        this.$router.push("/signin");
-      }
+    handleDialogClosed() {
+      // TODO: 닫혔을 때 어떡할건지?
     },
   },
 };

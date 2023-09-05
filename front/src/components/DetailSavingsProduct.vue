@@ -25,15 +25,26 @@
         </v-card>
       </v-col>
     </v-row>
+    <AlertDialog
+      v-bind="$attrs"
+      :show="dialog"
+      :message="dialogMessage"
+      @update:show="dialog = $event"
+      @closed="handleDialogClosed"
+    />
   </v-container>
 </template>
 
 <script>
 // cus
 import { formatAmount } from "../lib/formatter";
+import AlertDialog from "@/components/AlertDialog.vue";
 
 export default {
   name: "DetailSavingsProduct",
+  components: {
+    AlertDialog,
+  },
   props: ["fin_prdt_cd"],
   async created() {
     this.product = await this.$store.dispatch(
@@ -41,13 +52,34 @@ export default {
       this.fin_prdt_cd
     );
   },
+  computed: {
+    // error handler
+    isError() {
+      return this.$store.getters.ERROR;
+    },
+  },
+  watch: {
+    // error handler
+    isError(errMessage) {
+      if (errMessage) {
+        this.dialogMessage = errMessage;
+        this.dialog = true;
+        this.$store.dispatch("RESET_ERROR", null);
+      }
+    },
+  },
   data() {
     return {
       product: null,
+      dialog: false,
+      dialogMessage: "",
     };
   },
   methods: {
     formatAmount,
+    handleDialogClosed() {
+      // TODO: 추후 처리 
+    },
   },
 };
 </script>

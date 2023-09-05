@@ -497,12 +497,8 @@ export default {
         this.depositInterest = res.taxFreeInterest;
       }
     },
-    handleDialogClose(value) {
-      this.dialog = value;
-      // 다이얼로그가 닫혔을 때
-      if (!value) {
-        this.$router.push("/signin");
-      }
+    handleDialogClosed() {
+      // TODO: 닫고나서 무엇을 할건지
     },
   },
 };
