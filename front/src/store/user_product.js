@@ -18,38 +18,41 @@ const userProductModule = {
   },
   actions: {
     // eslint-disable-next-line no-unused-vars
-    async SAVE_PRODUCT_AFTER_CALC({ commit }, data) {
+    async SAVE_PRODUCT_AFTER_CALC({ dispatch }, data) {
       try {
         await prodService.SaveProductAfterCalc(data);
       } catch (err) {
-        console.log(err);
+        dispatch("OPEN_DIALOG", err.message, { root: true });
+        throw err;
       }
-      return
+      return;
     },
 
     // Get user's all product
-    async GET_USER_PRODUCTS({ commit }, userIdx) {
-      let res;
+    async GET_USER_PRODUCTS({ commit, dispatch }, userIdx) {
       try {
-        res = await prodService.GetUserProducts(userIdx);
+        const res = await prodService.GetUserProducts(userIdx);
+        commit("SET_USER_PRODUCT", res.data);
       } catch (err) {
-        console.log(err);
+        dispatch("OPEN_DIALOG", err.message, { root: true });
+        throw err;
       }
-      commit("SET_USER_PRODUCT", res.data);
     },
 
     // Get user's product
     // eslint-disable-next-line no-unused-vars
-    async GET_USER_PRODUCT({commit}, data) {
-      let res;
-      try{
-        res = await prodService.GetUserProduct(data.userIdx, data.productIdx);
-      }catch(err){
-        console.log(err);
-        return null;
+    async GET_USER_PRODUCT({ dispatch }, data) {
+      try {
+        const res = await prodService.GetUserProduct(
+          data.userIdx,
+          data.productIdx
+        );
+        return res.data;
+      } catch (err) {
+        dispatch("OPEN_DIALOG", err.message, { root: true });
+        throw err;
       }
-      return res.data;
-    }
+    },
   },
 };
 

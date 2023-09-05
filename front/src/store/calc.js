@@ -9,12 +9,12 @@ const calcModule = {
   getters: {},
   actions: {
     // 정기 적금 및 예금 계산 (data의 type으로 예*적금 분리)
-    async CALC_REG_SAVINGS_DEPOSIT({ commit }, data) {
+    async CALC_REG_SAVINGS_DEPOSIT({ dispatch }, data) {
       try {
         const res = await CalcService.CalcRegSavingsDeposit(data);
         return res.data.tax;
       } catch (err) {
-        commit("SET_ERROR", err.message, { root: true });
+        dispatch("OPEN_DIALOG", err.message, { root: true });
         throw err;
       }
     },

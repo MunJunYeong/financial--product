@@ -26,18 +26,18 @@ const authModule = {
   },
   actions: {
     // sign up
-    async SIGN_UP({ commit }, data) {
+    async SIGN_UP({ commit, dispatch }, data) {
       try {
         const res = await AuthService.SignUp(data);
         return res.data;
       } catch (err) {
-        commit("SET_ERROR", err.message, { root: true });
+        dispatch("OPEN_DIALOG", err.message, { root: true });
         throw err;
       }
     },
 
     // sign in (login)
-    async SIGN_IN({ commit }, data) {
+    async SIGN_IN({ commit, dispatch }, data) {
       try {
         const { resData } = await AuthService.SignIn(data);
         if (!resData) return false; // fail to login
@@ -49,7 +49,7 @@ const authModule = {
         commit("SET_USER", user);
         return true;
       } catch (err) {
-        commit("SET_ERROR", err.message, { root: true });
+        dispatch("OPEN_DIALOG", err.message, { root: true });
         throw err;
       }
     },
@@ -60,11 +60,11 @@ const authModule = {
     },
 
     // authenticate
-    async AUTHENTICATE({ commit }) {
+    async AUTHENTICATE({ dispatch }) {
       try {
         await AuthService.Authenticate();
       } catch (err) {
-        commit("SET_ERROR", err.message, { root: true });
+        dispatch("OPEN_DIALOG", err.message, { root: true });
         return err;
       }
     },
