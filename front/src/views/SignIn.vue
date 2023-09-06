@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { openDialog } from '../lib/defines';
+import { openDialog } from "../lib/defines";
 export default {
   name: "SignIn",
   data() {
@@ -61,7 +61,10 @@ export default {
         }
 
         if (!res) {
-          this.$store.dispatch(openDialog, "ID나 PW가 올바르지 않습니다. 다시 시도해주세요.")
+          this.$store.dispatch(
+            openDialog,
+            "ID나 PW가 올바르지 않습니다. 다시 시도해주세요."
+          );
           return;
         }
         this.isSuccess = true;

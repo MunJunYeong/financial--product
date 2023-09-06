@@ -23,7 +23,7 @@ export default {
   name: "MyProductList",
   mounted() {
     const userIdx = this.userData.user_idx; // 사용자 ID 가져오기, 필요에 따라 조정
-    this.$store.dispatch("GET_USER_PRODUCTS", userIdx);
+    this.getMyProducts(userIdx);
   },
   computed: {
     userData: function () {
@@ -47,6 +47,13 @@ export default {
   },
   methods: {
     formatDate,
+    async getMyProducts(userIdx) {
+      try {
+        await this.$store.dispatch("GET_USER_PRODUCTS", userIdx);
+      } catch (err) {
+        return;
+      }
+    },
     calculateCurrentAmount(startDate, monthlyPayment) {
       const start = new Date(startDate);
       const now = new Date();

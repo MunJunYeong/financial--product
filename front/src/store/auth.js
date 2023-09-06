@@ -38,15 +38,16 @@ const authModule = {
     },
 
     // sign in (login)
-    async SIGN_IN({ commit, dispatch }, data) {
+    async SIGN_IN({ commit, dispatch }, inputData) {
       try {
-        const { resData } = await AuthService.SignIn(data);
-        if (!resData) return false; // fail to login
+        const res = await AuthService.SignIn(inputData);
+        const data = res.data
+        if (!data) return false; // fail to login
 
         // save token
-        utils.SetToken(resData.access_token, resData.refresh_token);
+        utils.SetToken(data.access_token, data.refresh_token);
         // set user
-        const user = jwt_decode(resData.access_token);
+        const user = jwt_decode(data.access_token);
         commit("SET_USER", user);
         return true;
       } catch (err) {
@@ -69,9 +70,17 @@ const authModule = {
         return err;
       }
     },
+    // update user's otp enabled
+    async UPDATE_OTP_ENABLED ({commit, dispatch}, data) {
+      try{
+        const user = await AuthService.UpdateOtpEnabled(data)
+        commit("SET_USER", user);
+      }catch(err ){
+        dispatch(openDialog, err.message, { root: true });
+        return err;
+      }
+    }
 
-    // save savings
-    async SAVE_SAVINGS({ commit }, data) {},
   },
 };
 

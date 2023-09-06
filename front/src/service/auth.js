@@ -56,8 +56,26 @@ const Authenticate = async () => {
   }
 };
 
+/**
+ * update user's otp enabled
+ * @param {Object} data
+ * @param {number} data.user_idx
+ * @param {boolean} data.otp_enabled
+ */
+const UpdateOtpEnabled = async (data) => {
+  try {
+    return await utils.UPDATE(`${url}/${data.user_idx}/otp`, {
+      otp_enabled: data.otp_enabled,
+    });
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
 export default {
   SignUp,
   SignIn,
   Authenticate,
+  UpdateOtpEnabled,
 };
