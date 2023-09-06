@@ -39,11 +39,11 @@ const productModule = {
 
         commit("BEST_SAVINGS_DATA", savings.data);
         commit("BEST_INSTALLMENT_DATA", installment.data);
+        return true;
       } catch (err) {
         dispatch(openDialog, err.message, { root: true });
-        throw err;
+        return false;
       }
-      return true;
     },
 
     // eslint-disable-next-line no-unused-vars
@@ -53,7 +53,7 @@ const productModule = {
         return res.data;
       } catch (err) {
         dispatch(openDialog, err.message, { root: true });
-        throw err;
+        return false;
       }
     },
 
@@ -64,7 +64,7 @@ const productModule = {
         return res.data;
       } catch (err) {
         dispatch(openDialog, err.message, { root: true });
-        throw err;
+        return false;
       }
     },
   },

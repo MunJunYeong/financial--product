@@ -36,7 +36,7 @@ const authModule = {
         return res.data;
       } catch (err) {
         dispatch(openDialog, err.message, { root: true });
-        throw err;
+        return false;
       }
     },
 
@@ -55,7 +55,7 @@ const authModule = {
         return true;
       } catch (err) {
         dispatch(openDialog, err.message, { root: true });
-        throw err;
+        return false;
       }
     },
 
@@ -70,17 +70,17 @@ const authModule = {
         await AuthService.Authenticate();
       } catch (err) {
         dispatch(openDialog, err.message, { root: true });
-        return err;
+        return false;
       }
     },
     // update user's otp enabled
     async UPDATE_OTP_ENABLED({ commit, dispatch }, data) {
       try {
-        const res = await AuthService.UpdateOtpEnabled(data);
+        await AuthService.UpdateOtpEnabled(data);
         commit("SET_USER_OTP_ENABLED", data.otp_enabled);
       } catch (err) {
         dispatch(openDialog, err.message, { root: true });
-        return err;
+        return false;
       }
     },
   },

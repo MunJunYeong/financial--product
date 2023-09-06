@@ -94,11 +94,7 @@ export default {
 
     // set product data
     async SetBestProductData() {
-      try {
-        await this.$store.dispatch("SET_BEST_PRODUCT_DATA");
-      } catch (err) {
-        return;
-      }
+      await this.$store.dispatch("SET_BEST_PRODUCT_DATA");
     },
     filteredSavingsData() {
       return this.savingsData.filter((item) =>

@@ -16,7 +16,7 @@ const calcModule = {
         return res.data.tax;
       } catch (err) {
         dispatch(openDialog, err.message, { root: true });
-        throw err;
+        throw false;
       }
     },
   },

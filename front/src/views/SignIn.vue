@@ -44,21 +44,15 @@ export default {
         (v) => !!v || "Password is required",
         (v) => v.length >= 3 || "Password must be at least 3 characters",
       ],
-      isSuccess: false, // TODO: 어떻게 처리할지 생각
     };
   },
   methods: {
     async submitForm() {
       if (this.$refs.form.validate()) {
-        let res;
-        try {
-          res = await this.$store.dispatch("SIGN_IN", {
-            id: this.id,
-            password: this.password,
-          });
-        } catch (err) {
-          return;
-        }
+        const res = await this.$store.dispatch("SIGN_IN", {
+          id: this.id,
+          password: this.password,
+        });
 
         if (!res) {
           this.$store.dispatch(
@@ -67,7 +61,6 @@ export default {
           );
           return;
         }
-        this.isSuccess = true;
       }
     },
   },
