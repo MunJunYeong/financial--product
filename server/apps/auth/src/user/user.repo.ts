@@ -44,14 +44,32 @@ export class UserRepo {
     try {
       res = await User.findOne({
         where: { user_idx: userIdx },
-        include: [{
-          model: Product
-        }]
+        include: [
+          {
+            model: Product,
+          },
+        ],
       });
     } catch (err) {
       throw err;
     }
 
     return res;
+  }
+
+  async UpdateUserOtpEnabled(userIdx: number, otpEnabled: boolean): Promise<Boolean> {
+    try {
+      const updatedRows = await User.update(
+        { otp_enabled: otpEnabled },
+        {
+          where: { user_idx: userIdx },
+        },
+      );
+
+      // updatedRows는 배열이며, 첫 번째 요소는 업데이트된 행의 수를 나타냅니다.
+      return updatedRows[0] > 0;
+    } catch (err) {
+      throw err;
+    }
   }
 }

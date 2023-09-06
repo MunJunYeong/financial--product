@@ -19,6 +19,9 @@ const authModule = {
       state.user = null;
       utils.RemoveToken();
     },
+    SET_USER_OTP_ENABLED(state, otpEnabled) {
+      state.user.otp_enabled = otpEnabled;
+    },
   },
   getters: {
     GET_USER(state) {
@@ -41,7 +44,7 @@ const authModule = {
     async SIGN_IN({ commit, dispatch }, inputData) {
       try {
         const res = await AuthService.SignIn(inputData);
-        const data = res.data
+        const data = res.data;
         if (!data) return false; // fail to login
 
         // save token
@@ -71,16 +74,15 @@ const authModule = {
       }
     },
     // update user's otp enabled
-    async UPDATE_OTP_ENABLED ({commit, dispatch}, data) {
-      try{
-        const user = await AuthService.UpdateOtpEnabled(data)
-        commit("SET_USER", user);
-      }catch(err ){
+    async UPDATE_OTP_ENABLED({ commit, dispatch }, data) {
+      try {
+        const res = await AuthService.UpdateOtpEnabled(data);
+        commit("SET_USER_OTP_ENABLED", data.otp_enabled);
+      } catch (err) {
         dispatch(openDialog, err.message, { root: true });
         return err;
       }
-    }
-
+    },
   },
 };
 

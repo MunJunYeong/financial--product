@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, Put, ParseIntPipe } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ApiOkResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { LoginInputDTO, LoginOutputDTO, SignUpDTO } from './dto/common.dto';
+import { LoginInputDTO, LoginOutputDTO, SignUpDTO, UserDTO } from './dto/common.dto';
 
 @ApiResponse({
   status: 500,
@@ -56,6 +56,7 @@ export class UserController {
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // 인증
   @ApiTags('Authenticate')
   @ApiOperation({ summary: 'authenticate' })
   @ApiOkResponse({
@@ -68,5 +69,21 @@ export class UserController {
   @Get('/authenticate')
   async Authenticate() {
     return true; // middleware 통과했으면 ok
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // 인증
+  @ApiTags('Authenticate')
+  @ApiOperation({ summary: 'authenticate' })
+  @ApiOkResponse({
+    description: '토큰 인증',
+    schema: {
+      type: 'boolean',
+      example: true,
+    },
+  })
+  @Put('/:user_idx/otp')
+  async UpdateOtpEnabled(@Param('user_idx', ParseIntPipe) userIdx: number, @Body() user: UserDTO) {
+    return await this.userService.UpdateOtpEnabled(userIdx, user.otp_enabled);
   }
 }

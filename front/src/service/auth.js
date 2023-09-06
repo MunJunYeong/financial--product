@@ -64,7 +64,7 @@ const Authenticate = async () => {
  */
 const UpdateOtpEnabled = async (data) => {
   try {
-    return await utils.UPDATE(`${url}/${data.user_idx}/otp`, {
+     return await utils.UPDATE(`${url}/${data.user_idx}/otp`, {
       otp_enabled: data.otp_enabled,
     });
   } catch (err) {
