@@ -30,7 +30,8 @@ const CalcRegSavingsDeposit = async (data) => {
     const res = await utils.GET(fullUrl);
     return res;
   } catch (err) {
-    return err;
+    console.log(err);
+    throw err;
   }
 };
 

@@ -13,27 +13,17 @@
         </tr>
       </template>
     </v-data-table>
-
-    <AlertDialog
-      v-bind="$attrs"
-      :show="dialog"
-      :message="dialogMessage"
-      @update:show="handleDialogClose"
-    />
   </v-container>
 </template>
+
 <script>
 import { formatDate } from "../lib/formatter";
-import AlertDialog from "@/components/AlertDialog.vue";
 
 export default {
   name: "MyProductList",
-  components: {
-    AlertDialog,
-  },
   mounted() {
     const userIdx = this.userData.user_idx; // 사용자 ID 가져오기, 필요에 따라 조정
-    this.$store.dispatch("GET_USER_PRODUCTS", userIdx);
+    this.getMyProducts(userIdx);
   },
   computed: {
     userData: function () {
@@ -51,30 +41,19 @@ export default {
         { text: "Current Amount", value: "current_amount" },
       ];
     },
-    // error handler
-    authError() {
-      return this.$store.getters.AUTH_ERROR;
-    },
-  },
-  watch: {
-    // error handler
-    authError(errMessage) {
-      if (errMessage) {
-        this.dialogMessage = errMessage;
-        this.dialog = true;
-        this.$store.dispatch("RESET_AUTH_ERROR");
-      }
-    },
   },
   data() {
-    return {
-      // alert dialog
-      dialog: false,
-      dialogMessage: "",
-    };
+    return {};
   },
   methods: {
     formatDate,
+    async getMyProducts(userIdx) {
+      try {
+        await this.$store.dispatch("GET_USER_PRODUCTS", userIdx);
+      } catch (err) {
+        return;
+      }
+    },
     calculateCurrentAmount(startDate, monthlyPayment) {
       const start = new Date(startDate);
       const now = new Date();
@@ -91,13 +70,6 @@ export default {
         name: "my_product",
         params: { product_idx: product.product_idx },
       });
-    },
-    handleDialogClose(value) {
-      this.dialog = value;
-      // 다이얼로그가 닫혔을 때
-      if (!value) {
-        this.$router.push("/signin");
-      }
     },
   },
 };

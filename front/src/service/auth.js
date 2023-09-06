@@ -1,6 +1,5 @@
-
 // cus
-import utils from "../lib/utils"
+import utils from "../lib/utils";
 
 // preset
 const url = process.env.VUE_APP_AUTH_SERVER_URL;
@@ -14,17 +13,18 @@ const url = process.env.VUE_APP_AUTH_SERVER_URL;
  * @param {string} data.email - The email of the user.
  * @returns {boolean} - Description of the return value.
  */
-const SignUp = (data) => {
+const SignUp = async (data) => {
+  // 중복 ID일 경우에만 return false, 나머지 exception는 error
   try {
-    const res = utils.POST(`${url}/signup`, {
+    return await utils.POST(`${url}/signup`, {
       id: data.id,
       password: data.password,
       name: data.name,
       email: data.email,
     });
-    return res;
   } catch (err) {
-    return err;
+    console.log(err);
+    throw err;
   }
 };
 
@@ -33,21 +33,49 @@ const SignUp = (data) => {
  * @param {Object} data - The user data.
  * @param {string} data.id - The ID of the user.
  * @param {string} data.pw - The password of the user.
- * @returns {(boolean|{access_token: string, refresh_token: string})}
+ * @returns {({access_token: string, refresh_token: string})}
  */
 const SignIn = async (data) => {
   try {
-    const res = await utils.POST(`${url}/signin`, {
+    return await utils.POST(`${url}/signin`, {
       id: data.id,
       password: data.password,
     });
-    return res.data;
   } catch (err) {
-    return err;
+    console.log(err);
+    throw err;
+  }
+};
+
+const Authenticate = async () => {
+  try {
+    return await utils.GET(`${url}/authenticate`);
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+/**
+ * update user's otp enabled
+ * @param {Object} data
+ * @param {number} data.user_idx
+ * @param {boolean} data.otp_enabled
+ */
+const UpdateOtpEnabled = async (data) => {
+  try {
+     return await utils.UPDATE(`${url}/${data.user_idx}/otp`, {
+      otp_enabled: data.otp_enabled,
+    });
+  } catch (err) {
+    console.log(err);
+    throw err;
   }
 };
 
 export default {
   SignUp,
   SignIn,
+  Authenticate,
+  UpdateOtpEnabled,
 };

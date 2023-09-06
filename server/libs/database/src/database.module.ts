@@ -1,6 +1,6 @@
-import { ConfigurationModule } from '../../configuration/src';
 import { Module } from '@nestjs/common';
 import { databaseProviders } from './database.provider';
+import { ConfigurationModule } from '@app/configuration';
 
 @Module({
   imports : [

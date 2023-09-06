@@ -27,6 +27,15 @@
         "tsConfigPath": "apps/auth/tsconfig.app.json"
       }
     },
+    "calc": {
+      "type": "application",
+      "root": "apps/calc",
+      "entryFile": "main",
+      "sourceRoot": "apps/calc/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/calc/tsconfig.app.json"
+      }
+    },
     "product": {
       "type": "application",
       "root": "apps/product",
@@ -97,15 +106,6 @@
       "sourceRoot": "libs/scheduling/src",
       "compilerOptions": {
         "tsConfigPath": "libs/scheduling/tsconfig.lib.json"
-      }
-    },
-    "calc": {
-      "type": "application",
-      "root": "apps/calc",
-      "entryFile": "main",
-      "sourceRoot": "apps/calc/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/calc/tsconfig.app.json"
       }
     },
     "jwt": {

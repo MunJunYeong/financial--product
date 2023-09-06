@@ -1,27 +1,56 @@
 import axios from "@/lib/axios";
+
+import { ViewErrUnauthorized } from "../defines";
 import store from "@/store";
 
-const unauthorizedMsg = "토큰이 만료 되었습니다. 다시 로그인 해주세요.";
-
 const POST = async (url, payload) => {
+  const token = localStorage.getItem("access_token");
   try {
-    return await axios.post(url, payload);
+    return await axios.post(url, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   } catch (err) {
     if (err.response && err.response.status === 401) {
-      store.dispatch("HANDLE_AUTH_ERROR", Error(unauthorizedMsg));
+      store.commit("CLEAR_USER");
+      throw ViewErrUnauthorized;
     }
-    return err;
+    throw err;
   }
 };
 
 const GET = async (url) => {
+  const token = localStorage.getItem("access_token");
   try {
-    return await axios.get(url);
+    return await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   } catch (err) {
     if (err.response && err.response.status === 401) {
-      store.dispatch("HANDLE_AUTH_ERROR", Error(unauthorizedMsg));
+      store.commit("CLEAR_USER");
+      throw ViewErrUnauthorized;
     }
-    return err;
+    throw err;
+  }
+};
+
+const UPDATE = async (url, payload) => {
+  const token = localStorage.getItem("access_token");
+  try {
+    return await axios.put(url, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch (err) {
+    if (err.response && err.response.status === 401) {
+      store.commit("CLEAR_USER");
+      throw ViewErrUnauthorized;
+    }
+    throw err;
   }
 };
 
@@ -35,9 +64,13 @@ const RemoveToken = () => {
   localStorage.removeItem("refresh_token");
 };
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// internal
+
 export default {
   POST,
   GET,
+  UPDATE,
   SetToken,
   RemoveToken,
 };

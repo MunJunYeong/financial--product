@@ -1,4 +1,5 @@
 // cus
+import { openDialog } from "@/lib/defines";
 import prodService from "@/service/product";
 
 const productModule = {
@@ -31,7 +32,7 @@ const productModule = {
     },
 
     // set product data
-    async SET_BEST_PRODUCT_DATA({ commit }) {
+    async SET_BEST_PRODUCT_DATA({ commit, dispatch }) {
       try {
         const savings = await prodService.GetBestSavingsProducts();
         const installment = await prodService.GetBestInstallmentProducts();
@@ -39,28 +40,31 @@ const productModule = {
         commit("BEST_SAVINGS_DATA", savings.data);
         commit("BEST_INSTALLMENT_DATA", installment.data);
       } catch (err) {
-        return err;
+        dispatch(openDialog, err.message, { root: true });
+        throw err;
       }
       return true;
     },
 
     // eslint-disable-next-line no-unused-vars
-    async SET_DETAIL_SAVINGS({ commit }, prodCode) {
+    async SET_DETAIL_SAVINGS({ dispatch }, prodCode) {
       try {
         const res = await prodService.GetDetailSavings(prodCode);
         return res.data;
       } catch (err) {
-        return err;
+        dispatch(openDialog, err.message, { root: true });
+        throw err;
       }
     },
 
     // eslint-disable-next-line no-unused-vars
-    async SET_DETAIL_INSTALLMENTS({ commit }, prodCode) {
+    async SET_DETAIL_INSTALLMENTS({ dispatch }, prodCode) {
       try {
         const res = await prodService.GetDetailInstallments(prodCode);
         return res.data;
       } catch (err) {
-        return err;
+        dispatch(openDialog, err.message, { root: true });
+        throw err;
       }
     },
   },

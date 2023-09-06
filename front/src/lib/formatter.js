@@ -1,3 +1,4 @@
+// example - 10000 -> 10,000
 const formatAmount = (value) => {
   if (value !== null && value !== undefined) {
     return value.toLocaleString();

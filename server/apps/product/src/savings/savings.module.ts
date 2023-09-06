@@ -1,13 +1,12 @@
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
-import { ConfigurationModule, DatabaseModule } from 'libs';
+import { DatabaseModule } from 'libs';
 import { SavingsController } from './savings.controller';
 import { SavingsService } from './savings.service';
 import { SavingsRepo } from './savings.repo';
 
 @Module({
   imports: [
-    ConfigurationModule,
     // TODO: HttpModule - Axios module & service seperate
     HttpModule.registerAsync({
       useFactory: () => ({

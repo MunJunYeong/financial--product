@@ -24,11 +24,11 @@ export class UserService {
       const bcryptPw = await bcrypt.hash(data.password, 10);
 
       const user: User = new User({
-        id : data.id,
-        pw : bcryptPw,
-        name : data.name,
-        email : data.email
-      })
+        id: data.id,
+        pw: bcryptPw,
+        name: data.name,
+        email: data.email,
+      });
       await user.save();
     } catch (err) {
       throw err;
@@ -37,7 +37,7 @@ export class UserService {
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  async Login(data: LoginInputDTO): Promise<LoginOutputDTO | Boolean> {
+  async Login(data: LoginInputDTO): Promise<LoginOutputDTO> {
     let targetUser: User = null;
 
     try {
@@ -47,12 +47,12 @@ export class UserService {
     }
 
     if (targetUser === null) {
-      return false;
+      return null;
     }
 
     const isMatch = await bcrypt.compare(data.password, targetUser.pw);
     if (!isMatch) {
-      return false;
+      return null;
     }
 
     // Sequelize 모델 인스턴스가 나오기에 data만 추출
@@ -62,5 +62,14 @@ export class UserService {
       access_token: await this.jwtService.createAccessToken(payload),
       refresh_token: await this.jwtService.createRefreshToken(payload),
     };
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  async UpdateOtpEnabled(userIdx: number, otpEnabled: boolean): Promise<Boolean> {
+    try {
+      return await this.userRepo.UpdateUserOtpEnabled(userIdx, otpEnabled);
+    } catch (err) {
+      throw err;
+    }
   }
 }

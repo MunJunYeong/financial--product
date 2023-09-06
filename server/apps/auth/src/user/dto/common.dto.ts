@@ -66,3 +66,11 @@ export class LoginOutputDTO {
   refresh_token: string;
 }
 
+// TODO: User DTO는 필요에 의해서 추가적으로 늘려가기
+export class UserDTO {
+  @ApiProperty({
+    example: 'boolean',
+  })
+  @IsBoolean()
+  otp_enabled: boolean;
+}

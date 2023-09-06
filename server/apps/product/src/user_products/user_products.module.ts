@@ -3,7 +3,7 @@ import { HttpModule } from '@nestjs/axios';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 
 // cus
-import { ConfigurationModule, DatabaseModule, MiddlewareModule, MiddlewareService } from 'libs';
+import { DatabaseModule, MiddlewareModule, MiddlewareService } from 'libs';
 import { UserProductsController } from './user_products.controller';
 import { UserProductsRepo } from './user_products.repo';
 import { UserProductsService } from './user_products.service';
@@ -12,7 +12,6 @@ import { JwtAuthModule } from '@app/jwt';
 
 @Module({
   imports: [
-    ConfigurationModule,
     // TODO: HttpModule - Axios module & service seperate
     HttpModule.registerAsync({
       useFactory: () => ({

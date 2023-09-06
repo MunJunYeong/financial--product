@@ -1,14 +1,15 @@
+/* eslint-disable no-unused-vars */
 // vendor
 import jwt_decode from "jwt-decode";
 
 // cus
 import AuthService from "@/service/auth";
-import utils from "../lib/utils"
+import utils from "../lib/utils";
+import { openDialog } from "@/lib/defines";
 
 const authModule = {
   state: {
     user: null,
-    authError: null,
   },
   mutations: {
     SET_USER(state, user) {
@@ -18,68 +19,70 @@ const authModule = {
       state.user = null;
       utils.RemoveToken();
     },
-    SET_AUTH_ERROR(state, error) {
-      state.authError = error;
-    },
-    RESET_AUTH_ERROR(state) {
-      utils.RemoveToken();
-      state.authError = null;
+    SET_USER_OTP_ENABLED(state, otpEnabled) {
+      state.user.otp_enabled = otpEnabled;
     },
   },
   getters: {
     GET_USER(state) {
       return state.user;
     },
-    AUTH_ERROR(state) {
-      return state.authError;
-    }
   },
   actions: {
-    // eslint-disable-next-line no-unused-vars
-    async SIGN_UP({ commit }, data) {
+    // sign up
+    async SIGN_UP({ commit, dispatch }, data) {
       try {
         const res = await AuthService.SignUp(data);
         return res.data;
       } catch (err) {
-        return err;
+        dispatch(openDialog, err.message, { root: true });
+        throw err;
       }
     },
 
-    async SIGN_IN({ commit }, data) {
-      let res;
+    // sign in (login)
+    async SIGN_IN({ commit, dispatch }, inputData) {
       try {
-        res = await AuthService.SignIn(data);
+        const res = await AuthService.SignIn(inputData);
+        const data = res.data;
+        if (!data) return false; // fail to login
+
+        // save token
+        utils.SetToken(data.access_token, data.refresh_token);
+        // set user
+        const user = jwt_decode(data.access_token);
+        commit("SET_USER", user);
+        return true;
       } catch (err) {
-        return err;
+        dispatch(openDialog, err.message, { root: true });
+        throw err;
       }
-
-      // fail to login
-      if (res === false) {
-        return false;
-      }
-
-      // save token
-      utils.SetToken(res.access_token, res.refresh_token)
-
-      const user = jwt_decode(res.access_token);
-      commit("SET_USER", user);
-
-      return true;
     },
 
+    // logout
     Logout({ commit }) {
       commit("CLEAR_USER");
     },
 
-    HANDLE_AUTH_ERROR({ commit }, err) {
-      commit("SET_AUTH_ERROR", err.message);
+    // authenticate
+    async AUTHENTICATE({ dispatch }) {
+      try {
+        await AuthService.Authenticate();
+      } catch (err) {
+        dispatch(openDialog, err.message, { root: true });
+        return err;
+      }
     },
-    RESET_AUTH_ERROR({commit}) {
-      commit("RESET_AUTH_ERROR");
+    // update user's otp enabled
+    async UPDATE_OTP_ENABLED({ commit, dispatch }, data) {
+      try {
+        const res = await AuthService.UpdateOtpEnabled(data);
+        commit("SET_USER_OTP_ENABLED", data.otp_enabled);
+      } catch (err) {
+        dispatch(openDialog, err.message, { root: true });
+        return err;
+      }
     },
-
-    // eslint-disable-next-line no-unused-vars
-    async SAVE_SAVINGS({ commit }, data) {},
   },
 };
 
