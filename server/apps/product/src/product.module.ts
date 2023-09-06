@@ -11,10 +11,10 @@ import { UserProductsModule } from './user_products/user_products.module';
   controllers: [ProductController],
   providers: [
     ProductService,
-    {
-      provide: APP_FILTER,
-      useClass: HttpExceptionFilter,
-    },
+    // {
+    //   provide: APP_FILTER,
+    //   useClass: HttpExceptionFilter,
+    // },
   ],
 })
 export class ProductModule {

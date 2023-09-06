@@ -15,6 +15,7 @@
     </v-data-table>
   </v-container>
 </template>
+
 <script>
 import { formatDate } from "../lib/formatter";
 
