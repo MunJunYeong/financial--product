@@ -65,7 +65,6 @@ export default {
         (v) => !!v || "E-mail is required",
         (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
       ],
-      isSuccess: false,
     };
   },
   methods: {
@@ -82,7 +81,6 @@ export default {
           return;
         }
         this.$store.dispatch(openDialog, "회원가입 성공했습니다.");
-        this.isSuccess = true;
       }
     },
   },

@@ -22,6 +22,10 @@ const authModule = {
     SET_USER_OTP_ENABLED(state, otpEnabled) {
       state.user.otp_enabled = otpEnabled;
     },
+    SET_USER_INFO(state, data) {
+      state.user.name = data.name;
+      state.user.email = data.email;
+    },
   },
   getters: {
     GET_USER(state) {
@@ -78,6 +82,16 @@ const authModule = {
       try {
         await AuthService.UpdateOtpEnabled(data);
         commit("SET_USER_OTP_ENABLED", data.otp_enabled);
+      } catch (err) {
+        dispatch(openDialog, err.message, { root: true });
+        return false;
+      }
+    },
+    async UPDATE_USER_INFO({ commit, dispatch }, data) {
+      try {
+        await AuthService.UpdateUserInfo(data);
+        commit("SET_USER_INFO", data);
+        return true;
       } catch (err) {
         dispatch(openDialog, err.message, { root: true });
         return false;
