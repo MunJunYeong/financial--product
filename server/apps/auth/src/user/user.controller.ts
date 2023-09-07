@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, Put, Parse
 import { UserService } from './user.service';
 import { ApiOkResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LoginInputDTO, LoginOutputDTO, SignUpDTO, UserDTO } from './dto/common.dto';
+import { OtpEnabledDTO } from './dto/controller.dto';
 
 @ApiResponse({
   status: 500,
@@ -83,7 +84,23 @@ export class UserController {
     },
   })
   @Put('/:user_idx/otp')
-  async UpdateOtpEnabled(@Param('user_idx', ParseIntPipe) userIdx: number, @Body() user: UserDTO) {
-    return await this.userService.UpdateOtpEnabled(userIdx, user.otp_enabled);
+  async UpdateOtpEnabled(@Param('user_idx', ParseIntPipe) userIdx: number, @Body() otpEnabledDTO: OtpEnabledDTO) {
+    return await this.userService.UpdateOtpEnabled(userIdx, otpEnabledDTO.otp_enabled);
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Update user
+  @ApiTags('UpdateUser')
+  @ApiOperation({ summary: 'update user' })
+  @ApiOkResponse({
+    description: '사용자 정보 업데이트',
+    schema: {
+      type: 'boolean',
+      example: true,
+    },
+  })
+  @Put('/:user_idx')
+  async UpdateUser(@Param('user_idx', ParseIntPipe) userIdx: number, @Body() user: UserDTO) {
+    return await this.userService.UpdateUser(userIdx, user);
   }
 }
