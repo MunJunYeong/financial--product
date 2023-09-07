@@ -97,6 +97,15 @@ const authModule = {
         return false;
       }
     },
+    async REFRESH_ACCESS_TOKEN({commit, dispatch}, refreshToken) {
+      try {
+        const res =  await AuthService.RefreshAccessToken(refreshToken)
+        return res.data
+      }catch(err) {
+        dispatch(openDialog, err.message, { root: true });
+        return false;
+      }
+    }
   },
 };
 

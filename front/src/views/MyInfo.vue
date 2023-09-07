@@ -1,11 +1,11 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12" md="6">
+      <v-col cols="12" md="6" v-if="userData">
         <div class="user-info-box pa-5 elevation-2">
           <h3 class="mb-5">User Info</h3>
 
-          <div class="info-item mb-5">
+          <div class="info-item mb-5" >
             <strong>ID:</strong> {{ userData.id }}
           </div>
 

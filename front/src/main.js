@@ -14,14 +14,26 @@ new Vue({
   router,
   vuetify,
   render: (h) => h(App),
-  created() {
-    const userToken = localStorage.getItem("access_token");
+  async created() {
+    const accessToken = localStorage.getItem("access_token");
+    const refreshToken = localStorage.getItem("refresh_token");
     // refresh
-    if (userToken) {
+    if (accessToken) {
       try {
-        const decoded = jwt_decode(userToken);
-        this.$store.commit("SET_USER", decoded);
-      } catch (error) {
+        // new token 발급 후 재 설정
+        const newAccessToken = await this.$store.dispatch(
+          "REFRESH_ACCESS_TOKEN",
+          refreshToken
+        );
+        if (!newAccessToken) {
+          utils.RemoveToken();
+          return;
+        }
+        localStorage.setItem("access_token", newAccessToken);
+        const decodedUserData = jwt_decode(newAccessToken);
+        await this.$store.commit("SET_USER", decodedUserData);
+      } catch (err) {
+        console.log("created error : ", err.message);
         utils.RemoveToken();
       }
     }

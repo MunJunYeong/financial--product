@@ -47,15 +47,6 @@ const SignIn = async (data) => {
   }
 };
 
-const Authenticate = async () => {
-  try {
-    return await utils.GET(`${url}/authenticate`);
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
-};
-
 /**
  * update user's otp enabled
  * @param {Object} data
@@ -92,10 +83,35 @@ const UpdateUserInfo = async (data) => {
   }
 };
 
+/**
+ * update user's otp enabled
+ * @param {string} refreshToken
+ */
+const RefreshAccessToken = async (refreshToken) => {
+  try {
+    return await utils.POST(`${url}/refresh`, {
+      refresh_token: refreshToken,
+    });
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+const Authenticate = async () => {
+  try {
+    return await utils.GET(`${url}/authenticate`);
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
 export default {
   SignUp,
   SignIn,
-  Authenticate,
   UpdateOtpEnabled,
   UpdateUserInfo,
+  Authenticate,
+  RefreshAccessToken,
 };
