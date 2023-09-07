@@ -64,8 +64,27 @@ const Authenticate = async () => {
  */
 const UpdateOtpEnabled = async (data) => {
   try {
-     return await utils.UPDATE(`${url}/${data.user_idx}/otp`, {
+    return await utils.UPDATE(`${url}/${data.user_idx}/otp`, {
       otp_enabled: data.otp_enabled,
+    });
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+/**
+ * update user's otp enabled
+ * @param {Object} data
+ * @param {number} data.user_idx
+ * @param {string} data.email
+ * @param {string} data.name
+ */
+const UpdateUserInfo = async (data) => {
+  try {
+    return await utils.UPDATE(`${url}/${data.user_idx}`, {
+      email: data.email,
+      name: data.name,
     });
   } catch (err) {
     console.log(err);
@@ -78,4 +97,5 @@ export default {
   SignIn,
   Authenticate,
   UpdateOtpEnabled,
+  UpdateUserInfo,
 };

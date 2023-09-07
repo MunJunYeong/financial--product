@@ -22,11 +22,11 @@ const userProductModule = {
     async SAVE_PRODUCT_AFTER_CALC({ dispatch }, data) {
       try {
         await prodService.SaveProductAfterCalc(data);
+        return true;
       } catch (err) {
         dispatch(openDialog, err.message, { root: true });
-        throw err;
+        return false;
       }
-      return;
     },
 
     // Get user's all product
@@ -34,9 +34,10 @@ const userProductModule = {
       try {
         const res = await prodService.GetUserProducts(userIdx);
         commit("SET_USER_PRODUCT", res.data);
+        return true;
       } catch (err) {
         dispatch(openDialog, err.message, { root: true });
-        throw err;
+        return false;
       }
     },
 
@@ -51,7 +52,7 @@ const userProductModule = {
         return res.data;
       } catch (err) {
         dispatch(openDialog, err.message, { root: true });
-        throw err;
+        return false;
       }
     },
   },

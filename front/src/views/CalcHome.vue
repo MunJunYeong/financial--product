@@ -288,9 +288,6 @@ import { formatAmount } from "../lib/formatter";
 import { SavingsType } from "../lib/type";
 import { openDialog } from "../lib/defines";
 
-const networkErrMsg =
-  "서버와의 연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.";
-
 export default {
   name: "CalcHome",
   components: {
@@ -360,7 +357,6 @@ export default {
     },
     initSavingsAmount() {
       this.savingsPeriod = 0;
-
     },
     updateSavingsAmount(value) {
       const numberValue = Number(value.replace(/,/g, ""));
@@ -378,51 +374,45 @@ export default {
     async calcRegSavings() {
       let res;
       if (this.$refs.savingsForm.validate()) {
-        try {
-          res = await this.$store.dispatch("CALC_REG_SAVINGS_DEPOSIT", {
-            period: this.savingsPeriod,
-            price: this.savingsAmount,
-            rate: this.savingsRate,
-            isSimple: this.savingsIsSimple,
-            type: SavingsType.SAVINGS,
-          });
-        } catch (err) {
-          return;
+        res = await this.$store.dispatch("CALC_REG_SAVINGS_DEPOSIT", {
+          period: this.savingsPeriod,
+          price: this.savingsAmount,
+          rate: this.savingsRate,
+          isSimple: this.savingsIsSimple,
+          type: SavingsType.SAVINGS,
+        });
+        if (res) {
+          this.savingsTotalInterest = res.taxFreeInterest;
+          this.savingsInterest15 = res.taxGeneralInterest;
+          this.savingsInterest9 = res.taxInterest;
+          this.savingsInterest1 = res.taxInterest2;
+          this.savingsInterest = res.taxFreeInterest;
         }
-        this.savingsTotalInterest = res.taxFreeInterest;
-        this.savingsInterest15 = res.taxGeneralInterest;
-        this.savingsInterest9 = res.taxInterest;
-        this.savingsInterest1 = res.taxInterest2;
-        this.savingsInterest = res.taxFreeInterest;
       }
     },
     // 정기 적금 상품 내용 저장
     async saveSavings() {
       if (!this.userData) {
-        this.$store.dispatch(openDialog, "로그인 후 이용해주세요.")
+        this.$store.dispatch(openDialog, "로그인 후 이용해주세요.");
         return;
       }
 
       const startDate = await this.$refs.startDateDialog.waitForDate();
       this.$nextTick(async () => {
-        try {
-          await this.$store.dispatch("SAVE_PRODUCT_AFTER_CALC", {
-            period: this.savingsPeriod,
-            price: this.savingsAmount,
-            rate: this.savingsRate,
-            isSimple: this.savingsIsSimple,
-            startDate: startDate,
-            type: SavingsType.SAVINGS,
-            totalInterest: this.savingsTotalInterest,
-            userIdx: Number(this.userData.user_idx),
-          });
-        } catch (err) {
-          this.dialogMessage = networkErrMsg;
-          this.dialog = true;
-          return;
+        const res = await this.$store.dispatch("SAVE_PRODUCT_AFTER_CALC", {
+          period: this.savingsPeriod,
+          price: this.savingsAmount,
+          rate: this.savingsRate,
+          isSimple: this.savingsIsSimple,
+          startDate: startDate,
+          type: SavingsType.SAVINGS,
+          totalInterest: this.savingsTotalInterest,
+          userIdx: Number(this.userData.user_idx),
+        });
+        if (res) {
+          this.$store.dispatch(openDialog, "저장 성공");
         }
       });
-      this.$store.dispatch(openDialog, "저장 성공")
     },
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 예금 관련 method
@@ -451,23 +441,20 @@ export default {
       this.depositRate = 0;
     },
     async calcRegDeposit() {
-      let res;
       if (this.$refs.depositForm.validate()) {
-        try {
-          res = await this.$store.dispatch("CALC_REG_SAVINGS_DEPOSIT", {
-            period: this.depositPeriod,
-            price: this.depositAmount,
-            rate: this.depositRate,
-            type: SavingsType.DEPOSIT,
-          });
-        } catch (err) {
-          return;
+        const res = await this.$store.dispatch("CALC_REG_SAVINGS_DEPOSIT", {
+          period: this.depositPeriod,
+          price: this.depositAmount,
+          rate: this.depositRate,
+          type: SavingsType.DEPOSIT,
+        });
+        if (res) {
+          this.depositTotalInterest = res.taxFreeInterest;
+          this.depositInterest15 = res.taxGeneralInterest;
+          this.depositInterest9 = res.taxInterest;
+          this.depositInterest1 = res.taxInterest2;
+          this.depositInterest = res.taxFreeInterest;
         }
-        this.depositTotalInterest = res.taxFreeInterest;
-        this.depositInterest15 = res.taxGeneralInterest;
-        this.depositInterest9 = res.taxInterest;
-        this.depositInterest1 = res.taxInterest2;
-        this.depositInterest = res.taxFreeInterest;
       }
     },
   },

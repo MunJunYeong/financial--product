@@ -4,7 +4,7 @@ import * as bcrypt from 'bcrypt';
 
 // cus
 import { UserRepo } from './user.repo';
-import { LoginInputDTO, LoginOutputDTO, SignUpDTO } from './dto/common.dto';
+import { LoginInputDTO, LoginOutputDTO, SignUpDTO, UserDTO } from './dto/common.dto';
 import { User } from '@app/database/models/user';
 import { JwtService } from '@app/jwt';
 
@@ -68,6 +68,15 @@ export class UserService {
   async UpdateOtpEnabled(userIdx: number, otpEnabled: boolean): Promise<Boolean> {
     try {
       return await this.userRepo.UpdateUserOtpEnabled(userIdx, otpEnabled);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  async UpdateUser(userIdx: number, user: UserDTO): Promise<Boolean> {
+    try {
+      return await this.userRepo.UpdateUser(userIdx, user);
     } catch (err) {
       throw err;
     }

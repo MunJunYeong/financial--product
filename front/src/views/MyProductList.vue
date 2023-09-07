@@ -48,11 +48,7 @@ export default {
   methods: {
     formatDate,
     async getMyProducts(userIdx) {
-      try {
-        await this.$store.dispatch("GET_USER_PRODUCTS", userIdx);
-      } catch (err) {
-        return;
-      }
+      await this.$store.dispatch("GET_USER_PRODUCTS", userIdx);
     },
     calculateCurrentAmount(startDate, monthlyPayment) {
       const start = new Date(startDate);

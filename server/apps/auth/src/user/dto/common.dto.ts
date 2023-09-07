@@ -69,8 +69,15 @@ export class LoginOutputDTO {
 // TODO: User DTO는 필요에 의해서 추가적으로 늘려가기
 export class UserDTO {
   @ApiProperty({
-    example: 'boolean',
+    example: 'string',
   })
-  @IsBoolean()
-  otp_enabled: boolean;
+  @IsString()
+  email: string;
+
+  //
+  @ApiProperty({
+    example: 'string',  
+  })
+  @IsString()
+  name: string;
 }
