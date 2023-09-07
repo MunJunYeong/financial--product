@@ -10,7 +10,6 @@ export class OtpEnabledDTO {
 }
 
 export class TokenDTO {
-  //
   @ApiProperty({
     example: 'string',
   })
