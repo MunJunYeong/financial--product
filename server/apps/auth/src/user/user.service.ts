@@ -81,4 +81,26 @@ export class UserService {
       throw err;
     }
   }
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  async RefreshAccessToken(decodedUser: User, refreshToken: string): Promise<String> {
+    // 1. refreshToken validation
+    try {
+      this.jwtService.validateToken(refreshToken);
+    } catch (err) {
+      throw err;
+    }
+    try {
+      // 2. find user
+      const user = await this.userRepo.FindUserByIdx(decodedUser.user_idx);
+
+      const payload = user.dataValues;
+      delete payload.pw;
+
+      const accessToken = await this.jwtService.createAccessToken(payload);
+      return accessToken;
+    } catch (err) {
+      throw err;
+    }
+  }
 }

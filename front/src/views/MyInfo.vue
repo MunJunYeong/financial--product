@@ -12,12 +12,14 @@
           <div class="info-item mb-5">
             <strong>Email:</strong>
             <v-text-field
-              v-model="userData.email"
+              v-model.lazy="userData.email"
+              :rules="emailRules"
               outlined
               prepend-inner-icon="mdi-email-edit"
               label="Edit Email"
               hide-details="auto"
               solo
+              ref="emailField"
             ></v-text-field>
           </div>
 
@@ -66,7 +68,12 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      emailRules: [
+        (v) => !!v || "E-mail is required",
+        (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+      ],
+    };
   },
   methods: {
     // 해당 page 접근 시 token 확인
@@ -85,7 +92,13 @@ export default {
 
     //
     async updateUserInfo() {
+      if (!this.$refs.emailField.valid) {
+        this.$store.dispatch(openDialog, "이메일 형식이 올바르지 않습니다.");
+        return;
+      }
+
       const { user_idx, email, name } = this.userData;
+
       const res = await this.$store.dispatch("UPDATE_USER_INFO", {
         user_idx: user_idx,
         email: email,

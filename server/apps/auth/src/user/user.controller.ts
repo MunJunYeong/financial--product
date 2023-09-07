@@ -1,8 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, Put, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpCode,
+  Put,
+  ParseIntPipe,
+  Request,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { ApiOkResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LoginInputDTO, LoginOutputDTO, SignUpDTO, UserDTO } from './dto/common.dto';
-import { OtpEnabledDTO } from './dto/controller.dto';
+import { OtpEnabledDTO, TokenDTO } from './dto/controller.dto';
 
 @ApiResponse({
   status: 500,
@@ -57,27 +69,11 @@ export class UserController {
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // 인증
+  // Update otp_enabled
   @ApiTags('Authenticate')
   @ApiOperation({ summary: 'authenticate' })
   @ApiOkResponse({
-    description: '토큰 인증',
-    schema: {
-      type: 'boolean',
-      example: true,
-    },
-  })
-  @Get('/authenticate')
-  async Authenticate() {
-    return true; // middleware 통과했으면 ok
-  }
-
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // 인증
-  @ApiTags('Authenticate')
-  @ApiOperation({ summary: 'authenticate' })
-  @ApiOkResponse({
-    description: '토큰 인증',
+    description: 'otp 활성화 update',
     schema: {
       type: 'boolean',
       example: true,
@@ -102,5 +98,35 @@ export class UserController {
   @Put('/:user_idx')
   async UpdateUser(@Param('user_idx', ParseIntPipe) userIdx: number, @Body() user: UserDTO) {
     return await this.userService.UpdateUser(userIdx, user);
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // 인증
+  @ApiTags('Authenticate')
+  @ApiOperation({ summary: 'authenticate' })
+  @ApiOkResponse({
+    description: '토큰 인증',
+    schema: {
+      type: 'boolean',
+      example: true,
+    },
+  })
+  @Get('/authenticate')
+  async Authenticate() {
+    return true; // middleware 통과했으면 ok
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Refresh token
+  @ApiTags('Authenticate')
+  @ApiOperation({ summary: 'refresh access_token' })
+  @ApiOkResponse({
+    description: 'access_token 재생성',
+  })
+  @Post('/refresh')
+  async RefreshToken(@Body() token: TokenDTO, @Request() req: any) {
+    const decodedUser = req['user'];
+
+    return await this.userService.RefreshAccessToken(decodedUser, token.refresh_token);
   }
 }

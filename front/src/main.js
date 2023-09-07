@@ -16,6 +16,7 @@ new Vue({
   render: (h) => h(App),
   created() {
     const userToken = localStorage.getItem("access_token");
+    // refresh
     if (userToken) {
       try {
         const decoded = jwt_decode(userToken);
