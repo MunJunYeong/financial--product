@@ -6,11 +6,11 @@ export class JwtService {
   constructor(private readonly jwtService: NestJwtService) {}
 
   async createAccessToken(payload: any): Promise<string> {
-    return this.jwtService.sign(payload, { expiresIn: '4h', secret : process.env.JWT_SECRET });
+    return this.jwtService.sign(payload, { expiresIn: '4h'});
   }
 
   async createRefreshToken(payload: any): Promise<string> {
-    return this.jwtService.sign(payload, { expiresIn: '14d', secret : process.env.JWT_SECRET });
+    return this.jwtService.sign(payload, { expiresIn: '14d'});
   }
 
   // JWT 토큰 검증
@@ -22,4 +22,5 @@ export class JwtService {
       throw err;
     }
   }
+
 }

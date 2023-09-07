@@ -25,6 +25,11 @@ export class UserModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(MiddlewareService)
-      .forRoutes({ path: 'user/authenticate', method: RequestMethod.GET });
+      .forRoutes(
+        { path: 'user/authenticate', method: RequestMethod.GET },
+        { path: 'user/refresh', method: RequestMethod.POST },
+        { path: 'user/:user_idx', method: RequestMethod.PUT },
+        { path: 'user/:user_idx/otp', method: RequestMethod.PUT },
+      );
   }
 }
