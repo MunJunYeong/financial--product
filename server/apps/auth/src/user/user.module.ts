@@ -2,21 +2,11 @@ import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/c
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { DatabaseModule, MiddlewareService } from 'libs';
-import { HttpModule } from '@nestjs/axios';
 import { UserRepo } from './user.repo';
 import { JwtAuthModule } from '@app/jwt';
 
 @Module({
-    imports: [
-        HttpModule.registerAsync({
-            useFactory: () => ({
-                timeout: 5000,
-                maxRedirects: 5,
-            }),
-        }),
-        DatabaseModule,
-        JwtAuthModule,
-    ],
+    imports: [DatabaseModule, JwtAuthModule],
     controllers: [UserController],
     providers: [UserService, UserRepo],
     exports: [UserRepo],

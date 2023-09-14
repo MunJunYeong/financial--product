@@ -1,6 +1,5 @@
-import { HttpService } from '@nestjs/axios';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CommonService, ConfigurationService } from 'libs';
+import { AxiosService, CommonService, ConfigurationService } from 'libs';
 import { firstValueFrom } from 'rxjs';
 import { SavingsDTO, InstallmentDTO, SavingsOptionsDTO, InstallmentOptionsDTO } from './dto/common.dto';
 import { SavingsRepo } from './savings.repo';
@@ -21,7 +20,7 @@ const _installmentType: string = 'installment';
 export class SavingsService {
     constructor(
         private readonly configService: ConfigurationService,
-        private readonly httpService: HttpService,
+        private readonly axios: AxiosService,
         private readonly savingsRepo: SavingsRepo,
         private readonly commonService: CommonService,
     ) {}
@@ -32,9 +31,9 @@ export class SavingsService {
         let res: any;
         try {
             const { data } = await firstValueFrom(
-                this.httpService.get(`${url}?auth=${token}&topFinGrpNo=020000&pageNo=${1}`),
+                this.axios.GET(`${url}?auth=${token}&topFinGrpNo=020000&pageNo=${1}`),
             );
-            res = data.result;
+            res = (data as { result: any }).result;
         } catch (err) {
             throw err;
         }
