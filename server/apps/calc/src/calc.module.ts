@@ -4,8 +4,8 @@ import { CalcService } from './calc.service';
 import { SavingsModule } from './savings/savings.module';
 
 @Module({
-  imports: [SavingsModule],
-  controllers: [CalcController],
-  providers: [CalcService],
+    imports: [SavingsModule],
+    controllers: [CalcController],
+    providers: [CalcService],
 })
 export class CalcModule {}
