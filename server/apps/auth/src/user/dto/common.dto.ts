@@ -4,80 +4,52 @@ import { IsNumber, IsBoolean, IsString, IsDate } from 'class-validator';
 
 // 회원가입
 export class SignUpDTO {
-  @ApiProperty({
-    example: 'string',
-    description: 'ID',
-  })
-  @IsString()
-  id: string;
+    @ApiProperty({ description: 'ID' })
+    @IsString()
+    id: string;
 
-  @ApiProperty({
-    example: 'string',
-    description: 'password',
-  })
-  @IsString()
-  password: string;
+    @ApiProperty({ description: 'password' })
+    @IsString()
+    password: string;
 
-  @ApiProperty({
-    example: 'string',
-    description: 'name',
-  })
-  @IsString()
-  name: string;
+    @ApiProperty({ description: 'name' })
+    @IsString()
+    name: string;
 
-  @ApiProperty({
-    example: 'string',
-    description: 'email',
-  })
-  @IsString()
-  email: string;
+    @ApiProperty({ description: 'email' })
+    @IsString()
+    email: string;
 }
 
 // 로그인
 export class LoginInputDTO {
-  @ApiProperty({
-    example: 'string',
-    description: 'ID',
-  })
-  @IsString()
-  id: string;
+    @ApiProperty({ description: 'ID' })
+    @IsString()
+    id: string;
 
-  @ApiProperty({
-    example: 'string',
-    description: 'Password',
-  })
-  @IsString()
-  password: string;
+    @ApiProperty({ description: 'Password' })
+    @IsString()
+    password: string;
 }
 
 export class LoginOutputDTO {
-  @ApiProperty({
-    example: 'string',
-    description: 'access token',
-  })
-  @IsString()
-  access_token: string;
+    @ApiProperty({ description: 'access token' })
+    @IsString()
+    access_token: string;
 
-  @ApiProperty({
-    example: 'string',
-    description: 'refresh token',
-  })
-  @IsString()
-  refresh_token: string;
+    @ApiProperty({ description: 'refresh token' })
+    @IsString()
+    refresh_token: string;
 }
 
 // TODO: User DTO는 필요에 의해서 추가적으로 늘려가기
 export class UserDTO {
-  @ApiProperty({
-    example: 'string',
-  })
-  @IsString()
-  email: string;
+    @ApiProperty({ description: 'email' })
+    @IsString()
+    email: string;
 
-  //
-  @ApiProperty({
-    example: 'string',  
-  })
-  @IsString()
-  name: string;
+    //
+    @ApiProperty({ description: 'name' })
+    @IsString()
+    name: string;
 }
