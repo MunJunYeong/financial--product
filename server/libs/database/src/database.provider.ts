@@ -9,19 +9,20 @@ import { Installment } from './models/installments.entity';
 import { InstallmentOption } from './models/installmentOptions.entity';
 import { User } from './models/user';
 import { Product } from './models/product';
+import { CommonService } from '@app/common';
 
 export const databaseProviders = [
     {
         provide: 'SEQUELIZE',
-        inject: [ConfigurationService],
-        useFactory: async (configService: ConfigurationService) => {
+        inject: [ConfigurationService, CommonService],
+        useFactory: async (config: ConfigurationService, common: CommonService) => {
             const sequelize = new Sequelize({
                 dialect: 'postgres',
-                host: configService.get<string>('DB_HOST'),
-                port: configService.get<number>('DB_PORT'),
-                username: configService.get<string>('DB_USERNAME'),
-                password: configService.get<string>('DB_PASSWORD'),
-                database: configService.get<string>('DB_DATABASE'),
+                host: config.get<string>(common.Configs.DB_HOST),
+                port: config.get<number>(common.Configs.DB_PORT),
+                username: config.get<string>(common.Configs.DB_USERNAME),
+                password: config.get<string>(common.Configs.DB_PASSWORD),
+                database: config.get<string>(common.Configs.DB_DATABASE),
                 logging: false,
             });
 

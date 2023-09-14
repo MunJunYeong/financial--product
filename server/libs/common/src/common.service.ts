@@ -11,4 +11,14 @@ export class CommonService {
         DB_GET_INSTALLMENT: 'db error : failed to get installment',
         DB_SAVE_INSTALLMENT: 'db error : failed to save installment',
     };
+
+    Configs = {
+        ACCESS_TOKEN: 'API_ACCESS_TOKEN',
+        DB_HOST: 'DB_HOST',
+        DB_PORT: 'DB_PORT',
+        DB_USERNAME: 'DB_USERNAME',
+        DB_PASSWORD: 'DB_PASSWORD',
+        DB_DATABASE: 'DB_DATABASE',
+        JWT_SECRET: 'JWT_SECRET',
+    };
 }
