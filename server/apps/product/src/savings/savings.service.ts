@@ -1,11 +1,10 @@
 import { HttpService } from '@nestjs/axios';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { ConfigurationService } from 'libs';
+import { CommonService, ConfigurationService } from 'libs';
 import { firstValueFrom } from 'rxjs';
 import { SavingsDTO, InstallmentDTO, SavingsOptionsDTO, InstallmentOptionsDTO } from './dto/common.dto';
 import { SavingsRepo } from './savings.repo';
-import { OptionDTO, ProductWithOptionDTO } from './dto/service.dto';
-import { Errors } from '@app/common/shared/message';
+import { ProductWithOptionDTO } from './dto/service.dto';
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // 참고 url = https://finlife.fss.or.kr/finlife/api/fncCoApi/list.do?menuNo=700051
@@ -24,6 +23,7 @@ export class SavingsService {
     private readonly configService: ConfigurationService,
     private readonly httpService: HttpService,
     private readonly savingsRepo: SavingsRepo,
+    private readonly commonService: CommonService
   ) {}
 
   // api 통신
@@ -131,7 +131,7 @@ export class SavingsService {
     } catch (err) {
       throw new HttpException(
         {
-          message: Errors.FETCH_SAVINGS,
+          message: this.commonService.Errors.FETCH_SAVINGS,
           error: err.message,
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -149,7 +149,7 @@ export class SavingsService {
     } catch (err) {
       throw new HttpException(
         {
-          message: Errors.DB_SAVE_SAVINGS,
+          message: this.commonService.Errors.DB_SAVE_SAVINGS,
           error: err.message,
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -168,7 +168,7 @@ export class SavingsService {
     } catch (err) {
       throw new HttpException(
         {
-          message: Errors.DB_GET_SAVINGS,
+          message: this.commonService.Errors.DB_GET_SAVINGS,
           error: err.message,
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -201,7 +201,7 @@ export class SavingsService {
     } catch (err) {
       throw new HttpException(
         {
-          message: Errors.DB_GET_SAVINGS,
+          message: this.commonService.Errors.DB_GET_SAVINGS,
           error: err.message,
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -227,7 +227,7 @@ export class SavingsService {
     } catch (err) {
       throw new HttpException(
         {
-          message: Errors.DB_GET_SAVINGS,
+          message: this.commonService.Errors.DB_GET_SAVINGS,
           error: err.message,
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -257,7 +257,7 @@ export class SavingsService {
     } catch (err) {
       throw new HttpException(
         {
-          message: Errors.FETCH_INSTALLMENT,
+          message: this.commonService.Errors.FETCH_INSTALLMENT,
           error: err.message,
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -277,7 +277,7 @@ export class SavingsService {
     } catch (err) {
       throw new HttpException(
         {
-          message: Errors.DB_SAVE_INSTALLMENT,
+          message: this.commonService.Errors.DB_SAVE_INSTALLMENT,
           error: err.message,
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -296,7 +296,7 @@ export class SavingsService {
     } catch (err) {
       throw new HttpException(
         {
-          message: Errors.DB_GET_INSTALLMENT,
+          message: this.commonService.Errors.DB_GET_INSTALLMENT,
           error: err.message,
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -328,7 +328,7 @@ export class SavingsService {
     } catch (err) {
       throw new HttpException(
         {
-          message: Errors.DB_GET_INSTALLMENT,
+          message: this.commonService.Errors.DB_GET_INSTALLMENT,
           error: err.message,
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -353,7 +353,7 @@ export class SavingsService {
     } catch (err) {
       throw new HttpException(
         {
-          message: Errors.DB_GET_INSTALLMENT,
+          message: this.commonService.Errors.DB_GET_INSTALLMENT,
           error: err.message,
         },
         HttpStatus.INTERNAL_SERVER_ERROR,

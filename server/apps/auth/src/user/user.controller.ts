@@ -3,16 +3,16 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
-  Delete,
   HttpCode,
   Put,
   ParseIntPipe,
   Request,
 } from '@nestjs/common';
-import { UserService } from './user.service';
 import { ApiOkResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+
+// cus
+import { UserService } from './user.service';
 import { LoginInputDTO, LoginOutputDTO, SignUpDTO, UserDTO } from './dto/common.dto';
 import { OtpEnabledDTO, TokenDTO } from './dto/controller.dto';
 
