@@ -1,6 +1,6 @@
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
-import { DatabaseModule } from 'libs';
+import { CommonModule, DatabaseModule } from 'libs';
 import { SavingsController } from './savings.controller';
 import { SavingsService } from './savings.service';
 import { SavingsRepo } from './savings.repo';
@@ -15,6 +15,7 @@ import { SavingsRepo } from './savings.repo';
       }),
     }),
     DatabaseModule,
+    CommonModule,
   ],
   controllers: [SavingsController],
   providers: [SavingsService, SavingsRepo],
