@@ -6,7 +6,7 @@ import { AxiosModule } from './axios/src';
 import { SchedulingModule } from './scheduling/src/scheduling.module';
 
 @Module({
-  imports: [CommonModule, DatabaseModule, MiddlewareModule, AxiosModule, SchedulingModule],
-  exports: [CommonModule, DatabaseModule, MiddlewareModule, AxiosModule, SchedulingModule],
+    imports: [CommonModule, DatabaseModule, MiddlewareModule, AxiosModule, SchedulingModule],
+    exports: [CommonModule, DatabaseModule, MiddlewareModule, AxiosModule, SchedulingModule],
 })
 export class LibModule {}

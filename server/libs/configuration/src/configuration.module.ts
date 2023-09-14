@@ -4,13 +4,13 @@ import { ConfigurationService } from './configuration.service';
 
 @Global()
 @Module({
-  imports : [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: process.env.NODE_ENV === 'dev' ? '.dev.env' : '.prod.env',
-    })
-  ],
-  providers: [ConfigurationService],
-  exports: [ConfigurationService],
+    imports: [
+        ConfigModule.forRoot({
+            isGlobal: true,
+            envFilePath: process.env.NODE_ENV === 'dev' ? '.dev.env' : '.prod.env',
+        }),
+    ],
+    providers: [ConfigurationService],
+    exports: [ConfigurationService],
 })
 export class ConfigurationModule {}

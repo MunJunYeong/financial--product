@@ -3,8 +3,8 @@ import { MiddlewareService } from './middleware.service';
 import { JwtAuthModule } from '@app/jwt';
 
 @Module({
-  imports: [JwtAuthModule],
-  providers: [MiddlewareService],
-  exports: [MiddlewareService],
+    imports: [JwtAuthModule],
+    providers: [MiddlewareService],
+    exports: [MiddlewareService],
 })
 export class MiddlewareModule {}

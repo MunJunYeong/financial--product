@@ -12,84 +12,84 @@ import { DatabaseService } from '@app/database/database.service';
 
 @Injectable()
 export class SavingsRepo {
-  constructor(
-    @Inject('SEQUELIZE') private readonly sequelize: Sequelize,
-    private readonly dbService: DatabaseService,
-  ) {}
+    constructor(
+        @Inject('SEQUELIZE') private readonly sequelize: Sequelize,
+        private readonly dbService: DatabaseService,
+    ) {}
 
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // Savings method
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Savings method
 
-  async SaveSavings(savings: SavingsDTO[], savingsOptList: SavingsOptionsDTO[]): Promise<boolean> {
-    try {
-      await this.dbService.transaction(async (transaction) => {
-        // save savings + opt
-        await Savings.bulkCreate(savings, { transaction });
-        await SavingsOption.bulkCreate(savingsOptList, { transaction });
-      });
-    } catch (err) {
-      throw err;
+    async SaveSavings(savings: SavingsDTO[], savingsOptList: SavingsOptionsDTO[]): Promise<boolean> {
+        try {
+            await this.dbService.transaction(async (transaction) => {
+                // save savings + opt
+                await Savings.bulkCreate(savings, { transaction });
+                await SavingsOption.bulkCreate(savingsOptList, { transaction });
+            });
+        } catch (err) {
+            throw err;
+        }
+        return true;
     }
-    return true;
-  }
 
-  async DeleteAllSavings(): Promise<boolean> {
-    try {
-      await this.dbService.transaction(async (transaction) => {
-        // delete savings + opt
-        await Savings.destroy({ where: {}, transaction });
-        await SavingsOption.destroy({ where: {}, transaction });
-      });
-    } catch (err) {
-      throw err;
+    async DeleteAllSavings(): Promise<boolean> {
+        try {
+            await this.dbService.transaction(async (transaction) => {
+                // delete savings + opt
+                await Savings.destroy({ where: {}, transaction });
+                await SavingsOption.destroy({ where: {}, transaction });
+            });
+        } catch (err) {
+            throw err;
+        }
+        return true;
     }
-    return true;
-  }
 
-  async GetSavings(): Promise<SavingsDTO[]> {
-    return await Savings.findAll();
-  }
-
-  async GetSavingsOpts(): Promise<SavingsOptionsDTO[]> {
-    return await SavingsOption.findAll();
-  }
-
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // Installment method
-
-  async SaveInstallments(
-    installmentList: InstallmentDTO[],
-    installmentOptList: InstallmentOptionsDTO[],
-  ): Promise<boolean> {
-    try {
-      await this.dbService.transaction(async (transaction) => {
-        // save installment + opt
-        await Installment.bulkCreate(installmentList, { transaction });
-        await InstallmentOption.bulkCreate(installmentOptList, { transaction });
-      });
-    } catch (err) {
-      throw err;
+    async GetSavings(): Promise<SavingsDTO[]> {
+        return await Savings.findAll();
     }
-    return true;
-  }
 
-  async DeleteAllInstallment(): Promise<boolean> {
-    try {
-      await this.dbService.transaction(async (transaction) => {
-        // delete installment + opt
-        await Installment.destroy({ where: {}, transaction });
-        await InstallmentOption.destroy({ where: {}, transaction });
-      });
-    } catch (err) {
-      throw err;
+    async GetSavingsOpts(): Promise<SavingsOptionsDTO[]> {
+        return await SavingsOption.findAll();
     }
-    return true;
-  }
 
-  async GetInstallments(): Promise<InstallmentDTO[]> {
-    return await Installment.findAll();
-  }
-  async GetInstallmentOpts(): Promise<InstallmentOptionsDTO[]> {
-    return await InstallmentOption.findAll();
-  }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Installment method
+
+    async SaveInstallments(
+        installmentList: InstallmentDTO[],
+        installmentOptList: InstallmentOptionsDTO[],
+    ): Promise<boolean> {
+        try {
+            await this.dbService.transaction(async (transaction) => {
+                // save installment + opt
+                await Installment.bulkCreate(installmentList, { transaction });
+                await InstallmentOption.bulkCreate(installmentOptList, { transaction });
+            });
+        } catch (err) {
+            throw err;
+        }
+        return true;
+    }
+
+    async DeleteAllInstallment(): Promise<boolean> {
+        try {
+            await this.dbService.transaction(async (transaction) => {
+                // delete installment + opt
+                await Installment.destroy({ where: {}, transaction });
+                await InstallmentOption.destroy({ where: {}, transaction });
+            });
+        } catch (err) {
+            throw err;
+        }
+        return true;
+    }
+
+    async GetInstallments(): Promise<InstallmentDTO[]> {
+        return await Installment.findAll();
+    }
+    async GetInstallmentOpts(): Promise<InstallmentOptionsDTO[]> {
+        return await InstallmentOption.findAll();
+    }
 }

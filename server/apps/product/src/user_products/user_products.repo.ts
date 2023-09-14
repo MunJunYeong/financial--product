@@ -7,13 +7,13 @@ import { Sequelize } from 'sequelize-typescript';
 
 @Injectable()
 export class UserProductsRepo {
-  constructor(@Inject('SEQUELIZE') private readonly sequelize: Sequelize) {}
+    constructor(@Inject('SEQUELIZE') private readonly sequelize: Sequelize) {}
 
-  async SaveUserProduct(product: Product) {
-    try{
-      return await product.save();
-    }catch(err){
-      throw err;
+    async SaveUserProduct(product: Product) {
+        try {
+            return await product.save();
+        } catch (err) {
+            throw err;
+        }
     }
-  }
 }
