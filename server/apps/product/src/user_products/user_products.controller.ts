@@ -28,6 +28,7 @@ export class UserProductsController {
   })
   @Post('/:user_idx')
   async saveProduct(@Param('user_idx', ParseIntPipe) userIdx: number, @Body() productDTO: ProductDTO) {
+    console.log(productDTO)
     return await this.service.SaveUserProduct(userIdx, productDTO);
   }
 

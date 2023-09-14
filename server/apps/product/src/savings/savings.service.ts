@@ -246,7 +246,7 @@ export class SavingsService {
   // Installment method
 
   // save all
-  async SaveInstallments() {
+  async SaveInstallments(): Promise<Boolean> {
     // delete installments + opts
     await this.savingsRepo.DeleteAllInstallment();
 

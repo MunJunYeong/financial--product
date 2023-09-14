@@ -2,17 +2,13 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsString } from 'class-validator';
 
 export class OtpEnabledDTO {
-  @ApiProperty({
-    example: 'boolean',
-  })
-  @IsBoolean()
-  otp_enabled: boolean;
+    @ApiProperty({ description: 'otp 활성화 여부' })
+    @IsBoolean()
+    otp_enabled: boolean;
 }
 
 export class TokenDTO {
-  @ApiProperty({
-    example: 'string',
-  })
-  @IsString()
-  refresh_token: string;
+    @ApiProperty({ description: 'refresh token' })
+    @IsString()
+    refresh_token: string;
 }

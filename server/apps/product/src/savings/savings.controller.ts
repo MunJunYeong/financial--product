@@ -52,7 +52,7 @@ export class SavingsController {
     isArray: true,
   })
   @Get('savings/:fin_prdt_cd')
-  async getDetailSavings(@Param('fin_prdt_cd') prodCode: string) {
+  async getDetailSavings(@Param('fin_prdt_cd') prodCode: string): Promise<ProductWithOptionDTO[]> {
     return await this.savingsService.GetDetailSavings(prodCode);
   }
 
@@ -65,7 +65,7 @@ export class SavingsController {
     isArray: true,
   })
   @Get('savings')
-  async getSavings() {
+  async getSavings(): Promise<ProductWithOptionDTO[]> {
     return await this.savingsService.GetSavings();
   }
 
@@ -82,7 +82,7 @@ export class SavingsController {
     },
   })
   @Post('installment')
-  async postInstallments() {
+  async postInstallments(): Promise<Boolean> {
     return await this.savingsService.SaveInstallments();
   }
 
@@ -95,7 +95,7 @@ export class SavingsController {
     isArray: true,
   })
   @Get('installment/best')
-  async getBestInstallments() {
+  async getBestInstallments(): Promise<ProductWithOptionDTO[]> {
     return await this.savingsService.GetBestInstallments();
   }
 
@@ -108,7 +108,7 @@ export class SavingsController {
     isArray: true,
   })
   @Get('installment/:fin_prdt_cd')
-  async getDetailInstallments(@Param('fin_prdt_cd') prodCode: string) {
+  async getDetailInstallments(@Param('fin_prdt_cd') prodCode: string): Promise<ProductWithOptionDTO[]> {
     return await this.savingsService.GetDetailInstallments(prodCode);
   }
 
@@ -121,7 +121,7 @@ export class SavingsController {
     isArray: true,
   })
   @Get('installment')
-  async findInstallmentSavings() {
+  async findInstallmentSavings(): Promise<ProductWithOptionDTO[]> {
     return await this.savingsService.GetInstallment();
   }
 }
