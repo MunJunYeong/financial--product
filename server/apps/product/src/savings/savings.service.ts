@@ -22,12 +22,12 @@ export class SavingsService {
         private readonly configService: ConfigurationService,
         private readonly axios: AxiosService,
         private readonly savingsRepo: SavingsRepo,
-        private readonly commonService: CommonService,
+        private readonly common: CommonService,
     ) {}
 
     // api 통신
     private async _getData(url: string) {
-        const token = this.configService.get<string>('API_ACCESS_TOKEN');
+        const token = this.configService.get<string>(this.common.Configs.ACCESS_TOKEN);
         let res: any;
         try {
             const { data } = await firstValueFrom(
@@ -130,7 +130,7 @@ export class SavingsService {
         } catch (err) {
             throw new HttpException(
                 {
-                    message: this.commonService.Errors.FETCH_SAVINGS,
+                    message: this.common.Errors.FETCH_SAVINGS,
                     error: err.message,
                 },
                 HttpStatus.INTERNAL_SERVER_ERROR,
@@ -151,7 +151,7 @@ export class SavingsService {
         } catch (err) {
             throw new HttpException(
                 {
-                    message: this.commonService.Errors.DB_SAVE_SAVINGS,
+                    message: this.common.Errors.DB_SAVE_SAVINGS,
                     error: err.message,
                 },
                 HttpStatus.INTERNAL_SERVER_ERROR,
@@ -170,7 +170,7 @@ export class SavingsService {
         } catch (err) {
             throw new HttpException(
                 {
-                    message: this.commonService.Errors.DB_GET_SAVINGS,
+                    message: this.common.Errors.DB_GET_SAVINGS,
                     error: err.message,
                 },
                 HttpStatus.INTERNAL_SERVER_ERROR,
@@ -203,7 +203,7 @@ export class SavingsService {
         } catch (err) {
             throw new HttpException(
                 {
-                    message: this.commonService.Errors.DB_GET_SAVINGS,
+                    message: this.common.Errors.DB_GET_SAVINGS,
                     error: err.message,
                 },
                 HttpStatus.INTERNAL_SERVER_ERROR,
@@ -229,7 +229,7 @@ export class SavingsService {
         } catch (err) {
             throw new HttpException(
                 {
-                    message: this.commonService.Errors.DB_GET_SAVINGS,
+                    message: this.common.Errors.DB_GET_SAVINGS,
                     error: err.message,
                 },
                 HttpStatus.INTERNAL_SERVER_ERROR,
@@ -259,7 +259,7 @@ export class SavingsService {
         } catch (err) {
             throw new HttpException(
                 {
-                    message: this.commonService.Errors.FETCH_INSTALLMENT,
+                    message: this.common.Errors.FETCH_INSTALLMENT,
                     error: err.message,
                 },
                 HttpStatus.INTERNAL_SERVER_ERROR,
@@ -279,7 +279,7 @@ export class SavingsService {
         } catch (err) {
             throw new HttpException(
                 {
-                    message: this.commonService.Errors.DB_SAVE_INSTALLMENT,
+                    message: this.common.Errors.DB_SAVE_INSTALLMENT,
                     error: err.message,
                 },
                 HttpStatus.INTERNAL_SERVER_ERROR,
@@ -298,7 +298,7 @@ export class SavingsService {
         } catch (err) {
             throw new HttpException(
                 {
-                    message: this.commonService.Errors.DB_GET_INSTALLMENT,
+                    message: this.common.Errors.DB_GET_INSTALLMENT,
                     error: err.message,
                 },
                 HttpStatus.INTERNAL_SERVER_ERROR,
@@ -330,7 +330,7 @@ export class SavingsService {
         } catch (err) {
             throw new HttpException(
                 {
-                    message: this.commonService.Errors.DB_GET_INSTALLMENT,
+                    message: this.common.Errors.DB_GET_INSTALLMENT,
                     error: err.message,
                 },
                 HttpStatus.INTERNAL_SERVER_ERROR,
@@ -355,7 +355,7 @@ export class SavingsService {
         } catch (err) {
             throw new HttpException(
                 {
-                    message: this.commonService.Errors.DB_GET_INSTALLMENT,
+                    message: this.common.Errors.DB_GET_INSTALLMENT,
                     error: err.message,
                 },
                 HttpStatus.INTERNAL_SERVER_ERROR,

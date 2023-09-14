@@ -3,14 +3,16 @@ import { ConfigurationService } from '@app/configuration';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtService } from './jwt.service';
+import { CommonModule, CommonService } from '@app/common';
 
 @Module({
     imports: [
         PassportModule.register({ defaultStrategy: 'jwt' }),
+        CommonModule,
         JwtModule.registerAsync({
-            inject: [ConfigurationService],
-            useFactory: async (configService: ConfigurationService) => ({
-                secret: configService.get<string>('JWT_SECRET'),
+            inject: [ConfigurationService, CommonService],
+            useFactory: async (config: ConfigurationService, common: CommonService) => ({
+                secret: config.get<string>(common.Configs.JWT_SECRET),
                 signOptions: { expiresIn: '60s' },
             }),
         }),
