@@ -1,5 +1,5 @@
 // vendor
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Sequelize } from 'sequelize-typescript';
 
 // cus
