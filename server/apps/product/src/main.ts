@@ -3,6 +3,7 @@ import { ProductModule } from './product.module';
 import { SwaggerConfig } from './swagger.config';
 import { ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from '@app/common/filters/http-exception.filter';
+import { CommonService, ConfigurationService } from 'libs';
 
 async function bootstrap() {
     const app = await NestFactory.create(ProductModule);
@@ -23,6 +24,8 @@ async function bootstrap() {
         }),
     );
 
-    await app.listen(8089);
+    const config = app.get(ConfigurationService);
+    const common = app.get(CommonService);
+    await app.listen(config.get<string>(common.Configs.PROD_PORT));
 }
 bootstrap();

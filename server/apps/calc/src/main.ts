@@ -3,6 +3,7 @@ import { CalcModule } from './calc.module';
 import { SwaggerConfig } from './swagger.config';
 import { ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from '@app/common/filters/http-exception.filter';
+import { CommonService, ConfigurationService } from 'libs';
 
 async function bootstrap() {
     const app = await NestFactory.create(CalcModule);
@@ -23,6 +24,8 @@ async function bootstrap() {
         }),
     );
 
-    await app.listen(8088);
+    const config = app.get(ConfigurationService);
+    const common = app.get(CommonService);
+    await app.listen(config.get<string>(common.Configs.CALC_PORT));
 }
 bootstrap();
