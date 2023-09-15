@@ -8,7 +8,6 @@ import { CommonModule, CommonService } from '@app/common';
 @Module({
     imports: [
         PassportModule.register({ defaultStrategy: 'jwt' }),
-        CommonModule,
         JwtModule.registerAsync({
             inject: [ConfigurationService, CommonService],
             useFactory: async (config: ConfigurationService, common: CommonService) => ({
