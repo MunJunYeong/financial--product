@@ -10,17 +10,4 @@ import { ApiOkResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagg
 @Controller()
 export class ProductController {
     constructor(private readonly productService: ProductService) {}
-
-    // Ping-Pong Test
-    @ApiOperation({ summary: 'product ping pong test' })
-    @ApiOkResponse({
-        description: '핑퐁 성공 유무',
-        schema: {
-            example: { success: 'pong' },
-        },
-    })
-    @Get('/ping')
-    testPingPong() {
-        return 'pong';
-    }
 }

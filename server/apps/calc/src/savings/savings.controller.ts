@@ -56,12 +56,12 @@ export class SavingsController {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 선납이연 계산기
-    @ApiOperation({ summary: 'calc prepost savings' })
-    @Get('/prepost')
-    findSavingsDate(@Body() inputSavings: PrePostPaymentDTO) {
-        //TODO: validateeion 추가하기
-        const tempDate = new Date(inputSavings.startDate);
-        inputSavings.startDate = tempDate;
-        const temp = this.savingsService.calcPrePost(inputSavings);
-    }
+    // @ApiOperation({ summary: 'calc prepost savings' })
+    // @Get('/prepost')
+    // findSavingsDate(@Body() inputSavings: PrePostPaymentDTO) {
+    //     //TODO: validateeion 추가하기
+    //     const tempDate = new Date(inputSavings.startDate);
+    //     inputSavings.startDate = tempDate;
+    //     const temp = this.savingsService.calcPrePost(inputSavings);
+    // }
 }
