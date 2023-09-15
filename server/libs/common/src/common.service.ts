@@ -20,5 +20,8 @@ export class CommonService {
         DB_PASSWORD: 'DB_PASSWORD',
         DB_DATABASE: 'DB_DATABASE',
         JWT_SECRET: 'JWT_SECRET',
+        AUTH_PORT: 'AUTH_PORT',
+        CALC_PORT: 'CALC_PORT',
+        PROD_PORT: 'PROD_PORT',
     };
 }
