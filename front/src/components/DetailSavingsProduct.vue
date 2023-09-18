@@ -18,28 +18,39 @@
             예금 유형: {{ item.rsrv_type_nm }}
           </v-card-text>
           <v-card-actions>
-            <v-btn text @click="goToDetailProduct(item.fin_prdt_cd)"
-              >자세히</v-btn
-            >
+            <v-btn text @click="saveProduct(item.fin_prdt_cd)">저장하기</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
+
+    <SubmitDateDialog ref="startDateDialog" />
   </v-container>
 </template>
 
 <script>
 // cus
+import SubmitDateDialog from "@/components/SubmitDateDialog.vue";
 import { formatAmount } from "../lib/formatter";
+import { openDialog } from "../lib/defines";
+import { SavingsType } from "../lib/type";
 
 export default {
   name: "DetailSavingsProduct",
+  components: {
+    SubmitDateDialog,
+  },
   props: ["fin_prdt_cd"],
   async created() {
     this.product = await this.$store.dispatch(
       "SET_DETAIL_SAVINGS",
       this.fin_prdt_cd
     );
+  },
+  computed: {
+    userData: function () {
+      return this.$store.getters.GET_USER;
+    },
   },
   data() {
     return {
@@ -48,6 +59,34 @@ export default {
   },
   methods: {
     formatAmount,
+    async saveProduct() {
+      console.log(this.product);
+      if (!this.userData) {
+        this.$store.dispatch(openDialog, "로그인 후 이용해주세요.");
+        return;
+      }
+
+      // 단리 복리 여부 확인
+      const isSimple = this.product.intr_rate_type_nm === "단리" ? true : false;
+      
+      
+      const startDate = await this.$refs.startDateDialog.waitForDate();
+      this.$nextTick(async () => {
+        const res = await this.$store.dispatch("SAVE_PRODUCT_AFTER_CALC", {
+          period: this.product.save_trm, // TODO: default : 잡을지 ? 아니면 사용자 수정가능하게 잡을지
+          price: this.max_limit, // TODO: default
+          rate: this.savingsRate,
+          isSimple: isSimple,
+          startDate: startDate,
+          type: SavingsType.SAVINGS,
+          totalInterest: this.savingsTotalInterest,
+          userIdx: Number(this.userData.user_idx),
+        });
+        if (res) {
+          this.$store.dispatch(openDialog, "저장 성공");
+        }
+      });
+    },
   },
 };
 </script>

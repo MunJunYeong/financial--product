@@ -81,7 +81,7 @@
                 >
                 <v-switch
                   v-model="savingsIsSimple"
-                  label="복리 적용 여부"
+                  label="단리 적용 여부"
                 ></v-switch>
                 <v-btn
                   color="primary"
@@ -220,7 +220,10 @@
                 <v-btn small class="mr-2" @click="increaseDepositRate(1)"
                   >1.0</v-btn
                 >
-                <v-switch hidden> </v-switch>
+                <v-switch
+                  v-model="depositIsSimple"
+                  label="단리 적용 여부"
+                ></v-switch>
                 <v-btn
                   color="primary"
                   :disabled="!depositValid"
@@ -284,6 +287,8 @@
 <script>
 import SubmitDateDialog from "@/components/SubmitDateDialog.vue";
 
+import { calculateDeposits, calculateSavings } from "../lib/calc/savings";
+
 import { formatAmount } from "../lib/formatter";
 import { SavingsType } from "../lib/type";
 import { openDialog } from "../lib/defines";
@@ -314,6 +319,7 @@ export default {
       depositPeriod: 0,
       depositAmount: 0,
       depositRate: 0,
+      depositIsSimple: true,
       depositTotalInterest: null,
       depositInterest15: 0,
       depositInterest9: 0,
@@ -371,15 +377,13 @@ export default {
       this.savingsRate = 0;
     },
     // 정기 적금 계산
-    async calcRegSavings() {
-      let res;
+    calcRegSavings() {
       if (this.$refs.savingsForm.validate()) {
-        res = await this.$store.dispatch("CALC_REG_SAVINGS_DEPOSIT", {
+        const res = calculateSavings({
           period: this.savingsPeriod,
           price: this.savingsAmount,
           rate: this.savingsRate,
           isSimple: this.savingsIsSimple,
-          type: SavingsType.SAVINGS,
         });
         if (res) {
           this.savingsTotalInterest = res.taxFreeInterest;
@@ -442,12 +446,13 @@ export default {
     },
     async calcRegDeposit() {
       if (this.$refs.depositForm.validate()) {
-        const res = await this.$store.dispatch("CALC_REG_SAVINGS_DEPOSIT", {
+        const res = calculateDeposits({
           period: this.depositPeriod,
           price: this.depositAmount,
           rate: this.depositRate,
-          type: SavingsType.DEPOSIT,
+          isSimple: this.depositIsSimple,
         });
+
         if (res) {
           this.depositTotalInterest = res.taxFreeInterest;
           this.depositInterest15 = res.taxGeneralInterest;
