@@ -18,7 +18,7 @@
             예금 유형: {{ item.rsrv_type_nm }}
           </v-card-text>
           <v-card-actions>
-            <v-btn text @click="saveProduct(item.fin_prdt_cd)">저장하기</v-btn>
+            <v-btn text @click="saveProduct(index)">저장하기</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -34,6 +34,7 @@ import SubmitDateDialog from "@/components/SubmitDateDialog.vue";
 import { formatAmount } from "../lib/formatter";
 import { openDialog } from "../lib/defines";
 import { SavingsType } from "../lib/type";
+import { calculateSavings } from "../lib/calc/savings";
 
 export default {
   name: "DetailSavingsProduct",
@@ -59,8 +60,9 @@ export default {
   },
   methods: {
     formatAmount,
-    async saveProduct() {
-      console.log(this.product);
+
+    // save product
+    async saveProduct(index) {
       if (!this.userData) {
         this.$store.dispatch(openDialog, "로그인 후 이용해주세요.");
         return;
@@ -68,18 +70,30 @@ export default {
 
       // 단리 복리 여부 확인
       const isSimple = this.product.intr_rate_type_nm === "단리" ? true : false;
-      
-      
+
       const startDate = await this.$refs.startDateDialog.waitForDate();
+
+      const { save_trm, max_limit, intr_rate2, fin_prdt_nm } =
+        this.product[index];
+
+      // 총 이자 계산
+      const { totalInterest } = calculateSavings({
+        period: save_trm,
+        price: max_limit,
+        rate: intr_rate2,
+        isSimple: isSimple,
+      });
+
       this.$nextTick(async () => {
         const res = await this.$store.dispatch("SAVE_PRODUCT_AFTER_CALC", {
-          period: this.product.save_trm, // TODO: default : 잡을지 ? 아니면 사용자 수정가능하게 잡을지
-          price: this.max_limit, // TODO: default
-          rate: this.savingsRate,
+          period: Number(save_trm), // TODO: default : 잡을지 ? 아니면 사용자 수정가능하게 잡을지
+          price: max_limit, // TODO: default
+          rate: intr_rate2,
           isSimple: isSimple,
+          name: fin_prdt_nm,
           startDate: startDate,
           type: SavingsType.SAVINGS,
-          totalInterest: this.savingsTotalInterest,
+          totalInterest: totalInterest,
           userIdx: Number(this.userData.user_idx),
         });
         if (res) {
