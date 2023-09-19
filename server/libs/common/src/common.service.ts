@@ -24,4 +24,8 @@ export class CommonService {
         CALC_PORT: 'CALC_PORT',
         PROD_PORT: 'PROD_PORT',
     };
+
+    Sign = {
+
+    };
 }
