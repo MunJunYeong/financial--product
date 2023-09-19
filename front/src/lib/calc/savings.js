@@ -23,6 +23,7 @@ const _createTax = (totalInterest) => {
 const calculateSavings = (data) => {
   let { period, price, rate, isSimple } = data;
 
+  console.log(data)
   const numericRate = parseFloat(rate);
   const monthlyInterestRate = numericRate / 100;
   let total = 0;

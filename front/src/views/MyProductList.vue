@@ -21,9 +21,15 @@ import { formatDate } from "../lib/formatter";
 
 export default {
   name: "MyProductList",
-  mounted() {
-    const userIdx = this.userData.user_idx; // 사용자 ID 가져오기, 필요에 따라 조정
-    this.getMyProducts(userIdx);
+  watch: {
+    userData: {
+      immediate: true, // 컴포넌트 초기화 시에도 감시 함수 실행
+      handler(newValue) {
+        if (newValue && newValue.user_idx) {
+          this.getMyProducts(newValue.user_idx);
+        }
+      },
+    },
   },
   computed: {
     userData: function () {

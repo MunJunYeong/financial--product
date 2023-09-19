@@ -68,14 +68,18 @@ export default {
         return;
       }
 
-      // 단리 복리 여부 확인
-      const isSimple = this.product.intr_rate_type_nm === "단리" ? true : false;
-
       const startDate = await this.$refs.startDateDialog.waitForDate();
 
-      const { save_trm, max_limit, intr_rate2, fin_prdt_nm } =
-        this.product[index];
+      const {
+        save_trm,
+        max_limit,
+        intr_rate2,
+        fin_prdt_nm,
+        intr_rate_type_nm,
+      } = this.product[index];
 
+      // 단리 복리 여부 확인
+      const isSimple = intr_rate_type_nm === "단리" ? true : false;
       // 총 이자 계산
       const { totalInterest } = calculateSavings({
         period: save_trm,
@@ -86,8 +90,8 @@ export default {
 
       this.$nextTick(async () => {
         const res = await this.$store.dispatch("SAVE_PRODUCT_AFTER_CALC", {
-          period: Number(save_trm), // TODO: default : 잡을지 ? 아니면 사용자 수정가능하게 잡을지
-          price: max_limit, // TODO: default
+          period: Number(save_trm),
+          price: max_limit,
           rate: intr_rate2,
           isSimple: isSimple,
           name: fin_prdt_nm,

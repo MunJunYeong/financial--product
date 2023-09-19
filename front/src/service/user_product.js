@@ -27,6 +27,7 @@ const SaveProductAfterCalc = async (data) => {
     .format("YYYY-MM-DD");
   data.name = data.name || "N/A";
 
+  console.log(data)
   try {
     const res = await utils.POST(`${url}/user-prod/${data.userIdx}`, {
       name: data.name,
