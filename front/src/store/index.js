@@ -1,20 +1,18 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
 
-import auth from './auth'
-import calc from './calc'
-import product from './product'
-import userProduct from './user_product'
-import common from './common'
+import auth from "./auth";
+import product from "./product";
+import userProduct from "./user_product";
+import common from "./common";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: {
     auth,
-    calc,
     product,
     userProduct,
-    common
-  }
-})
+    common,
+  },
+});

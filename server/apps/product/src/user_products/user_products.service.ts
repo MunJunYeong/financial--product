@@ -35,6 +35,7 @@ export class UserProductsService {
             });
             await product.save();
         } catch (err) {
+            console.log(err)
             throw err;
         }
         return true;

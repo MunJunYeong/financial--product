@@ -39,7 +39,7 @@ export class Product extends Model<Product> {
     period: number;
 
     @ApiProperty({ description: '이율' })
-    @Column
+    @Column(DataType.FLOAT)
     rate: number;
 
     @ApiProperty({ description: '월 납입금' })
