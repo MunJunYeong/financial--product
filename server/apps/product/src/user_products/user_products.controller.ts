@@ -1,5 +1,5 @@
 // vendor
-import { Body, Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
 import { ApiOperation, ApiTags, ApiResponse, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 
 // cus
@@ -60,5 +60,22 @@ export class UserProductsController {
         @Param('product_idx', ParseIntPipe) productIdx: number,
     ) {
         return await this.service.GetUserProduct(userIdx, productIdx);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // update user's product
+    @ApiTags('User product')
+    @ApiOperation({ summary: "update user's product" })
+    @ApiOkResponse({
+        description: '사용자 저장 상품 업데이트',
+        type: Boolean,
+    })
+    @Put('/:user_idx/prod/:product_idx')
+    async UpdateProduct(
+        @Param('user_idx', ParseIntPipe) userIdx: number,
+        @Param('product_idx', ParseIntPipe) productIdx: number,
+        @Body() product: Product
+    ) {
+        return await this.service.UpdateUserProduct(userIdx, productIdx, product);
     }
 }

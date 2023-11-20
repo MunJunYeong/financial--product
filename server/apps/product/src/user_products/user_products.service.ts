@@ -69,4 +69,24 @@ export class UserProductsService {
             throw err;
         }
     }
+    // update user's product
+    async UpdateUserProduct(userIdx: number, productIdx: number, product: Product): Promise<Boolean> {
+        try {
+            // 1. find user
+            const user = await this.userRepo.FindUserByIdxIncProd(userIdx);
+
+            // 2. find product by productIdx
+            const product = user.products.find((p) => Number(p.product_idx) === productIdx);
+
+            if (!product) {
+                throw new Error('Product not found');
+            }
+
+            // 3. update
+            return await this.prodRepo.UpdateProduct(productIdx, product);
+            ;
+        } catch (err) {
+            throw err;
+        }
+    }
 }

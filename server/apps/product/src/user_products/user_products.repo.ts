@@ -16,4 +16,23 @@ export class UserProductsRepo {
             throw err;
         }
     }
+
+    async UpdateProduct(productIdx: number, product: Product): Promise<Boolean> {
+        try {
+            const updatedRows = await Product.update(
+                {
+                    name : product.name,
+                },
+                {
+                    where : {
+                        product_idx : productIdx
+                    }
+                }
+            )
+            return updatedRows[0] > 0;
+        }catch(err) {
+            throw err;
+        }
+    }
+
 }
