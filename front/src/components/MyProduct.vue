@@ -5,8 +5,27 @@
       <v-card-text>
         <v-list dense>
           <v-list-item class="px-0">
-            <v-list-item-content>Name: {{ product.name }}</v-list-item-content>
+            <v-list-item-content>
+              <!-- Edit 버튼이 표시된 경우와 아닌 경우를 나누어 표시 -->
+              <div v-if="!editMode">
+                Name: {{ product.name }}
+                <v-btn @click="toggleEditMode" small
+                  ><v-icon>mdi-pencil</v-icon>
+                </v-btn>
+              </div>
+              <div v-else>
+                <!-- 사용자가 입력할 수 있는 텍스트 필드와 Update 버튼 -->
+                <v-text-field v-model="editedName" label="Name"></v-text-field>
+                <v-btn @click="updateName" small class="mr-2">
+                  <v-icon>mdi-check</v-icon>
+                </v-btn>
+                <v-btn @click="toggleEditMode" small>
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </div>
+            </v-list-item-content>
           </v-list-item>
+
           <v-list-item class="px-0">
             <v-list-item-content
               >Type:
@@ -83,11 +102,20 @@ export default {
   data() {
     return {
       product: null, // product를 지역 상태로 추가
+      editMode: false,
+      editedName: "",
     };
   },
   methods: {
     formatDate,
     formatAmount,
+    toggleEditMode() {
+      // Edit 모드를 토글합니다.
+      this.editMode = !this.editMode;
+
+      // Edit 모드가 시작될 때 사용자가 입력할 수 있는 텍스트 필드 초기화
+      this.editedName = this.product.name;
+    },
   },
 };
 </script>
