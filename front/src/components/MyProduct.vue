@@ -17,10 +17,10 @@
                 <!-- 사용자가 입력할 수 있는 텍스트 필드와 Update 버튼 -->
                 <v-text-field v-model="editedName" label="Name"></v-text-field>
                 <v-btn @click="updateName" small class="mr-2">
-                  <v-icon>mdi-check</v-icon>
+                  <v-icon>mdi-check</v-icon> Update
                 </v-btn>
                 <v-btn @click="toggleEditMode" small>
-                  <v-icon>mdi-close</v-icon>
+                  <v-icon>mdi-close</v-icon> Cancel
                 </v-btn>
               </div>
             </v-list-item-content>
@@ -82,6 +82,7 @@
 
 <script>
 import { formatDate, formatAmount } from "../lib/formatter";
+import { openDialog } from "../lib/defines";
 
 export default {
   name: "MyProduct",
@@ -94,6 +95,7 @@ export default {
     },
   },
   async created() {
+    console.log(this.userData);
     this.product = await this.$store.dispatch("GET_USER_PRODUCT", {
       userIdx: this.userData.user_idx,
       productIdx: this.product_idx,
@@ -115,6 +117,21 @@ export default {
 
       // Edit 모드가 시작될 때 사용자가 입력할 수 있는 텍스트 필드 초기화
       this.editedName = this.product.name;
+    },
+    async updateName() {
+      const res = await this.$store.dispatch("UPDATE_MY_PRODUCT", {
+        userIdx: this.userData.user_idx,
+        productIdx: this.product.product_idx,
+        name: this.editedName,
+      });
+      if (!res) {
+        this.$store.dispatch(openDialog, res);
+        return;
+      }
+      this.product.name = this.editedName;
+
+      // Edit 모드를 다시 비활성화
+      this.editMode = false;
     },
   },
 };

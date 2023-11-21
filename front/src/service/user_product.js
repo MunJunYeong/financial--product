@@ -5,7 +5,7 @@ import moment from "moment";
 import utils from "../lib/utils"
 
 // preset
-const url = process.env.VUE_APP_AUTH_PROD_URL;
+const url = process.env.VUE_APP_AUTH_PROD_URL + "/user-prod";
 
 /**
  * Save user's product
@@ -53,7 +53,7 @@ const SaveProductAfterCalc = async (data) => {
  */
 const GetUserProducts = async (userIdx) => {
   try {
-    const res = await utils.GET(`${url}/user-prod/${userIdx}`, {});
+    const res = await utils.GET(`${url}/${userIdx}`, {});
     return res;
   } catch (err) {
     console.log(err);
@@ -69,7 +69,23 @@ const GetUserProducts = async (userIdx) => {
 const GetUserProduct = async (userIdx, productIdx) => {
   try {
     const res = await utils.GET(
-      `${url}/user-prod/${Number(userIdx)}/prod/${Number(productIdx)}`
+      `${url}/${Number(userIdx)}/prod/${Number(productIdx)}`
+    );
+    return res;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+// get detail installments by product code
+const UpdateUserProduct = async (name, userIdx, productIdx) => {
+  try {
+    const res = await utils.UPDATE(
+      `${url}/${userIdx}/prod/${productIdx}`,
+      {
+        name: name,
+      }
     );
     return res;
   } catch (err) {
@@ -82,4 +98,5 @@ export default {
   SaveProductAfterCalc,
   GetUserProducts,
   GetUserProduct,
+  UpdateUserProduct,
 };

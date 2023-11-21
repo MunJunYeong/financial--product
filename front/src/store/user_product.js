@@ -55,6 +55,20 @@ const userProductModule = {
         return false;
       }
     },
+    //
+    async UPDATE_MY_PRODUCT({ dispatch }, product) {
+      try {
+        const res = await prodService.UpdateUserProduct(
+          product.name,
+          product.userIdx,
+          product.productIdx
+        );
+        return res.data;
+      } catch (err) {
+        dispatch(openDialog, err.message, { root: true });
+        return false;
+      }
+    },
   },
 };
 
