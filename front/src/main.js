@@ -5,7 +5,7 @@ import router from "./router";
 import vuetify from "./plugins/vuetify";
 import jwt_decode from "jwt-decode";
 
-import utils from "./lib/utils";
+import utils from "./lib/utils/http";
 
 Vue.config.productionTip = false;
 

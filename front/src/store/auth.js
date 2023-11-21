@@ -4,7 +4,7 @@ import jwt_decode from "jwt-decode";
 
 // cus
 import AuthService from "@/service/auth";
-import utils from "../lib/utils";
+import utils from "../lib/utils/http";
 import { openDialog } from "@/lib/defines";
 
 const authModule = {
