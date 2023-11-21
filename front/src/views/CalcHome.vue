@@ -285,10 +285,10 @@
 </template>
 
 <script>
-import SubmitDateDialog from "@/components/SubmitDateDialog.vue";
+import SubmitDateDialog from "@/components/dialog/SubmitDateDialog.vue";
 
+// cus
 import { calculateDeposits, calculateSavings } from "../lib/calc/savings";
-
 import { formatAmount } from "../lib/formatter";
 import { SavingsType } from "../lib/type";
 import { openDialog } from "../lib/defines";

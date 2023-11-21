@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import AlertDialog from "@/components/AlertDialog.vue";
+import AlertDialog from "@/components/dialog/AlertDialog.vue";
 
 export default {
   components: {

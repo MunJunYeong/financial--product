@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import SubmitDateDialog from "@/components/SubmitDateDialog.vue";
-import SubmitMaxLimitDialog from "@/components/SubmitMaxLimitDialog.vue";
+import SubmitDateDialog from "@/components/dialog/SubmitDateDialog.vue";
+import SubmitMaxLimitDialog from "@/components/dialog/SubmitMaxLimitDialog.vue";
 
 // cus
 import { calculateDeposits } from "../lib/calc/savings";

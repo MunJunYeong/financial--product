@@ -42,7 +42,9 @@
 </template>
 
 <script>
+// cus
 import { openDialog } from "../lib/defines";
+
 export default {
   name: "SignUp",
   data() {

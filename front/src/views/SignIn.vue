@@ -28,7 +28,9 @@
 </template>
 
 <script>
+
 import { openDialog } from "../lib/defines";
+
 export default {
   name: "SignIn",
   data() {

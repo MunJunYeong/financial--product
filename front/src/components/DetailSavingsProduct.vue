@@ -29,8 +29,9 @@
 </template>
 
 <script>
+import SubmitDateDialog from "@/components/dialog/SubmitDateDialog.vue";
+
 // cus
-import SubmitDateDialog from "@/components/SubmitDateDialog.vue";
 import { formatAmount } from "../lib/formatter";
 import { openDialog } from "../lib/defines";
 import { SavingsType } from "../lib/type";
