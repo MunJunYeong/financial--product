@@ -5,8 +5,27 @@
       <v-card-text>
         <v-list dense>
           <v-list-item class="px-0">
-            <v-list-item-content>Name: {{ product.name }}</v-list-item-content>
+            <v-list-item-content>
+              <!-- Edit 버튼이 표시된 경우와 아닌 경우를 나누어 표시 -->
+              <div v-if="!editMode">
+                Name: {{ product.name }}
+                <v-btn @click="toggleEditMode" small
+                  ><v-icon>mdi-pencil</v-icon>
+                </v-btn>
+              </div>
+              <div v-else>
+                <!-- 사용자가 입력할 수 있는 텍스트 필드와 Update 버튼 -->
+                <v-text-field v-model="editedName" label="Name"></v-text-field>
+                <v-btn @click="updateName" small class="mr-2">
+                  <v-icon>mdi-check</v-icon> Update
+                </v-btn>
+                <v-btn @click="toggleEditMode" small>
+                  <v-icon>mdi-close</v-icon> Cancel
+                </v-btn>
+              </div>
+            </v-list-item-content>
           </v-list-item>
+
           <v-list-item class="px-0">
             <v-list-item-content
               >Type:
@@ -63,6 +82,7 @@
 
 <script>
 import { formatDate, formatAmount } from "../lib/formatter";
+import { openDialog } from "../lib/defines";
 
 export default {
   name: "MyProduct",
@@ -75,6 +95,7 @@ export default {
     },
   },
   async created() {
+    console.log(this.userData);
     this.product = await this.$store.dispatch("GET_USER_PRODUCT", {
       userIdx: this.userData.user_idx,
       productIdx: this.product_idx,
@@ -83,11 +104,35 @@ export default {
   data() {
     return {
       product: null, // product를 지역 상태로 추가
+      editMode: false,
+      editedName: "",
     };
   },
   methods: {
     formatDate,
     formatAmount,
+    toggleEditMode() {
+      // Edit 모드를 토글합니다.
+      this.editMode = !this.editMode;
+
+      // Edit 모드가 시작될 때 사용자가 입력할 수 있는 텍스트 필드 초기화
+      this.editedName = this.product.name;
+    },
+    async updateName() {
+      const res = await this.$store.dispatch("UPDATE_MY_PRODUCT", {
+        userIdx: this.userData.user_idx,
+        productIdx: this.product.product_idx,
+        name: this.editedName,
+      });
+      if (!res) {
+        this.$store.dispatch(openDialog, res);
+        return;
+      }
+      this.product.name = this.editedName;
+
+      // Edit 모드를 다시 비활성화
+      this.editMode = false;
+    },
   },
 };
 </script>

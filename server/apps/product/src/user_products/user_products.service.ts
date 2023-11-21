@@ -35,7 +35,6 @@ export class UserProductsService {
             });
             await product.save();
         } catch (err) {
-            console.log(err)
             throw err;
         }
         return true;
@@ -65,6 +64,27 @@ export class UserProductsService {
                 throw new Error('Product not found');
             }
             return product;
+        } catch (err) {
+            throw err;
+        }
+    }
+    // update user's product
+    async UpdateUserProduct(userIdx: number, productIdx: number, product: Product): Promise<Boolean> {
+        try {
+            // 1. find user
+            const user = await this.userRepo.FindUserByIdxIncProd(userIdx);
+
+            // 2. find product by productIdx
+            const targetProduct = user.products.find((p) => Number(p.product_idx) === productIdx);
+            if (!targetProduct) {
+                throw new Error('Product not found');
+            }
+
+            // change attr
+            targetProduct.name = product.name;
+
+            // 3. update
+            return await this.prodRepo.UpdateProduct(productIdx, targetProduct);
         } catch (err) {
             throw err;
         }
