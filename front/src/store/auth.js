@@ -5,7 +5,6 @@ import jwt_decode from "jwt-decode";
 // cus
 import AuthService from "@/service/auth";
 import utils from "../lib/utils/http";
-import { openDialog } from "@/lib/defines";
 
 const authModule = {
   state: {
@@ -35,32 +34,22 @@ const authModule = {
   actions: {
     // sign up
     async SIGN_UP({ commit, dispatch }, data) {
-      try {
-        const res = await AuthService.SignUp(data);
-        return res.data;
-      } catch (err) {
-        dispatch(openDialog, err.message, { root: true });
-        return false;
-      }
+      const res = await AuthService.SignUp(data);
+      return res.data;
     },
 
     // sign in (login)
     async SIGN_IN({ commit, dispatch }, inputData) {
-      try {
-        const res = await AuthService.SignIn(inputData);
-        const data = res.data;
-        if (!data) return false; // fail to login
+      const res = await AuthService.SignIn(inputData);
+      const data = res.data;
+      if (!data) return false; // fail to login
 
-        // save token
-        utils.SetToken(data.access_token, data.refresh_token);
-        // set user
-        const user = jwt_decode(data.access_token);
-        commit("SET_USER", user);
-        return true;
-      } catch (err) {
-        dispatch(openDialog, err.message, { root: true });
-        return false;
-      }
+      // save token
+      utils.SetToken(data.access_token, data.refresh_token);
+      // set user
+      const user = jwt_decode(data.access_token);
+      commit("SET_USER", user);
+      return true;
     },
 
     // logout
@@ -70,42 +59,22 @@ const authModule = {
 
     // authenticate
     async AUTHENTICATE({ dispatch }) {
-      try {
-        await AuthService.Authenticate();
-      } catch (err) {
-        dispatch(openDialog, err.message, { root: true });
-        return false;
-      }
+      await AuthService.Authenticate();
     },
     // update user's otp enabled
     async UPDATE_OTP_ENABLED({ commit, dispatch }, data) {
-      try {
-        await AuthService.UpdateOtpEnabled(data);
-        commit("SET_USER_OTP_ENABLED", data.otp_enabled);
-      } catch (err) {
-        dispatch(openDialog, err.message, { root: true });
-        return false;
-      }
+      await AuthService.UpdateOtpEnabled(data);
+      commit("SET_USER_OTP_ENABLED", data.otp_enabled);
     },
     async UPDATE_USER_INFO({ commit, dispatch }, data) {
-      try {
-        await AuthService.UpdateUserInfo(data);
-        commit("SET_USER_INFO", data);
-        return true;
-      } catch (err) {
-        dispatch(openDialog, err.message, { root: true });
-        return false;
-      }
+      await AuthService.UpdateUserInfo(data);
+      commit("SET_USER_INFO", data);
+      return true;
     },
-    async REFRESH_ACCESS_TOKEN({commit, dispatch}, refreshToken) {
-      try {
-        const res =  await AuthService.RefreshAccessToken(refreshToken)
-        return res.data
-      }catch(err) {
-        dispatch(openDialog, err.message, { root: true });
-        return false;
-      }
-    }
+    async REFRESH_ACCESS_TOKEN({ commit, dispatch }, refreshToken) {
+      const res = await AuthService.RefreshAccessToken(refreshToken);
+      return res.data;
+    },
   },
 };
 
