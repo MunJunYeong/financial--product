@@ -82,7 +82,7 @@
 
 <script>
 import { formatDate, formatAmount } from "../lib/formatter";
-import { openDialog } from "../lib/defines";
+import { errMsgInternal, openDialog } from "../lib/defines";
 
 export default {
   name: "MyProduct",
@@ -119,19 +119,23 @@ export default {
       this.editedName = this.product.name;
     },
     async updateName() {
-      const res = await this.$store.dispatch("UPDATE_MY_PRODUCT", {
-        userIdx: this.userData.user_idx,
-        productIdx: this.product.product_idx,
-        name: this.editedName,
-      });
-      if (!res) {
-        this.$store.dispatch(openDialog, res);
-        return;
-      }
-      this.product.name = this.editedName;
+      try {
+        const res = await this.$store.dispatch("UPDATE_MY_PRODUCT", {
+          userIdx: this.userData.user_idx,
+          productIdx: this.product.product_idx,
+          name: this.editedName,
+        });
+        if (!res) {
+          this.$store.dispatch(openDialog, "");
+          return;
+        }
+        this.product.name = this.editedName;
 
-      // Edit 모드를 다시 비활성화
-      this.editMode = false;
+        // Edit 모드를 다시 비활성화
+        this.editMode = false;
+      } catch (err) {
+        this.$store.dispatch(openDialog, errMsgInternal);
+      }
     },
   },
 };

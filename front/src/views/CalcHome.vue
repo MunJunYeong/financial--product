@@ -285,13 +285,13 @@
 </template>
 
 <script>
-import SubmitDateDialog from "@/components/SubmitDateDialog.vue";
+import SubmitDateDialog from "@/components/dialog/SubmitDateDialog.vue";
 
+// cus
 import { calculateDeposits, calculateSavings } from "../lib/calc/savings";
-
 import { formatAmount } from "../lib/formatter";
 import { SavingsType } from "../lib/type";
-import { openDialog } from "../lib/defines";
+import { errMsgInternal, openDialog } from "../lib/defines";
 
 export default {
   name: "CalcHome",
@@ -401,22 +401,26 @@ export default {
         return;
       }
 
-      const startDate = await this.$refs.startDateDialog.waitForDate();
-      this.$nextTick(async () => {
-        const res = await this.$store.dispatch("SAVE_PRODUCT_AFTER_CALC", {
-          period: this.savingsPeriod,
-          price: this.savingsAmount,
-          rate: this.savingsRate,
-          isSimple: this.savingsIsSimple,
-          startDate: startDate,
-          type: SavingsType.SAVINGS,
-          totalInterest: this.savingsTotalInterest,
-          userIdx: Number(this.userData.user_idx),
+      try {
+        const startDate = await this.$refs.startDateDialog.waitForDate();
+        this.$nextTick(async () => {
+          const res = await this.$store.dispatch("SAVE_PRODUCT_AFTER_CALC", {
+            period: this.savingsPeriod,
+            price: this.savingsAmount,
+            rate: this.savingsRate,
+            isSimple: this.savingsIsSimple,
+            startDate: startDate,
+            type: SavingsType.SAVINGS,
+            totalInterest: this.savingsTotalInterest,
+            userIdx: Number(this.userData.user_idx),
+          });
+          if (res) {
+            this.$store.dispatch(openDialog, "저장 성공");
+          }
         });
-        if (res) {
-          this.$store.dispatch(openDialog, "저장 성공");
-        }
-      });
+      } catch (err) {
+        this.$store.dispatch(openDialog, errMsgInternal);
+      }
     },
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 예금 관련 method

@@ -1,5 +1,5 @@
 // cus
-import utils from "../lib/utils";
+import utils from "../lib/utils/http";
 
 // preset
 const url = process.env.VUE_APP_AUTH_SERVER_URL;

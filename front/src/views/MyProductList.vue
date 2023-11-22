@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import { errMsgInternal, openDialog } from "../lib/defines";
 import { formatDate } from "../lib/formatter";
 
 export default {
@@ -54,7 +55,11 @@ export default {
   methods: {
     formatDate,
     async getMyProducts(userIdx) {
-      await this.$store.dispatch("GET_USER_PRODUCTS", userIdx);
+      try {
+        await this.$store.dispatch("GET_USER_PRODUCTS", userIdx);
+      } catch (err) {
+        this.$store.dispatch(openDialog, errMsgInternal);
+      }
     },
     calculateCurrentAmount(startDate, monthlyPayment) {
       const start = new Date(startDate);

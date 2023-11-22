@@ -5,7 +5,7 @@
         <div class="user-info-box pa-5 elevation-2">
           <h3 class="mb-5">User Info</h3>
 
-          <div class="info-item mb-5" >
+          <div class="info-item mb-5">
             <strong>ID:</strong> {{ userData.id }}
           </div>
 
@@ -54,7 +54,7 @@
 
 
 <script>
-import { openDialog } from "../lib/defines";
+import { errMsgInternal, openDialog } from "../lib/defines";
 
 export default {
   name: "MyInfo",
@@ -99,13 +99,17 @@ export default {
 
       const { user_idx, email, name } = this.userData;
 
-      const res = await this.$store.dispatch("UPDATE_USER_INFO", {
-        user_idx: user_idx,
-        email: email,
-        name: name,
-      });
-      if (res) {
-        this.$store.dispatch(openDialog, "회원 정보 Update 성공");
+      try {
+        const res = await this.$store.dispatch("UPDATE_USER_INFO", {
+          user_idx: user_idx,
+          email: email,
+          name: name,
+        });
+        if (res) {
+          this.$store.dispatch(openDialog, "회원 정보 Update 성공");
+        }
+      } catch (err) {
+        this.$store.dispatch(openDialog, errMsgInternal);
       }
     },
   },

@@ -1,5 +1,5 @@
+/* eslint-disable no-unused-vars */
 // cus
-import { openDialog } from "@/lib/defines";
 import prodService from "@/service/product";
 
 const productModule = {
@@ -25,7 +25,6 @@ const productModule = {
   },
   actions: {
     // TODO: refresh 하는 기능은 scheduling으로 돌려야 함.
-    // eslint-disable-next-line no-unused-vars
     async TEST_REFRESH_PRODUCT({ commit }) {
       const res = await prodService.SaveSavingsProduct();
       return res;
@@ -33,39 +32,22 @@ const productModule = {
 
     // set product data
     async SET_BEST_PRODUCT_DATA({ commit, dispatch }) {
-      try {
-        const savings = await prodService.GetBestSavingsProducts();
-        const installment = await prodService.GetBestInstallmentProducts();
+      const savings = await prodService.GetBestSavingsProducts();
+      const installment = await prodService.GetBestInstallmentProducts();
 
-        commit("BEST_SAVINGS_DATA", savings.data);
-        commit("BEST_INSTALLMENT_DATA", installment.data);
-        return true;
-      } catch (err) {
-        dispatch(openDialog, err.message, { root: true });
-        return false;
-      }
+      commit("BEST_SAVINGS_DATA", savings.data);
+      commit("BEST_INSTALLMENT_DATA", installment.data);
+      return true;
     },
 
-    // eslint-disable-next-line no-unused-vars
     async SET_DETAIL_SAVINGS({ dispatch }, prodCode) {
-      try {
-        const res = await prodService.GetDetailSavings(prodCode);
-        return res.data;
-      } catch (err) {
-        dispatch(openDialog, err.message, { root: true });
-        return false;
-      }
+      const res = await prodService.GetDetailSavings(prodCode);
+      return res.data;
     },
 
-    // eslint-disable-next-line no-unused-vars
     async SET_DETAIL_INSTALLMENTS({ dispatch }, prodCode) {
-      try {
-        const res = await prodService.GetDetailInstallments(prodCode);
-        return res.data;
-      } catch (err) {
-        dispatch(openDialog, err.message, { root: true });
-        return false;
-      }
+      const res = await prodService.GetDetailInstallments(prodCode);
+      return res.data;
     },
   },
 };
