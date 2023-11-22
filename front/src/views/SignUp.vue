@@ -43,7 +43,7 @@
 
 <script>
 // cus
-import { openDialog } from "../lib/defines";
+import { errMsgInternal, openDialog } from "../lib/defines";
 
 export default {
   name: "SignUp",
@@ -71,18 +71,22 @@ export default {
   },
   methods: {
     async submitForm() {
-      if (this.$refs.form.validate()) {
-        const res = await this.$store.dispatch("SIGN_UP", {
-          id: this.id,
-          password: this.password,
-          name: this.name,
-          email: this.email,
-        });
-        if (!res) {
-          this.$store.dispatch(openDialog, "중복된 ID입니다. 확인해주세요.");
-          return;
+      try {
+        if (this.$refs.form.validate()) {
+          const res = await this.$store.dispatch("SIGN_UP", {
+            id: this.id,
+            password: this.password,
+            name: this.name,
+            email: this.email,
+          });
+          if (!res) {
+            this.$store.dispatch(openDialog, "중복된 ID입니다. 확인해주세요.");
+            return;
+          }
+          this.$store.dispatch(openDialog, "회원가입 성공했습니다.");
         }
-        this.$store.dispatch(openDialog, "회원가입 성공했습니다.");
+      }catch(err) {
+        this.$store.dispatch(openDialog, errMsgInternal);
       }
     },
   },

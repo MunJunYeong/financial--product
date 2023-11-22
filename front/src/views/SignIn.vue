@@ -28,8 +28,7 @@
 </template>
 
 <script>
-
-import { openDialog } from "../lib/defines";
+import { errMsgInternal, openDialog } from "../lib/defines";
 
 export default {
   name: "SignIn",
@@ -50,19 +49,23 @@ export default {
   },
   methods: {
     async submitForm() {
-      if (this.$refs.form.validate()) {
-        const res = await this.$store.dispatch("SIGN_IN", {
-          id: this.id,
-          password: this.password,
-        });
+      try {
+        if (this.$refs.form.validate()) {
+          const res = await this.$store.dispatch("SIGN_IN", {
+            id: this.id,
+            password: this.password,
+          });
 
-        if (!res) {
-          this.$store.dispatch(
-            openDialog,
-            "ID나 PW가 올바르지 않습니다. 다시 시도해주세요."
-          );
-          return;
+          if (!res) {
+            this.$store.dispatch(
+              openDialog,
+              "ID나 PW가 올바르지 않습니다. 다시 시도해주세요."
+            );
+            return;
+          }
         }
+      } catch (err) {
+        this.$store.dispatch(openDialog, errMsgInternal);
       }
     },
   },

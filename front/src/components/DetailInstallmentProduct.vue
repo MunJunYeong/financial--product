@@ -33,7 +33,7 @@ import SubmitMaxLimitDialog from "@/components/dialog/SubmitMaxLimitDialog.vue";
 
 // cus
 import { calculateDeposits } from "../lib/calc/savings";
-import { openDialog } from "../lib/defines";
+import { errMsgInternal, openDialog } from "../lib/defines";
 import { formatAmount } from "../lib/formatter";
 import { SavingsType } from "../lib/type";
 
@@ -78,7 +78,7 @@ export default {
       if (!max_limit) {
         max_limit = Number(await this.$refs.limitDialog.waitForLimit());
       }
-      
+
       // 단리 복리 여부 확인
       const isSimple = intr_rate_type_nm === "단리" ? true : false;
       // 총 이자 계산
@@ -89,22 +89,26 @@ export default {
         isSimple: isSimple,
       });
 
-      this.$nextTick(async () => {
-        const res = await this.$store.dispatch("SAVE_PRODUCT_AFTER_CALC", {
-          period: Number(save_trm),
-          price: max_limit,
-          rate: intr_rate2,
-          isSimple: isSimple,
-          name: fin_prdt_nm,
-          startDate: startDate,
-          type: SavingsType.DEPOSIT,
-          totalInterest: totalInterest,
-          userIdx: Number(this.userData.user_idx),
+      try {
+        this.$nextTick(async () => {
+          const res = await this.$store.dispatch("SAVE_PRODUCT_AFTER_CALC", {
+            period: Number(save_trm),
+            price: max_limit,
+            rate: intr_rate2,
+            isSimple: isSimple,
+            name: fin_prdt_nm,
+            startDate: startDate,
+            type: SavingsType.DEPOSIT,
+            totalInterest: totalInterest,
+            userIdx: Number(this.userData.user_idx),
+          });
+          if (res) {
+            this.$store.dispatch(openDialog, "저장 성공");
+          }
         });
-        if (res) {
-          this.$store.dispatch(openDialog, "저장 성공");
-        }
-      });
+      } catch (err) {
+        this.$store.dispatch(openDialog, errMsgInternal);
+      }
     },
   },
 };

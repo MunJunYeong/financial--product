@@ -33,7 +33,7 @@ import SubmitDateDialog from "@/components/dialog/SubmitDateDialog.vue";
 
 // cus
 import { formatAmount } from "../lib/formatter";
-import { openDialog } from "../lib/defines";
+import { errMsgInternal, openDialog } from "../lib/defines";
 import { SavingsType } from "../lib/type";
 import { calculateSavings } from "../lib/calc/savings";
 
@@ -89,22 +89,26 @@ export default {
         isSimple: isSimple,
       });
 
-      this.$nextTick(async () => {
-        const res = await this.$store.dispatch("SAVE_PRODUCT_AFTER_CALC", {
-          period: Number(save_trm),
-          price: max_limit,
-          rate: intr_rate2,
-          isSimple: isSimple,
-          name: fin_prdt_nm,
-          startDate: startDate,
-          type: SavingsType.SAVINGS,
-          totalInterest: totalInterest,
-          userIdx: Number(this.userData.user_idx),
+      try {
+        this.$nextTick(async () => {
+          const res = await this.$store.dispatch("SAVE_PRODUCT_AFTER_CALC", {
+            period: Number(save_trm),
+            price: max_limit,
+            rate: intr_rate2,
+            isSimple: isSimple,
+            name: fin_prdt_nm,
+            startDate: startDate,
+            type: SavingsType.SAVINGS,
+            totalInterest: totalInterest,
+            userIdx: Number(this.userData.user_idx),
+          });
+          if (res) {
+            this.$store.dispatch(openDialog, "저장 성공");
+          }
         });
-        if (res) {
-          this.$store.dispatch(openDialog, "저장 성공");
-        }
-      });
+      } catch (err) {
+        this.$store.dispatch(openDialog, errMsgInternal);
+      }
     },
   },
 };

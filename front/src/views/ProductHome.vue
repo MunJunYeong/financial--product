@@ -63,6 +63,7 @@
 </template>
 
 <script>
+import { errMsgInternal, openDialog } from "../lib/defines";
 // cus
 import { formatAmount } from "../lib/formatter";
 
@@ -94,7 +95,11 @@ export default {
 
     // set product data
     async SetBestProductData() {
-      await this.$store.dispatch("SET_BEST_PRODUCT_DATA");
+      try {
+        await this.$store.dispatch("SET_BEST_PRODUCT_DATA");
+      } catch (err) {
+        this.$store.dispatch(openDialog, errMsgInternal);
+      }
     },
     filteredSavingsData() {
       return this.savingsData.filter((item) =>
